@@ -1,0 +1,55 @@
+.member-card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  max-height: 460px;
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--surface);
+  padding: 1rem 1.5rem ;
+  gap: 1rem;
+  
+  h4, p{
+    margin: auto;
+  }
+
+  .member-btn-edit{
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-weight: 1000;
+    color: var(--body-light);
+    align-self: flex-start;
+    padding-top: 0.5rem;
+  }
+
+  .member-image{
+    margin-top: 1.5rem;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+
+  .member-role{
+    padding: .5rem 1rem;
+    background-color: var(--gray100);
+    border-radius: 0.5rem;
+    p{
+      font-size: 14px;
+    }
+  }
+
+  .member-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+

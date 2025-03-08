@@ -1,0 +1,16 @@
+﻿<div class="members-container">
+
+    <div class="header">
+        <h2 class="members-title">Team Members</h2>
+        <button class="btn">+ Add Member</button>
+    </div>
+
+    <div class="members-list">
+
+        <!-- Members cards here -->
+        @await Html.PartialAsync("Team/_MemberCard")
+        @await Html.PartialAsync("Team/_MemberCard")
+        @await Html.PartialAsync("Team/_MemberCard")
+    </div>
+
+</div>

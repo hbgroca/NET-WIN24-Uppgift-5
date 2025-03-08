@@ -1,0 +1,136 @@
+﻿/*Project card*/
+.project {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-width: 350px;
+  height: 276px;
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--surface);
+  padding: 1.5rem;
+}
+
+.project-header {
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.project-header .project-header-title {
+  padding-left: 1.0rem;
+  .project-title, .project-title-info {
+    margin: 0;
+  }
+}
+
+.project-title-info {
+  color: var(--body-light);
+}
+
+.project-btn-edit {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-weight: 1000;
+  color: var(--body-light);
+  align-self: flex-start;
+  padding-top: 0.5rem;
+}
+
+.project-body {
+  grid-row: 2;
+  display: flex;
+}
+
+.project-footer {
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.project-time {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--project-card-time);
+  padding: 0.5rem;
+  font-size: 14px;
+  border-radius: 10px;
+  max-width: 113px;
+  height: 34px;
+}
+
+  .project-time .project-time-clock {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: var(--project-card-time-circle);
+  }
+
+    .project-time-clock-pointer-hour {
+      position: absolute;
+      font-size: 24px;
+      background-color: var(--project-card-time-pointer);
+      width: 6px;
+      height: 1.5px;
+      border-radius: 1px;
+      top: -16px;
+      left: 8px;
+      transform-origin: 0% 50%;
+      text-anchor: end;
+      animation: rotate 30s linear infinite;
+    }
+
+    .project-time-clock-pointer-minute {
+      position: absolute;
+      font-size: 24px;
+      background-color: var(--project-card-time-pointer);
+      width: 6px;
+      height: 1.5px;
+      border-radius: 1px;
+      top: -16px;
+      left: 8px;
+      transform-origin: 0% 50%;
+      text-anchor: end;
+      rotate: 0deg;
+      animation: rotate 10s linear infinite;
+    }
+
+    .project-time-clock-pointer-center {
+      position: absolute;
+      color: var(--project-card-time-pointer);
+      top: -5px;
+      left: 5.75px;
+      font-size: 8px;
+    }
+
+.project-users {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+  .project-users img {
+    height: 30px;
+    width: 30px;
+  }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,56 @@
+﻿.settings-container {
+  position: absolute;
+  top: 4rem;
+  right: 5rem;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 380px;
+  background-color: var(--surface);
+  border-radius: 14px;
+  padding: 0.5rem;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--gray100);
+  border-radius: 14px;
+  padding: .5rem;
+  width: fit-content;
+  min-width: 284px;
+}
+
+.user-card-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+
+  .line{
+    height: 2px;
+    width: 100%;
+    background-color: var(--gray100);
+  }
+
+  .settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 14px;
+  }
+
+  .logout {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 14px;
+  }
+
+  .settings:hover, .logout:hover {
+    background-color: var(--nav-bg-color);
+    cursor: pointer;
+  }
+}

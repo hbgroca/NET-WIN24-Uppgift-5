@@ -1,0 +1,170 @@
+﻿.project-add-wrapper{
+  position: absolute;
+  top: 0%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+  padding: 3rem; 
+}
+
+.project-edit-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 550px; 
+  max-height: 1131px;
+  width: 100%;
+  height:fit-content;
+  align-items: start;
+  justify-content: center;
+  margin-top: 50px;
+  background-color: var(--surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+
+  .project-close-btn{ 
+    position: absolute;
+    top: 1.0rem;
+    right: 1.5rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+
+    &:hover{
+      color: var(--body-light);
+    }
+  }
+}
+
+#formtest{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.project-image-container {
+  position: relative;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 2rem;
+  outline: dashed 1px var(--border-color);
+  cursor: pointer;
+  margin: 1rem auto;
+  .project-image-edit{
+    position: absolute;
+    bottom: 0;
+    z-index: 99;
+    translate: 0%;
+    margin-bottom: 0.5rem;
+
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .project-image{
+    width: 100%;
+    height: 100%;
+    scale: 1.02;
+    border-radius: 2rem;
+    margin: auto;
+    z-index: 99;
+    background: orange;
+    object-fit: cover;
+  }
+}
+
+.project-member-container {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.5rem; 
+  border: 1px solid var(--border100);
+  border-radius: 14px;
+  
+  .member-search{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+}
+
+.member {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: fit-content;
+  height: 36px;
+  background-color: var(--gray100);
+  padding: 0.5rem 1rem;
+  border-radius: .5rem;
+  
+  p {
+    font-size: 14px;
+  }
+
+  .user-image {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+  }
+
+  .remove-user {
+    background-color: transparent;
+    border: none;
+    color: var(--body-light);
+    cursor: pointer;
+  }
+}
+
+.budget-input {
+  position: relative;
+  input {
+    padding-left: 2rem;
+  }
+
+  p {
+    position: absolute;
+    top: 0rem;
+    left: 1rem;
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 800;
+  }
+}
+
+.project-dates, .project-status-container{
+  display: flex;
+  gap: 1.5rem;
+}
+
+.editor {
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid var(--border100);
+  padding: 0.5rem;
+}
+
+.project-name, .project-description, .project-member, .project-budget, .project-status{
+  /* padding-block: 5rem; */
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  width: 100%;
+}

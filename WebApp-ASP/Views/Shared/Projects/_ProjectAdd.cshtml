@@ -1,0 +1,80 @@
+﻿<div class="project-add-wrapper">
+    <div class="project-edit-container">
+        <h3>Add Project</h3>
+        <button class="project-close-btn">x</button>
+        <div id="formtest">
+            <div class="project-image-container">
+                <!-- <div>
+                    <img src="/images/icons/upload.svg" alt="Project Image location" class="project-image-missing">
+                </div> -->
+                
+                <img src="https://privat.bahnhof.se/wb632954/DBP/Bild/media2/250-1.jpg" alt="Project Image" class="project-image">
+                
+                <div class="project-image-edit">
+                    <img src="/images/icons/Edit.svg" alt="Project Image location">
+                </div>
+            </div>
+
+            <div class="project-name">
+                <label for="projectName" class="text-medium">Project Name</label>
+                <input type="text" placeholder="Project Name" name="projectName" id="projectName" required>
+            </div>
+
+            <div class="project-name">
+                <label for="projectName" class="text-medium">Client Name</label>
+                <input type="text" placeholder="Project Name" name="projectName" id="projectName" required>
+            </div>
+
+            <div class="project-description">
+                <label for="projectDescription" class="text-medium">Project Description</label>
+                <textarea name="projectDescription" placeholder="Type something..." id="projectDescription" required></textarea>
+            </div>
+
+            <div class="project-dates">
+                <div class="project-start-date">
+                    <label for="projectStartDate" class="text-medium">Start Date</label>
+                    <input type="date" name="projectStartDate" id="projectStartDate" required>
+                </div>
+
+                <div class="project-end-date">
+                    <label for="projectEndDate" class="text-medium">End Date</label>
+                    <input type="date" name="projectEndDate" id="projectEndDate" required>
+                </div>
+            </div>
+
+            <div class="project-member">
+                <label for="projectManager" class="text-medium">Members</label>
+                <div class="project-member-container">
+
+                    <!-- component -->
+                    <div class="member">
+                        <img src="/images/User5.svg" alt="User Image" class="user-image">
+                        <p>Therese Lidbom</p>
+                        <button class="remove-user">x</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="project-status-container">
+                <div class="project-budget">
+                    <label for="projectStatus" class="text-medium">Budget</label>
+                    <div class="budget-input">
+                        <input type="number" name="budget" id="budget" required>
+                        <p>$</p>
+                    </div>
+                </div>
+
+                <div class="project-status">
+                    <label for="projectStatus" class="text-medium">Status</label>
+                    <select name="projectStatus" id="projectStatus" required>
+                        <option value="Completed">Completed</option>
+                        <option value="Started">Started</option>
+                    </select>
+                </div>
+            </div>
+
+            <input class="submit-btn btn" type="submit" value="Create">
+        </div>
+    </div>
+</div>

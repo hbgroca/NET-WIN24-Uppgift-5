@@ -1,0 +1,9 @@
+﻿.wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: 270px auto;
+  
+  .main-container {
+    grid-column: 2;
+  }
+}
