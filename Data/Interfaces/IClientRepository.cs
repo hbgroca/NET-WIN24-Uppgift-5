@@ -1,6 +1,8 @@
-﻿namespace Data.Interfaces;
+﻿using Data.Entities;
 
-public interface IClientRepository
+namespace Data.Interfaces;
+
+public interface IClientRepository : IBaseRepository<ClientEntity>
 {
     void FakeMethod();
 }

@@ -14,6 +14,10 @@ public class ClientEntity
     public string Email { get; set; } = null!;
     public string Phone { get; set; } = null!;
 
+    public DateOnly DateCreated { get; set; }
+    public DateOnly DateUpdated { get; set; }
+
+
     // Address (One-to-One)
     public int AddressId { get; set; }
     public AddressEntity Address { get; set; } = null!;

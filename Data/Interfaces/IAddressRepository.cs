@@ -1,6 +1,7 @@
-﻿namespace Data.Interfaces;
+﻿using Data.Entities;
 
-public interface IAddressRepository
+namespace Data.Interfaces;
+
+public interface IAddressRepository : IBaseRepository<AddressEntity>
 {
-    void FakeMethod();
 }
