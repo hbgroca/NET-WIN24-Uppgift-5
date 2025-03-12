@@ -35,4 +35,21 @@ public class MemberFactory
             Projects = entity.Projects.Select(ProjectFactory.Create).ToList()
         };
     }
+
+    public static MemberEntity Create(MemberModel model)
+    {
+        return new MemberEntity
+        {
+            Id = model.Id,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Email,
+            ImageUrl = model.ImageUrl,
+            Phone = model.Phone,
+            Title = model.Title,
+            BirthDate = model.BirthDate,
+            Address = AddressFactory.Create(model.Address),
+            Projects = model.Projects.Select(ProjectFactory.Create).ToList()
+        };
+    }
 }

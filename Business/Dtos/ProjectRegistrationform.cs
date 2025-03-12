@@ -1,4 +1,7 @@
-﻿namespace Business.Dtos;
+﻿using Business.Models;
+using Data.Entities;
+
+namespace Business.Dtos;
 
 public class ProjectRegistrationform
 {

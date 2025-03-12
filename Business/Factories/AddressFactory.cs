@@ -16,7 +16,7 @@ public static class AddressFactory
     {
         if (form == null)
         {
-            Debug.WriteLine("Registrationform missing");
+            Debug.WriteLine("! Address Factory: Registrationform missing");
             return null!;
         }
         return new AddressEntity
@@ -28,11 +28,27 @@ public static class AddressFactory
         };
     }
 
+    public static AddressRegistrationform Create(string street, string zipcode, string city, string country)
+    {
+        if (string.IsNullOrWhiteSpace(street) || string.IsNullOrWhiteSpace(zipcode) || string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(country))
+        {
+            Debug.WriteLine("! Address Factory: Required inputs missing");
+            return null!;
+        }
+        return new AddressRegistrationform
+        {
+            Street = street,
+            ZipCode = zipcode,
+            City = city,
+            Country = country,
+        };
+    }
+
     public static AddressModel Create(AddressEntity entity) 
     {
         if (entity == null)
         {
-            Debug.WriteLine("Entity missing");
+            Debug.WriteLine("! Address Factory: Entity missing");
             return null!;
         }
         return new AddressModel
@@ -42,6 +58,23 @@ public static class AddressFactory
             ZipCode = entity.ZipCode,
             City = entity.City,
             Country = entity.Country,
+        };
+    }
+
+    public static AddressEntity Create(AddressModel model)
+    {
+        if (model == null)
+        {
+            Debug.WriteLine("! Address Factory: Entity missing");
+            return null!;
+        }
+        return new AddressEntity
+        {
+            Id = model.Id,
+            Street = model.Street,
+            ZipCode = model.ZipCode,
+            City = model.City,
+            Country = model.Country,
         };
     }
 }

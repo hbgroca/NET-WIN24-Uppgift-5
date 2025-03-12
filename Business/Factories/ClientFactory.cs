@@ -32,4 +32,20 @@ public class ClientFactory
             Projects = entity.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }
+
+    public static ClientEntity Create(ClientModel model)
+    {
+        return new ClientEntity
+        {
+            Id = model.Id,
+            ImageUrl = model.ImageUrl,
+            ClientName = model.ClientName,
+            Email = model.Email,
+            Phone = model.Phone,
+            Address = AddressFactory.Create(model.Address),
+            DateCreated = model.DateCreated,
+            DateUpdated = model.DateUpdated,
+            Projects = model.Projects.Select(ProjectFactory.Create).ToList(),
+        };
+    }
 }

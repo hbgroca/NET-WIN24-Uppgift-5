@@ -1,3 +1,18 @@
-﻿@using WebApp_ASP
+﻿@using Business.Interfaces
+@using Business.Models
+@using Business.Dtos
+@using Data.Interfaces
+@using Data.Repositories
+@using WebApp_ASP
 @using WebApp_ASP.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IClientRepository _clientRepository
+@inject IMemberRepository _memberRepository
+@inject IProjectRepository _projectRepository
+@inject IAddressRepository _addressRepository
+
+@inject IClientService _clientService
+@inject IMemberService _memberService
+@inject IProjectService _projectService
+@inject IAddressService _addressService

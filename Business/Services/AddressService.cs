@@ -14,6 +14,7 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
     private readonly IAddressRepository _addressRepository = addressRepository;
 
     // Create
+    /// Create a new address. If the address already exists, returns the existing address.
     public async Task<AddressModel> CreateAddressAsync(AddressRegistrationform form)
     {
         if (form == null)
@@ -23,7 +24,6 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
         }
 
         // Check if the address already exists
-
         var exists = await GetAddressAsync(
             c =>
             c.Street == form.Street &&
@@ -53,7 +53,18 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
             // Commit the transaction
             await _addressRepository.CommitTransactionAsync();
 
-            return AddressFactory.Create(address);
+            // Get the address from db
+            var updatedEntity = await _addressRepository.GetOneAsync(
+                c =>
+                c.Street == form.Street &&
+                c.ZipCode == form.ZipCode &&
+                c.City == form.City &&
+                c.Country == form.Country
+                );
+            if (updatedEntity is null)
+                throw new Exception("Error while saving the address");
+
+            return AddressFactory.Create(updatedEntity);
         }
         catch (Exception ex)
         {
@@ -64,6 +75,11 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
         return null!;
     }
 
+    public async Task<AddressModel> CreateAddressAsync(string street, string zipcode, string city, string country)
+    {
+        var addressform = AddressFactory.Create(street, zipcode, city, country);
+        return await CreateAddressAsync(addressform);
+    }
 
     // Read
     private async Task<AddressModel> GetAddressAsync(Expression<Func<AddressEntity, bool>> expression)

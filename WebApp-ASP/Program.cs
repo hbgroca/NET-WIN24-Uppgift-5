@@ -1,5 +1,10 @@
+using Business.Interfaces;
+using Business.Services;
+using Data.Interfaces;
+using Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using WebApp_ASP.Data;
 
 namespace WebApp_ASP;
@@ -8,6 +13,14 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            // Clean up json file
+            WriteIndented = true,
+            // Prevent infinite loop when collecting db data where JOIN can cause trubble
+            ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+        };
+
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -19,6 +32,25 @@ public class Program
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllersWithViews();
+
+        // SQL Server
+        var sqlConnectionString = builder.Configuration.GetConnectionString("SQLConnection") ?? throw new InvalidOperationException("Connection string 'SQLConnection' not found.");
+        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(sqlConnectionString));
+
+
+
+        // Repository
+        builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+        builder.Services.AddScoped<IClientRepository, ClientRepository>();
+        builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+        builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+
+        // Services
+        builder.Services.AddScoped<IAddressService, AddressService>();
+        builder.Services.AddScoped<IClientService, ClientService>();
+        builder.Services.AddScoped<IMemberService, MemberService>();
+        builder.Services.AddScoped<IProjectService, ProjectService>();
+
 
         var app = builder.Build();
 

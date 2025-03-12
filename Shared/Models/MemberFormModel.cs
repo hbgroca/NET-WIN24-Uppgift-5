@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Shared.Models;
 
-namespace Data.Entities;
-
-public class MemberEntity
+public class MemberFormModel
 {
-    [Key]
     public Guid Id { get; set; }
     public string? ImageUrl { get; set; }
     public string FirstName { get; set; } = null!;
@@ -17,10 +14,8 @@ public class MemberEntity
     public DateOnly DateCreated { get; set; }
     public DateOnly DateUpdated { get; set; }
 
-    // Adress (One-to-One)
-    public int AddressId { get; set; }
-    public AddressEntity Address { get; set; } = null!;
+    public AddressModel Address { get; set; } = null!;
+    public List<ProjectModel> Projects { get; set; } = [];
 
-    // Projects (Many-to-Many)
-    public List<ProjectEntity> Projects { get; set; } = [];
+    public string FullName => $"{FirstName} {LastName}";
 }

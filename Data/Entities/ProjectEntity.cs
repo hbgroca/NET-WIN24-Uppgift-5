@@ -13,7 +13,9 @@ public class ProjectEntity
 
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
-    
+    public DateOnly CreateDate { get; set; }
+    public DateOnly UpdateDate { get; set; }
+
     public decimal Budget { get; set; }
 
 

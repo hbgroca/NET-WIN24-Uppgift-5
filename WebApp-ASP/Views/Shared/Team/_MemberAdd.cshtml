@@ -1,0 +1,101 @@
+﻿@model MemberModel
+
+<div class="new-member-wrapper">
+    <div class="member-edit-container">
+        <h3>New Member</h3>
+        <button class="member-close-btn">x</button>
+        <form method="post" class="member-edit-form">
+            <div class="member-image-container">
+                @if (string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <img src="/images/icons/upload.svg" alt="member Image location" class="member-image-missing">
+                }
+                else
+                {
+                    <img src="@Model.ImageUrl" alt="member Image" class="member-image">
+                }
+            </div>
+
+            <div class="member-name-container">
+                <div class="member-name">
+                    <label for="memberFirstName" class="text-medium">First Name</label>
+                    <input type="text" placeholder="Your first Name" name="memberFirstName" id="memberFirstName" required>
+                </div>
+
+                <div class="member-name">
+                    <label for="memberLastName" class="text-medium">Last Name</label>
+                    <input type="text" placeholder="Your last Name" name="memberLastName" id="memberLastName" required>
+                </div>
+            </div>
+
+            <div class="member-email">
+                <label for="memberEmail" class="text-medium">Email</label>
+                <input type="text" placeholder="Your email adress" name="memberEmail" id="memberEmail" required>
+            </div>
+
+            <div class="member-phone">
+                <label for="memberPhone" class="text-medium">Phone</label>
+                <input type="text" placeholder="Your phone number" name="memberPhone" id="memberPhone" required>
+            </div>
+
+            <div class="member-title">
+                <label for="memberTitle" class="text-medium">Job Title</label>
+                <input type="text" placeholder="Your job title" name="memberTitle" id="memberTitle" required>
+            </div>
+
+            <div class="member-address">
+                <label for="memberAdress" class="text-medium">Adress</label>
+                <input type="text" placeholder="Your adress" name="memberAdress" id="memberAdress" required>
+            </div>
+
+
+            <div class="member-birthdate-container">
+
+                <label for="memberStatus" class="text-medium">Date of Birth</label>
+                <div class="member-birthdate-selector">
+
+                    <div class="member-birthdate">
+                        <select name="memberStatus" id="memberStatus" required>
+                            <option value="" selected disabled>Day</option>
+                            @for(int i = 1; i <= 12; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="member-birthdate">
+                        <select name="memberStatus" id="memberStatus" required>
+                            <option value="" selected disabled>Month</option>
+                            <option value="Started">January</option>
+                            <option value="Started">February</option>
+                            <option value="Started">March</option>
+                            <option value="Started">April</option>
+                            <option value="Started">May</option>
+                            <option value="Started">June</option>
+                            <option value="Started">July</option>
+                            <option value="Started">August</option>
+                            <option value="Started">September</option>
+                            <option value="Started">October</option>
+                            <option value="Started">November</option>
+                            <option value="Started">December</option>
+                        </select>
+                    </div>
+
+                    <div class="member-birthdate">
+                        <select name="memberStatus" id="memberStatus" required>
+                            <option disabled selected value="">Year</option>
+                            @for (int i = 1; i <= 125; i++)
+                            {
+                                <option value="@i">@(DateTime.Now.Year - i)</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <input class="submit-btn btn" type="submit" value="Create">
+        </form>
+    </div>
+</div>

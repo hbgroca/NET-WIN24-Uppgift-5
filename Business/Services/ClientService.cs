@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ClientService(IClientRepository clientRepository, IAddressService addressService)
+public class ClientService(IClientRepository clientRepository, IAddressService addressService) : IClientService
 {
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IAddressService _addressService = addressService;
@@ -23,15 +23,6 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             Debug.WriteLine("Registrationform missing.");
             return null!;
         }
-        // Check if the client already exists
-        //var exists = await GetClientAsync(
-        //    c =>
-        //    c.FirstName == form.FirstName &&
-        //    c.LastName == form.LastName &&
-        //    c.Email == form.Email
-        //    );
-        //if (exists != null)
-        //    return exists;
 
         // Begin a new transaction
         await _clientRepository.BeginTransactionAsync();
@@ -42,16 +33,10 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             clientEntity.Id = GenerateGuid.NewGuid();
 
             // Create the address
-            var addressform = new AddressRegistrationform
-            {
-                Street = form.Street,
-                ZipCode = form.ZipCode,
-                City = form.City,
-                Country = form.Country
-            };
-            var address = await _addressService.CreateAddressAsync(addressform);
+            var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
             if (address == null)
                 throw new Exception("Error while creating the address");
+
             clientEntity.AddressId = address.Id;
 
             // Set the date created and updated
@@ -68,6 +53,9 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
 
             // Commit the transaction
             await _clientRepository.CommitTransactionAsync();
+
+            // Return the client
+            return ClientFactory.Create(clientEntity);
         }
         catch (Exception ex)
         {
