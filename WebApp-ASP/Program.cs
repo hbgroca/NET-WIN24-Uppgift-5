@@ -34,8 +34,8 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         // SQL Server
-        var sqlConnectionString = builder.Configuration.GetConnectionString("SQLConnection") ?? throw new InvalidOperationException("Connection string 'SQLConnection' not found.");
-        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(sqlConnectionString));
+        //var sqlConnectionString = builder.Configuration.GetConnectionString("SQLConnection") ?? throw new InvalidOperationException("Connection string 'SQLConnection' not found.");
+        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\HBGROCA\\Desktop\\Github\\NET-WIN24-Uppgift-5\\Data\\Databases\\Assignment.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
 
 
 

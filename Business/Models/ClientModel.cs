@@ -15,5 +15,7 @@ public class ClientModel
 
     public AddressModel Address { get; set; } = null!;
 
+    public string Status { get; set; } = null!;
+
     public List<ProjectModel> Projects { get; set; } = [];
 }

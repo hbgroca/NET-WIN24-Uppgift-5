@@ -6,6 +6,7 @@ using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
+using Shared.Models;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -17,7 +18,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
     private readonly IAddressService _addressService = addressService;
 
     // Create
-    public async Task<MemberModel> CreateMemberAsync(MemberRegistrationform form)
+    public async Task<MemberModel> CreateMemberAsync(MemberRegistrationFormModel form)
     {
         if (form == null)
         {
@@ -33,7 +34,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             var memberEntity = MemberFactory.Create(form);
             memberEntity.Id = GenerateGuid.NewGuid();
 
-            // Create the address
+            // Create the address if not already exists
             var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
             if (address == null)
                 throw new Exception("Error while creating the address");
@@ -56,7 +57,8 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             await _memberRepository.CommitTransactionAsync();
 
             // Return the client
-            return MemberFactory.Create(memberEntity);
+            //return MemberFactory.Create(memberEntity);
+            return null!;
         }
         catch (Exception ex)
         {
@@ -95,6 +97,12 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
 
 
     // Update
+    public MemberRegistrationFormModel CreateRegistrationUpdateForm(MemberModel member)
+    {
+        var form = MemberFactory.CreateRegistrationUpdateForm(member);
+        return form;
+    }
+
 
     // Delete
 }

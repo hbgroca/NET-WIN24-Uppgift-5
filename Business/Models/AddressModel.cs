@@ -7,4 +7,6 @@ public class AddressModel
     public string ZipCode { get; set; } = null!;
     public string City { get; set; } = null!;
     public string Country { get; set; } = "Sweden";
+
+    public string FullAddress => $"{Street}, {ZipCode} {City}, {Country}";
 }

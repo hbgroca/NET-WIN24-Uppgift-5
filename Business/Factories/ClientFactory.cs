@@ -1,17 +1,18 @@
 ﻿using Business.Dtos;
 using Business.Models;
 using Data.Entities;
+using Shared.Models;
 
 namespace Business.Factories;
 
 public class ClientFactory
 {
-    public static ClientEntity Create(ClientRegistrationform form)
+    public static ClientEntity Create(AddClientFormModel form)
     {
         return new ClientEntity
         {
-            ImageUrl = form.ImageUrl,
-            ClientName = form.ClientName,
+            ImageUrl = form.ImageName,
+            ClientName = form.Name,
             Email = form.Email,
             Phone = form.Phone,
         };
@@ -29,6 +30,7 @@ public class ClientFactory
             Address = AddressFactory.Create(entity.Address),
             DateCreated = entity.DateCreated,
             DateUpdated = entity.DateUpdated,
+            Status = entity.Status,
             Projects = entity.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }
@@ -45,6 +47,7 @@ public class ClientFactory
             Address = AddressFactory.Create(model.Address),
             DateCreated = model.DateCreated,
             DateUpdated = model.DateUpdated,
+            Status = model.Status,
             Projects = model.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }

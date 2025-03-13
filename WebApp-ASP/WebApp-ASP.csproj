@@ -27,7 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Admin\" />
+    <Folder Include="wwwroot\uploaded\" />
+    <Folder Include="wwwroot\uploaded\members\" />
   </ItemGroup>
 
   <ItemGroup>

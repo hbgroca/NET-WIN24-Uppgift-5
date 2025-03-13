@@ -14,18 +14,16 @@
 
 .project-edit-container {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  max-width: 550px; 
-  max-height: 1131px;
-  width: 100%;
-  height:fit-content;
-  align-items: start;
-  justify-content: center;
-  margin-top: 50px;
-  background-color: var(--surface);
-  border-radius: 1rem;
-  padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-top: 50px;
+    height: 100%;
+    background-color: var(--surface);
+    max-width: 550px;;
+    border-radius: 1rem;
+    padding: 1.5rem;
 
   .project-close-btn{ 
     position: absolute;

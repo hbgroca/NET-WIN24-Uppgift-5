@@ -34,11 +34,11 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
         if (exists != null)
             return exists;
 
-
-        // Begin a new transaction
-        await _addressRepository.BeginTransactionAsync();
         try
         {
+            // Begin a new transaction
+            //await _addressRepository.BeginTransactionAsync();
+
             // Remap with factory
             var address = AddressFactory.Create(form);
 
@@ -51,7 +51,7 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
                 throw new Exception("Error while saving the address");
 
             // Commit the transaction
-            await _addressRepository.CommitTransactionAsync();
+            //await _addressRepository.CommitTransactionAsync();
 
             // Get the address from db
             var updatedEntity = await _addressRepository.GetOneAsync(

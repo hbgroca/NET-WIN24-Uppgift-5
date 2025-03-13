@@ -1,0 +1,48 @@
+﻿<div class="client-list">
+    <table>
+        <thead>
+            <tr>
+                <th class="client-info">Client</th>
+                <th class="client-location">Address</th>
+                <th class="client-date">Date added</th>
+                <th class="client-status">Status</th>
+                <th class="client-actions">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in await _clientService.GetAllClientsAsync())
+            {
+                <tr>
+                    <td class="client-info">
+                        @if (client.ImageUrl != null)
+                        {
+                            <img class="client-image" src="@client.ImageUrl" />
+                        }
+                        else
+                        {
+                            <img class="client-image" src="/images/User5.svg" />
+                        }
+                        <div class="client-name">@client.ClientName</div>
+                        <div class="client-email">@client.Email</div>
+                        <div class="client-phone">@client.Phone</div>
+                    </td>
+                    <td class="client-location">
+                        <div>@client.Address.Street</div>
+                        <div> @client.Address.ZipCode @client.Address.City</div>
+                        <div> @client.Address.Country</div>
+                    </td>
+                    
+                    <td class="client-date">@client.DateCreated</td>
+                    <td class="client-status">
+                        <div class="badge success">
+                            @client.Status
+                        </div>
+                    </td>
+                    <td class="client-actions">
+                        <p class="client-actions-edit-btn" data-modal="true" data-target="#editClientModal">&#9998;</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

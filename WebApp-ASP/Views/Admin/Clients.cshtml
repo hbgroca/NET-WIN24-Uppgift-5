@@ -1,0 +1,20 @@
+﻿
+<partial name="Partials/Components/_AddClientModal" />
+<partial name="Partials/Components/_EditClientModal" />
+
+
+
+<section id="clients">
+
+    <header>
+        <h2 class="clients-title">Clients</h2>
+        <button id="clients-add-btn" data-modal="true" data-target="#addClientModal" class="btn">+ Add Client</button>
+    </header>
+
+   <div class="surface">
+        @await Html.PartialAsync("Partials/Sections/_ClientList")
+        @* <partial name="Partials/Sections/_ClientList"/> *@
+   </div>
+
+    
+</section>

@@ -23,6 +23,7 @@
   --yellow: #FFD422;
   --blue1: #2CD9D9;
   --green: #31D482;
+  --light-green:#a5fdd1;
   --dark-green: #24B26B;
   --dark-orange: #F09330;
   --dark-red: #E94D3F;
@@ -41,6 +42,16 @@
   --project-card-time: var(--gray200);
   --project-card-time-circle: rgba(0, 0, 0, 0.25);
   --project-card-time-pointer: #000000;
+  --modal-bg: rgba(0, 0, 0, 0.3);
+
+
+  --font-black: 900;
+  --font-bold: 700;
+  --font-semi-bold: 600;
+  --font-medium: 500;
+  --font-regular: 400;
+  --font-light: 300;
+  --font-thin: 100;
 }
 
 *, *::after, *::before  {
@@ -99,7 +110,13 @@ p, span {
   font-size: 15px;
   color: var(--text-color);
 }
-
+a {
+  color: var(--accent);
+  font-weight: semi-bold;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;;
+}
 .text-medium {
   font-weight: 700;
 }
@@ -156,6 +173,40 @@ p, span {
 }
 
 
+/* Barges */
+.badge{
+  padding: 2px 4px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Colors */
+.primary{
+  color: var(--primary-color);
+}
+.success{
+  background-color: var(--light-green);
+  color: var(--dark-green);
+}
+.warning{
+  background-color: var(--yellow);
+  color: var(--orange);
+}
+.normal{
+  background-color: var(--gray400);
+  color: var(--text-color);
+}
+
+/* Cards */
+.surface{
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: var(--surface);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Buttons */
 .btn {
   display: flex;
   justify-content: center;
@@ -172,7 +223,6 @@ p, span {
   &:hover{
     background-color: var(--accent-dark);
   }
-
 }
 
 .btn-gray {
@@ -182,10 +232,161 @@ p, span {
   &:hover{
     background-color: var(--btn-bg-shadow-color);
   }
-
 }
 
-select, input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="number"] {
+.btn-close{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.5em;
+  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+
+  &:hover{
+    color: var(--text-dim);
+  }
+}
+
+.btn-create{
+  margin-top: 1rem;
+}
+
+/* Modal */
+.modal{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--modal-bg);
+  justify-content: center;
+  align-items: center;
+}
+.modal .modal-content{
+  background-color: var(--surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+}
+.modal .modal-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tr{
+  display: grid;
+  grid-template-areas: "checkbox info location phone date status actions";
+  grid-template-columns: auto 3fr 2fr 2fr 2fr 2fr 50px;
+  align-items: center;
+  width: 100%;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+table th, table td {
+  width: 100%;
+  padding: 0 1rem;
+  text-align: left;
+}
+
+table thead, table tbody{
+  display: contents;
+}
+
+table thead > tr{
+  background-color: var(--gray100);
+  color: var(--text-dim);
+  border-radius: 1rem;
+}
+
+table tbody > tr{
+  padding: 0.25rem 0.5rem;
+  margin: 0.5rem 0;
+
+  &:hover{
+    background-color: var(--nav-bg-hover-color);
+  }
+}
+
+table td img{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  background-color: var(--accent);
+}
+
+
+
+
+/* Forms */
+form{
+  width: 100%;
+}
+
+form .form-group{
+  position: relative;
+  margin-bottom: 1rem;
+  margin-top: 0.25rem;
+}
+form textarea {
+  width: 100%;
+  min-height: 48px;
+  max-width: 490px;
+  padding: 1rem;
+  border: 1px solid var(--border100);
+  border-radius: 14px;
+}
+
+form .input-validation-error{
+  outline: 3px solid rgba(235, 95, 95, 0.504);
+}
+
+form .field-validation-error{
+  position: absolute;
+  color: red;
+  background-color: rgba(235, 95, 95, 0.504);
+  font-size: .8rem;
+  z-index: 10;
+  bottom: 3px;
+  right: 3px;
+  border-radius: .75rem;
+  padding: .5rem .75rem;
+  text-align: right;
+  display: flex;
+  gap: .25rem;
+  align-items: center;
+}
+
+form .field-validation-error::before{
+  content: '\26A0';
+  font-size: 1.1rem;
+}
+
+select, 
+input[type="text"], 
+input[type="password"], 
+input[type="email"], 
+input[type="date"], 
+input[type="number"] {
+  position: relative;
   width: 100%;
   height: 48px;
   padding: 0 1rem;
@@ -199,19 +400,58 @@ input[type="checkbox"] {
   background-color: var(--accent);
 }
 
-textarea {
-  width: 100%;
-  min-height: 48px;
-  max-width: 490px;
-  padding: 1rem;
-  border: 1px solid var(--border100);
-  border-radius: 14px;
+
+/* Image Preview */
+.image-previewer{
+  position: relative;
+  outline: 3px dashed var(--border100);
+  outline-offset: -3px;
+  height: 150px;
+  width: 150px;
+  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-a {
-  color: var(--accent);
-  font-weight: semi-bold;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;;
+.image-previewer::before{
+  content: '';
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/images/icons/Camera.svg);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  padding: 2rem;
+  border-radius: 50%;
+}
+
+.image-previewer.selected::after{
+  content: '';
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/images/icons/Edit.svg);
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.image-previewer.circle{
+  border-radius: 50%;
+}
+
+.image-previewer.square{
+  border-radius: 1rem;
+}
+
+
+
+.hidden{
+  display: none;
 }

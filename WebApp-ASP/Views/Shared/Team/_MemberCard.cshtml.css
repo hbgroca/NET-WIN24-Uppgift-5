@@ -3,16 +3,138 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 300px;
+  width: 300px;
   max-height: 460px;
   border: none;
   border-radius: 1rem;
   background-color: var(--surface);
   padding: 1rem 1.5rem ;
   gap: 1rem;
-  
-  h4, p{
-    margin: auto;
+
+  .member-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  .member-name{
+    max-width: 268px;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.member-card-continer{
+  .member-card{
+    display: flex;
+  }
+  .member-card-large{
+    display: none;
+  }
+}
+.expanded{
+  .member-card{
+    display: none;
+  }
+  .member-card-large{
+    display: grid;
+  }
+}
+
+h4, p{
+  margin: auto;
+}
+
+.member-image{
+  margin-top: 1.5rem;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.member-role{
+  padding: .5rem 1rem;
+  background-color: var(--gray100);
+  border-radius: 0.5rem;
+  p{
+    font-size: 14px;
+  }
+}
+
+
+
+.member-btn-edit{
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-weight: 1000;
+  color: var(--body-light);
+  align-self: flex-start;
+  padding-top: 0.5rem;
+  z-index: 3;
+}
+
+.member-card-large{
+  position: relative;
+  display: grid;
+  grid-template-areas: 
+  "image info"
+  "btn btn" ;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  width: 616px;
+  max-height: 460px;
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--surface);
+  padding: 1rem 1.5rem ;
+  gap: 1rem;
+
+  .member-card-left-container{
+    grid-area: image;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+  .member-name{
+    max-height: 90px;
+    max-width: 268px;
+    margin: 1.5rem 0.5rem;
+    text-wrap: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+}
+
+  .member-card-right-container{
+    grid-area: info;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+
+    .member-info{
+      h6{
+        margin: 1rem 0;
+      }
+      p{
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  #member-card-message-btn{
+    grid-area: btn;
   }
 
   .member-btn-edit{
@@ -27,29 +149,4 @@
     align-self: flex-start;
     padding-top: 0.5rem;
   }
-
-  .member-image{
-    margin-top: 1.5rem;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-  }
-
-  .member-role{
-    padding: .5rem 1rem;
-    background-color: var(--gray100);
-    border-radius: 0.5rem;
-    p{
-      font-size: 14px;
-    }
-  }
-
-  .member-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-  }
 }
-

@@ -1,0 +1,60 @@
+﻿@model TeamMembersViewModel
+
+<div class="members-container">
+
+    <div class="header">
+        <h2 class="members-title">Team Members</h2>
+        <button id ="addMemberBtn" class="btn">+ Add Member</button>
+    </div>
+    <!-- Add member -->
+    <div id="overlay" class="overlay" style=@(Model.RegistrationFormInvalid ? "display:block" : "display:none")>
+        <div class="overlay-content"> 
+            <span class="close-btn">&times;</span> 
+            @await Html.PartialAsync("Team/_MemberAdd", Model.MemberRegistrationForm)
+        </div> 
+    </div>
+
+    @* <div class="overlay" style=@(Model.IsUpdate ? "display:block" : "display:none")> *@
+    @*     <div class="overlay-content"> *@
+    @*         @await Html.PartialAsync("Team/_MemberEdit", Model.MemberRegistrationForm) *@
+    @*     </div> *@
+    @* </div> *@
+
+
+    <div class="members-list">
+        <!-- Members cards here -->
+        @foreach (var member in Model.Members)
+        {   
+            @await Html.PartialAsync("Team/_MemberCard", member)
+        }
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        // Execute when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the modal element
+            const overlay = document.getElementById('overlay');
+
+            // Get the buttons
+            const btn = document.getElementById('addMemberBtn');
+            const closeBtn = overlay.querySelector('.member-close-btn');
+            const submitBtn = overlay.querySelector('.submit-btn');
+
+            // Add button
+            btn.addEventListener('click', function() {
+               overlay.style.display = "block";
+            });
+
+            // Close button (inside overlay)
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    overlay.style.display = "none";
+                });
+            }
+        });
+    </script>
+}

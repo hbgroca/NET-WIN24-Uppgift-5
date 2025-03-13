@@ -5,6 +5,7 @@ using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
+using Shared.Models;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -16,7 +17,7 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
     private readonly IAddressService _addressService = addressService;
 
     // Create
-    public async Task<ClientModel> CreateClientAsync(ClientRegistrationform form)
+    public async Task<ClientModel> CreateClientAsync(AddClientFormModel form)
     {
         if (form == null)
         {
@@ -24,10 +25,11 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             return null!;
         }
 
-        // Begin a new transaction
-        await _clientRepository.BeginTransactionAsync();
         try
         {
+            // Begin a new transaction
+            await _clientRepository.BeginTransactionAsync();
+
             // Remap with factory
             var clientEntity = ClientFactory.Create(form);
             clientEntity.Id = GenerateGuid.NewGuid();
@@ -42,6 +44,9 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             // Set the date created and updated
             clientEntity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
             clientEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+
+            // Set the status
+            clientEntity.Status = "Alive";
 
             // Create the client in dbcontext
             await _clientRepository.CreateAsync(clientEntity);
@@ -90,6 +95,7 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
         var clients = await _clientRepository.GetAllAsync();
         if (clients == null)
             return null!;
+
         return clients.Select(ClientFactory.Create);
     }
 

@@ -17,6 +17,8 @@ public class ClientEntity
     public DateOnly DateCreated { get; set; }
     public DateOnly DateUpdated { get; set; }
 
+    public string Status { get; set; } = null!;
+
 
     // Address (One-to-One)
     public int AddressId { get; set; }

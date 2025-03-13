@@ -1,0 +1,54 @@
+.client-list{
+  height: 100%;
+
+  .client-info{
+    display: grid;
+    column-gap: 1rem;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 
+    "image name"
+    "image email"
+    "image phone";
+
+    .client-image{
+      grid-area: image;
+    }
+    .client-name{
+      grid-area: name;
+      font-weight: var(--font-bold);
+    }
+    .client-email{
+      grid-area: email;
+      color: var(--text-dim);
+    }
+    .client-phone{
+      grid-area: phone;
+      color: var(--text-dim);
+    }
+  }
+}
+
+.client-list table tr{
+  display: grid;
+  grid-template-areas: "info location date status actions";
+  grid-template-columns: 4fr 2fr  2fr auto auto;
+  align-items: center;
+  width: 100%;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.client-actions-edit-btn{
+  display: flex;
+  scale: 1.5;
+  color: var(--text-dim);
+  cursor: pointer;
+  transform: scaleX(-1);
+}
+
+.client-location, .client-date{
+  display: flex;
+  flex-direction: column;
+  color: var(--text-dim);
+}
