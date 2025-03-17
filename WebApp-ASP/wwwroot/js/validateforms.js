@@ -8,7 +8,6 @@ const validateField = (field) => {
         return;
     }
 
-
     let errorMessage = ""
     let value = field.value.trim()
 

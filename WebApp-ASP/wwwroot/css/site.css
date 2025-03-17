@@ -117,24 +117,46 @@ a {
   font-size: 15px;
   font-weight: 600;;
 }
-.text-medium {
+
+/* Text Styles */
+.text-black {
+  font-weight: 900;
+}
+.text-bold {
   font-weight: 700;
 }
+.text-semi-bold {
+  font-weight: 600;
+}
+.text-medium {
+  font-weight: 500;
+}
+.text-regular {
+  font-weight: 400;
+}
+.text-light {
+  font-weight: 300;
+}
+.text-thin {
+  font-weight: 100;
+}
 
-.text-bold {
-  font-weight: bold;
+/* Layout */
+.hidden{
+  display: none;
+}
+.block {
+  display: block;
 }
 
 .flex {
   display: flex;
 }
-
 .flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -173,10 +195,10 @@ a {
 }
 
 
-/* Barges */
+/* Badges */
 .badge{
-  padding: 2px 4px;
-  border-radius: 8px;
+  padding: 2px 6px;
+  border-radius: 6px;
   text-align: center;
 }
 
@@ -450,8 +472,3 @@ input[type="checkbox"] {
   border-radius: 1rem;
 }
 
-
-
-.hidden{
-  display: none;
-}

@@ -26,8 +26,6 @@ namespace WebApp_ASP.Controllers
         {
             ViewData["Title"] = "Clients";
 
-            //var clients = await _clientService.GetAllClientsAsync();
-
             return View();
         }
 

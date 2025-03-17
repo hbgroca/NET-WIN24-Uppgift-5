@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Models;
-class EditClientFormModel
+public class EditClientFormModel
 {
     [DataType(DataType.Upload)]
     public IFormFile? ProfilePicture { get; set; }
@@ -43,4 +43,9 @@ class EditClientFormModel
     [Required(ErrorMessage = " ")]
     [MinLength(2, ErrorMessage = " ")]
     public string Country { get; set; } = null!;
+
+    [Display(Name = "Status")]
+    [Required(ErrorMessage = " ")]
+    [MinLength(3, ErrorMessage = " ")]
+    public string Status { get; set; } = null!;
 }

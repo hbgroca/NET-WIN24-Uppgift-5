@@ -38,6 +38,7 @@ namespace Data.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateOnly>(type: "date", nullable: false),
                     DateUpdated = table.Column<DateOnly>(type: "date", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
