@@ -51,4 +51,19 @@ public class ClientFactory
             Projects = model.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }
+
+    public static ClientEntity Update(EditClientFormModel form, ClientEntity client)
+    {
+        client.Status = form.Status;
+        client.ClientName = form.Name;
+        client.Email = form.Email;
+        client.Phone = form.Phone;
+
+        if (!string.IsNullOrEmpty(form.ImageName))
+        {
+            client.ImageUrl = form.ImageName;
+        }
+ 
+        return client;
+    }
 }

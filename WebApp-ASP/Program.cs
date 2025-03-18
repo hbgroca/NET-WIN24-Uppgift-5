@@ -21,25 +21,22 @@ public class Program
             ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
         };
 
+        // Create a new builder
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
-        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        // Connection strings
+        var dataConnectionString = builder.Configuration.GetConnectionString("DATAConnection") ?? throw new InvalidOperationException("Connection string 'DATAConnection' not found.");
+        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\roban\\Desktop\\Github\\NET-WIN24-Uppgift-5\\Data\\Database\\Assignment5.mdf;Integrated Security=True;Connect Timeout=30"));
+        //builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("dataConnectionString"));
+        var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(defaultConnectionString));
 
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+        // Identity
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllersWithViews();
 
-        // SQL Server
-        //var sqlConnectionString = builder.Configuration.GetConnectionString("SQLConnection") ?? throw new InvalidOperationException("Connection string 'SQLConnection' not found.");
-        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\HBGROCA\\Desktop\\Github\\NET-WIN24-Uppgift-5\\Data\\Databases\\Assignment.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
-
-
-
-        // Repository
+        // Repositories
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<IMemberRepository, MemberRepository>();

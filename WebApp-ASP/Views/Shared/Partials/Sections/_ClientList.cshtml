@@ -34,12 +34,13 @@
                     
                     <td class="client-date">@client.DateCreated</td>
                     <td class="client-status">
-                        <div class="badge success">
+                        <div class="badge @(client.Status == "Alive" ? "success" : "chaos")">
                             @client.Status
                         </div>
                     </td>
+
                     <td class="client-actions">
-                        <p class="client-actions-edit-btn" data-modal="true" data-target="#editClientModal">&#9998;</p>
+                        <p class="client-actions-edit-btn" data-modal="true" data-target="#editClientModal" data-client-id="@client.Id">&#9998;</p>
                     </td>
                 </tr>
             }

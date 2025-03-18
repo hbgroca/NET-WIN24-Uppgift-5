@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Shared.Models;
 public class EditClientFormModel
 {
+    [Required]
+    public Guid Id { get; set; }
+
     [DataType(DataType.Upload)]
     public IFormFile? ProfilePicture { get; set; }
     public string? ImageName { get; set; }

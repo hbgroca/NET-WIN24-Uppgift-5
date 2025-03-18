@@ -11,4 +11,5 @@ public interface IClientService
     Task<IEnumerable<ClientModel>> GetAllClientsAsync();
     Task<ClientModel> GetClientAsync(Expression<Func<ClientEntity, bool>> expression);
     Task<IEnumerable<ClientModel>> GetClientsAsync(Expression<Func<ClientEntity, bool>> expression);
+    Task<bool> UpdateClient(EditClientFormModel form);
 }

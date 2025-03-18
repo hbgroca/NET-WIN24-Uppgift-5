@@ -37,7 +37,11 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             // Create the address
             var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
             if (address == null)
-                throw new Exception("Error while creating the address");
+            {
+                Debug.WriteLine("An error occurred while creating the client: ");
+                await _clientRepository.RollbackTransactionAsync();
+                return null!;
+            }
 
             clientEntity.AddressId = address.Id;
 
@@ -100,6 +104,78 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
     }
 
     // Update
+
+    public async Task<bool> UpdateClient(EditClientFormModel form)
+    {
+        if (form == null)
+        {
+            Debug.WriteLine("EditClientFormModel missing.");
+            return false;
+        }
+
+        try
+        {
+            // Begin a new transaction
+            await _clientRepository.BeginTransactionAsync();
+            // Get the client
+            var client = await _clientRepository.GetOneAsync(x => x.Id == form.Id);
+
+            if (client == null)
+            {
+                Debug.WriteLine("Client not found.");
+                await _clientRepository.RollbackTransactionAsync();
+                return false;
+            }
+            var imageUrl = client.ImageUrl;
+
+            // Remap with factory
+            var clientEntity = ClientFactory.Update(form, client);
+
+            // Create the address
+            var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
+            if (address == null)
+            {
+                Debug.WriteLine("An error occurred while updating the client: ");
+                await _clientRepository.RollbackTransactionAsync();
+                return false;
+            }
+
+            clientEntity.AddressId = address.Id;
+
+            // Set the date updated
+            clientEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+
+            // Update the client in dbcontext
+            _clientRepository.Update(clientEntity);
+
+            // Save the changes
+            var result = await _clientRepository.SaveAsync();
+            if (result == 0)
+                throw new Exception("Error while saving the client");
+
+            // Commit the transaction
+            await _clientRepository.CommitTransactionAsync();
+
+            /// Remove image
+            if (form.ProfilePicture is not null && imageUrl is not null)
+            {
+                var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\clients\\{imageUrl.Substring(18)}";
+                Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
+                if (File.Exists(cutString))
+                {
+                    Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
+                    File.Delete(cutString);
+                }
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("An error occurred while updating the client: ", ex);
+            return false;
+        }
+    }
 
     // Delete
 

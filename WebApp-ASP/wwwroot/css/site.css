@@ -214,6 +214,10 @@ a {
   background-color: var(--yellow);
   color: var(--orange);
 }
+.chaos{
+  background-color: var(--red);
+  color: var(--white);
+}
 .normal{
   background-color: var(--gray400);
   color: var(--text-color);
