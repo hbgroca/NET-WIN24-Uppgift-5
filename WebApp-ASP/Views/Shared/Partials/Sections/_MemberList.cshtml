@@ -1,0 +1,9 @@
+﻿<div class="members-container">
+    <div class="members-list">
+        <!-- Members cards here -->
+        @foreach (var member in await _memberService.GetAllMembersAsync())
+        {
+            @await Html.PartialAsync("Partials/Components/_MemberCard", member)
+        }
+    </div>
+</div>

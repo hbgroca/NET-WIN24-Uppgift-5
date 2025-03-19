@@ -1,0 +1,152 @@
+﻿@model EditMemberFormModel
+
+
+<div id="editMemberModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3>Edit Member</h3>
+            <button class="btn-close" data-close="true">&#10006;</button>
+        </div>
+
+        <form asp-controller="Members" asp-action="EditMember" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="image-previewer circle selected">
+                <img src="" class="image-preview" />
+                <input asp-for="ProfilePicture" accept="image/*" class="hidden" />
+            </div>
+
+            <div class="member-name-container">
+                <div class="member-name form-group">
+                    <label asp-for="FirstName" class="text-bold"></label>
+                    <input asp-for="FirstName" />
+                    <span asp-validation-for="FirstName"></span>
+                </div>
+
+                <div class="member-name form-group">
+                    <label asp-for="LastName" class="text-bold"></label>
+                    <input asp-for="LastName" />
+                    <span asp-validation-for="LastName"></span>
+                </div>
+            </div>
+
+            <div class="member-email form-group">
+                <label asp-for="Email" class="text-bold"></label>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </div>
+
+            <div class="member-phone form-group">
+                <label asp-for="Phone" class="text-bold"></label>
+                <input asp-for="Phone" />
+                <span asp-validation-for="Phone"></span>
+            </div>
+
+            <div class="member-address-container">
+                <label for="memberStatus" class="text-bold">Address</label>
+                <div>
+                    <div class="d-flex flex-column">
+                        <label asp-for="Street"></label>
+                        <input asp-for="Street" />
+                        <span asp-validation-for="Street"></span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label asp-for="ZipCode"></label>
+                        <input asp-for="ZipCode" />
+                        <span asp-validation-for="ZipCode"></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex flex-column">
+                        <label asp-for="City"></label>
+                        <input asp-for="City" />
+                        <span asp-validation-for="City"></span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label asp-for="Country"></label>
+                        <input asp-for="Country" />
+                        <span asp-validation-for="Country"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="member-status-title-container">
+
+                <div class="member-status form-group">
+                    <label asp-for="Status" class="text-bold"></label>
+                    <select asp-for="Status" required>
+                        <option value="" selected disabled></option>
+                        <option value="Active">Active</option>
+                        <option value="Vacation">Vacation</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                    <span asp-validation-for="Status"></span>
+                </div>
+
+                <div class="member-title form-group">
+                    <label asp-for="Title" class="text-bold"></label>
+                    <input asp-for="Title" />
+                    <span asp-validation-for="Title"></span>
+                </div>
+
+            </div>
+
+            
+
+            <div class="member-birthdate-container">
+
+                <label for="memberStatus" class="text-bold">Date of Birth</label>
+                <div class="member-birthdate-selector">
+
+                    <div class="member-birthdate form-group">
+                        <select asp-for="Day" required>
+                            <option value="not selected" selected disabled>Day</option>
+                            @for (int i = 1; i <= 31; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Day"></span>
+                    </div>
+
+                    <div class="member-birthdate form-group">
+                        <select asp-for="Month" required>
+                            <option value="not selected" selected disabled>Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                        <span asp-validation-for="Month"></span>
+                    </div>
+
+                    <div class="member-birthdate form-group">
+                        <select asp-for="Year" required>
+                            <option disabled selected value="not selected">Year</option>
+                            @for (int i = DateTime.Now.Year; i >= 1900; i--)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Year"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="btn btn-create" type="submit">Update</button>
+        </form>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("_ValidationFormScript")

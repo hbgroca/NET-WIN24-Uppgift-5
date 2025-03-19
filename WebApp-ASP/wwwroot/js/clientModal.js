@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (clientData.imageUrl) {
                             imagePreview.src = clientData.imageUrl;
                         } else {
-                            imagePreview.src = '/images/User5.svg';
+                            imagePreview.src = '/images/defaultprofile.png';
                         }
                     }
                 } catch (error) {

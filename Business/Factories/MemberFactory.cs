@@ -7,7 +7,7 @@ namespace Business.Factories;
 
 public class MemberFactory
 {
-    public static MemberEntity Create(MemberRegistrationFormModel form)
+    public static MemberEntity Create(AddMemberFormModel form)
     {
         return new MemberEntity
         {
@@ -17,6 +17,7 @@ public class MemberFactory
             ImageUrl = form.ImageName,
             Phone = form.Phone,
             Title = form.Title,
+            Status = "Active",
             BirthDate = DateOnly.Parse($"{form.Day}-{form.Month}-{form.Year}"),
         };
     }
@@ -34,6 +35,7 @@ public class MemberFactory
             DateCreated = entity.DateCreated,
             DateUpdated = entity.DateUpdated,
             Title = entity.Title,
+            Status = entity.Status,
             BirthDate = entity.BirthDate,
             Address = AddressFactory.Create(entity.Address),
             Projects = entity.Projects.Select(ProjectFactory.Create).ToList()
@@ -51,6 +53,7 @@ public class MemberFactory
             ImageUrl = model.ImageUrl,
             Phone = model.Phone,
             Title = model.Title,
+            Status = model.Status,
             DateUpdated = model.DateUpdated,
             DateCreated = model.DateCreated,
             BirthDate = model.BirthDate,
@@ -59,9 +62,9 @@ public class MemberFactory
         };
     }
 
-    public static MemberRegistrationFormModel CreateRegistrationUpdateForm(MemberModel model)
+    public static AddMemberFormModel CreateRegistrationUpdateForm(MemberModel model)
     {
-        return new MemberRegistrationFormModel
+        return new AddMemberFormModel
         {
             FirstName = model.FirstName,
             LastName = model.LastName,
@@ -77,5 +80,23 @@ public class MemberFactory
             City = model.Address.City,
             Country = model.Address.Country
         };
+    }
+
+    public static MemberEntity Update(EditMemberFormModel form, MemberEntity member)
+    {
+        member.FirstName = form.FirstName;
+        member.LastName = form.LastName;
+        member.Email = form.Email;
+        member.Phone = form.Phone;
+        member.BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}");
+        member.Title = form.Title;
+        member.Status = form.Status;
+
+        if (!string.IsNullOrEmpty(form.ImageName))
+        {
+            member.ImageUrl = form.ImageName;
+        }
+
+        return member;
     }
 }

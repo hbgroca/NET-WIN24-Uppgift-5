@@ -1,0 +1,94 @@
+﻿@model MemberModel
+
+<div class="member-card-continer">
+    <div class="member-card">
+        <p class="member-btn-edit" onclick="viewEditPopup(this)">&deg;&deg;</p>
+
+        <img class="member-image" src="@Model.ImageUrl">
+
+        <h4 class="member-name">@Model.FullName</h4>
+
+        <div class="member-role">
+            <p class="member-role-text">@Model.Title</p>
+        </div>
+
+        <div class="member-info">
+            <p>@Model.Email</p>
+            <p>@Model.Phone</p>
+        </div>
+
+        <button class="btn btn-gray">Message</button>
+
+
+        @* Pop-up *@
+        <div class="member-card-edit-popup">
+
+            <button class="pop-up-btn member-actions-edit-btn" data-modal="true" data-target="#editMemberModal" data-member-id="@Model.Id" onclick="viewEditPopup(this)"><span class="edit">&#9998;</span>Edit</button>
+            <button class="pop-up-btn" disabled><span class="remove">&#x1F5D1;</span>Remove</button>
+        </div>
+    </div>
+
+    <div class="member-card-large">
+        <div class="member-btn-edit" onclick="toggleSize()">&deg;&deg;</div>
+
+
+        <div class="member-card-left-container">
+            <img class="member-image" src="@Model.ImageUrl">
+
+            <h4 class="member-name">@Model.FullName</h4>
+
+            <div class="member-role">
+                <p class="member-role-text">@Model.Title</p>
+            </div>
+        </div>
+
+        <div class="member-card-right-container">
+            <div class="member-info">
+                <h6>Address</h6>
+                <p>@Model.Address.Street</p>
+                <p>@Model.Address.ZipCode @Model.Address.City</p>
+                <p>@Model.Address.Country</p>
+
+                <h6>Contact</h6>
+                <p>Email: <span>@Model.Email</span></p>
+                <p>Phone: <span>@Model.Phone</span></p>
+
+                <h6>Info</h6>
+                <p>Birthdate: <span>@Model.BirthDate</span></p>
+                <p>Date added: <span>@Model.DateCreated</span></p>
+                <p>Date updated: <span>@Model.DateUpdated</span></p>
+            </div>
+        </div>
+
+        <button id="member-card-message-btn" class="btn btn-gray">Message</button>
+    </div>
+</div>
+
+
+<script>
+    // Toogle the expanded class for the class member-card-continer
+    function toggleSize(e) {
+        // Remove the expanded class from all member-card-continer
+        var membercardContiners = document.querySelectorAll('.member-card-continer')
+        membercardContiners.forEach(
+            (container)=>{container.classList.remove('expanded');}
+        );
+
+        // Add the expanded class to the clicked member-card-continer
+        var memberCardContainer = e.closest('.member-card-continer');
+        memberCardContainer.classList.toggle('expanded');
+    }
+
+
+    // View the member edit popup
+    function viewEditPopup(e) {
+        var memberCardContainer = e.closest('.member-card-continer');
+        var memberCardEditPopup = memberCardContainer.querySelector('.member-card-edit-popup');
+        memberCardEditPopup.classList.toggle('active');
+        var memberCardEditPopup = memberCardContainer.querySelector('.member-btn-edit');
+        memberCardEditPopup.classList.toggle('open');
+    }
+
+
+ 
+</script>

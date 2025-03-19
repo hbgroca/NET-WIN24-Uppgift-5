@@ -45,6 +45,8 @@ namespace WebApp_ASP.Controllers
                 // Set file path
                 form.ImageName = $"/uploaded/clients/{fileName}";
             }
+            else
+                form.ImageName = $"/images/defaultprofile.png";
 
             // Send data to service
             var result = await _clientService.CreateClientAsync(form);

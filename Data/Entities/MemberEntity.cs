@@ -17,6 +17,8 @@ public class MemberEntity
     public DateOnly DateCreated { get; set; }
     public DateOnly DateUpdated { get; set; }
 
+    public string Status { get; set; } = null!;
+
     // Adress (One-to-One)
     public int AddressId { get; set; }
     public AddressEntity Address { get; set; } = null!;

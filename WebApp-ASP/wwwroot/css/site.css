@@ -290,6 +290,7 @@ a {
   background-color: var(--modal-bg);
   justify-content: center;
   align-items: center;
+  z-index:2;
 }
 .modal .modal-content{
   background-color: var(--surface);

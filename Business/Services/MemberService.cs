@@ -18,7 +18,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
     private readonly IAddressService _addressService = addressService;
 
     // Create
-    public async Task<MemberModel> CreateMemberAsync(MemberRegistrationFormModel form)
+    public async Task<MemberModel> CreateMemberAsync(AddMemberFormModel form)
     {
         if (form == null)
         {
@@ -57,8 +57,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             await _memberRepository.CommitTransactionAsync();
 
             // Return the client
-            //return MemberFactory.Create(memberEntity);
-            return null!;
+            return MemberFactory.Create(memberEntity);
         }
         catch (Exception ex)
         {
@@ -97,10 +96,76 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
 
 
     // Update
-    public MemberRegistrationFormModel CreateRegistrationUpdateForm(MemberModel member)
+    public async Task<bool> UpdateMember(EditMemberFormModel form)
     {
-        var form = MemberFactory.CreateRegistrationUpdateForm(member);
-        return form;
+        if (form == null)
+        {
+            Debug.WriteLine("EditMemberFormModel missing.");
+            return false;
+        }
+
+        try
+        {
+            // Begin a new transaction
+            await _memberRepository.BeginTransactionAsync();
+            // Get the client
+            var member = await _memberRepository.GetOneAsync(x => x.Id == form.Id);
+
+            if (member == null)
+            {
+                Debug.WriteLine("Client not found.");
+                await _memberRepository.RollbackTransactionAsync();
+                return false;
+            }
+            var imageUrl = member.ImageUrl;
+
+            // Remap with factory
+            var memberEntity = MemberFactory.Update(form, member);
+
+            // Create the address
+            var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
+            if (address == null)
+            {
+                Debug.WriteLine("An error occurred while updating the client: ");
+                await _memberRepository.RollbackTransactionAsync();
+                return false;
+            }
+
+            memberEntity.AddressId = address.Id;
+
+            // Set the date updated
+            memberEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+
+            // Update the client in dbcontext
+            _memberRepository.Update(memberEntity);
+
+            // Save the changes
+            var result = await _memberRepository.SaveAsync();
+            if (result == 0)
+                throw new Exception("Error while saving the client");
+
+            // Commit the transaction
+            await _memberRepository.CommitTransactionAsync();
+
+            /// Remove image
+            if (form.ProfilePicture is not null && imageUrl is not null)
+            {
+                var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\clients\\{imageUrl.Substring(18)}";
+                Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
+                if (File.Exists(cutString))
+                {
+                    Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
+                    File.Delete(cutString);
+                }
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("An error occurred while updating the client: ", ex);
+            return false;
+        }
     }
 
 

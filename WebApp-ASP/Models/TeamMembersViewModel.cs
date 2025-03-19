@@ -7,7 +7,7 @@ namespace WebApp_ASP.Models;
 public class TeamMembersViewModel()
 {
     public IEnumerable<MemberModel> Members { get; set; } = new List<MemberModel>();
-    public MemberRegistrationFormModel MemberRegistrationForm { get; set; } = new();
+    public AddMemberFormModel MemberRegistrationForm { get; set; } = new();
     public bool IsUpdate = false;
     public bool RegistrationFormInvalid = false;
 }

@@ -17,5 +17,7 @@ public class MemberModel
     public AddressModel Address { get; set; } = null!;
     public List<ProjectModel> Projects { get; set; } = [];
 
+    public string Status { get; set; } = null!;
+
     public string FullName => $"{FirstName} {LastName}";
 }

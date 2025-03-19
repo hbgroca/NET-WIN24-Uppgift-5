@@ -1,0 +1,16 @@
+#members{
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  padding: 0 1rem;
+  
+  header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    #members-add-btn{
+      max-width: 130px;
+    }
+  }
+}
