@@ -1,0 +1,84 @@
+﻿<partial name="Partials/Components/_AddClientModal" model="new AddClientFormModel()" />
+<partial name="Partials/Components/_EditClientModal" model="new EditClientFormModel()"/>
+
+@model ProjectsPageViewModel
+
+
+<section id="projects">
+
+    <header>
+        <h2 class="projects-title">Projects</h2>
+        <button id="projects-add-btn" data-modal="true" data-target="#addClientModal" class="btn">+ Add Project</button>
+    </header>
+
+    <div class="projects-selector-bar">
+        <button class="projects-selector-btn btn-selected" data-index="0">ALL [@Model.Projects.Count()]</button>
+        <button class="projects-selector-btn" data-index="1">STARTED [@Model.ProjectsStartedCount()]</button>
+        <button class="projects-selector-btn" data-index="2">COMPLETED [@Model.ProjectsCompletedCount()]</button>
+    </div>
+
+    <div>
+        <div class="projects-list-view current" data-index="0">
+            @if (Model.Projects.Count() == 0)
+            {
+                <h6 class="surface">No projects in list</h6>
+            }
+            else
+            {
+                @await Html.PartialAsync("Partials/Sections/_ProjectList", Model.Projects);
+            }
+        </div>
+        <div class="projects-list-view" data-index="1">
+            @if (Model.ProjectsStartedCount() == 0)
+            {
+                <h6 class="surface">No started projects in list</h6>
+            }
+            else
+            {
+                @await Html.PartialAsync("Partials/Sections/_ProjectList", Model.ProjectsStarted());
+            }
+
+        </div>
+        <div class="projects-list-view" data-index="2">
+            @if (Model.ProjectsCompletedCount() == 0)
+            {
+                <h6 class="surface">No completed projects in list</h6>
+            }
+            else
+            {
+                @await Html.PartialAsync("Partials/Sections/_ProjectList", Model.ProjectsCompleted());
+            }
+
+        </div>
+    </div>
+
+
+</section>
+
+<script src="~/js/clientModal.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.projects-selector-btn');
+        const lists = document.querySelectorAll('.projects-list-view');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Remove class from other btns
+                buttons.forEach(b => b.classList.remove('btn-selected'));
+
+                // Add the class to selected button
+                button.classList.add('btn-selected');
+
+                // Remove class from other lists
+                lists.forEach(list => list.classList.remove('current'));
+
+                const index = button.getAttribute('data-index');
+                if(index !== null){
+                    lists[index].classList.add('current');
+                }                
+            });
+        });
+    });
+</script>
+

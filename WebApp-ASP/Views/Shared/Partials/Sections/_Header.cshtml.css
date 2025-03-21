@@ -20,7 +20,7 @@
 }
 
 .header-buttons {
-
+  position: relative;
   grid-column: 2;
   display: flex;
   align-items: center;
@@ -41,22 +41,109 @@
   width: 22px;
   height: 22px;
   &:hover{
-  cursor: pointer;
-}
-
+    cursor: pointer;
+  }
 }
 
 .header-user {
   grid-column: 5;
   margin: auto;
   padding-inline: 1rem;
-  /* border-right: 1px solid var(--border-color); */
   .header-user-icon{
     width: 40px;
     height: 40px;
     &:hover{
     cursor: pointer;
+    }
   }
+}
 
+
+
+.header-options-popup{
+  position: absolute;
+  top: 60px;
+  right: 5rem;
+  display: none;
+  flex-direction: column;
+  width: fit-content;
+  padding: 0.5rem;
+  z-index: 12;
+  .user-container{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--gray100);
+    border-radius: 0.5rem;
+    h6{
+      margin: 0;
+    }
   }
+  .darkmode-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin-top: 0.25rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    p{
+      display: flex;
+      gap: 1rem;
+      align-items: center ;
+    }
+    .checkbox-container{
+      position: relative;
+      width: 42px;
+      height: 24px;
+      background-color: var(--gray400);
+      border-radius: 50px;
+    }
+    input[type="checkbox"] {
+      cursor: pointer;
+      appearance: none;
+      background-color: transparent;
+      width: 36px;
+      &:not(:checked):after{
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: var(--surface);
+      }
+      &:checked::after{
+        content: '';
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: var(--surface);
+      }
+    }
+    &:hover{
+      background-color: var(--gray100);
+    }
+  }
+  .logout-container{
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap:1rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    &:hover{
+      background-color: var(--gray100);
+    }
+  }
+}
+.popup-open{
+  display: flex;
 }

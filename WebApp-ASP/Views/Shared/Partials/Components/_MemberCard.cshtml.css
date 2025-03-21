@@ -8,50 +8,132 @@
   border: none;
   border-radius: 1rem;
   background-color: var(--surface);
-  padding: 0.5rem 1.5rem ;
+  z-index: 4;
   gap: 1rem;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 
-  .member-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-  }
-  .member-name{
-    max-width: 268px;
-    text-wrap: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  
 
   &:hover{
-    cursor: pointer;
     scale: 1.01;
     box-shadow: 0px 0px 20px 10px rgba(0,0,0,0.1);
   }
 }
 
-.member-card-continer{
-  .member-card{
-    display: flex;
+.member-card-info{
+  cursor: pointer;
+  padding: 0.5rem 1.5rem ;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.member-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+.member-name{
+  max-width: 268px;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-card-info-expanded{
+  cursor: pointer;
+  position: relative;
+  display: none;
+  grid-template-areas: 
+  "image info"
+  "btn btn" ;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  width: 616px;
+  /* max-height: 460px; */
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--surface);
+  padding: 1rem 1.5rem ;
+  gap: 1rem;
+  z-index: 10;
+  .member-info{
+    gap: 0;
   }
-  .member-card-large{
-    display: none;
+  .member-status{
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+  }
+
+
+  .member-card-left-container{
+    grid-area: image;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    
+    .member-name{
+      max-height: 90px;
+      max-width: 268px;
+      margin: 1.5rem 0.5rem;
+      text-wrap: wrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
+  }
+  .member-card-right-container{
+    grid-area: info;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+  
+    .member-info{
+      h6{
+        align-self: flex-start;
+        margin: 1rem 0;
+        padding: 0;
+      }
+      p{
+        margin-left: 1rem;
+        padding: 0;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  
+  #member-card-message-btn{
+    grid-area: btn;
   }
 }
+
 .expanded{
-  .member-card{
+  width: fit-content;
+  max-height: fit-content;
+  .member-card-info{
     display: none;
   }
-  .member-card-large{
+  .member-card-info-expanded{
     display: grid;
   }
 }
 
 h4, p{
   margin: auto;
+}
+
+.btn{
+  grid-area: btn  ;
 }
 
 .member-image{
@@ -90,84 +172,13 @@ h4, p{
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 50;
   &:hover{
     background-color: var(--gray100);
   }
 }
 .open{
   background-color: var(--gray100);
-}
-
-.member-card-large{
-  position: relative;
-  display: grid;
-  grid-template-areas: 
-  "image info"
-  "btn btn" ;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr auto;
-  align-items: center;
-  width: 616px;
-  max-height: 460px;
-  border: none;
-  border-radius: 1rem;
-  background-color: var(--surface);
-  padding: 1rem 1.5rem ;
-  gap: 1rem;
-
-  .member-card-left-container{
-    grid-area: image;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-  .member-name{
-    max-height: 90px;
-    max-width: 268px;
-    margin: 1.5rem 0.5rem;
-    text-wrap: wrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-  }
-}
-
-  .member-card-right-container{
-    grid-area: info;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-
-    .member-info{
-      h6{
-        margin: 1rem 0;
-      }
-      p{
-        margin-left: 1rem;
-      }
-    }
-  }
-
-  #member-card-message-btn{
-    grid-area: btn;
-  }
-
-  .member-btn-edit{
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-    font-weight: 1000;
-    color: var(--body-light);
-    align-self: flex-start;
-    padding-top: 0.5rem;
-  }
 }
 
 
@@ -184,6 +195,8 @@ h4, p{
   background-color: white;
   box-shadow: 0px 5px 10px 5px rgba(0,0,0,0.1);
   width: 70%;
+  max-width: 200px;
+  z-index: 98;
 }
 
 .pop-up-btn{
@@ -212,4 +225,30 @@ h4, p{
 
 .active{
   display: flex;
+}
+
+.pop-up-remove-btns{
+  padding:0.5rem  1rem ;
+  background-color: var(--gray100);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+  align-items: center;
+  gap: 0.25rem;
+  button{
+    background-color: var(--btn-bg-shadow-color);
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 0.5rem;
+    padding: 0.15rem 0.25rem;
+    &:hover{
+      color: red;
+    }
+  }
+}
+
+.hidden{
+  display: none;
 }

@@ -43,48 +43,6 @@ input, select, textarea {
   }
 }
 
-
-.member-image-container{
-  width: 100%;
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-
-  .image-preview {
-    justify-self: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 125px;
-    height: 125px;
-    border-radius: 1reM;
-    overflow:hidden;
-  }
-  #imagePreview {
-    width: 125px;
-    height: 125px;
-  }
-  .circle {
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: 1px dashed dimgray;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-  }
-  .fa-camera{
-    background-color:dimgray;
-    color:white;
-    padding:.5rem;
-    border-radius:50%;
-  }
-
-  .hidden{
-    display:none;
-  }
-}
-
 .member-name-container{
   display: flex;
   gap: 1rem;
@@ -236,4 +194,28 @@ input, select, textarea {
     gap: 0.5rem;
     width: 100%;
   }
+}
+
+img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.image-preview{
+  z-index: 1;
+}
+
+.image-previewer.edit::after{
+  content: '';
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/images/icons/Edit.svg);
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 50%;
+  z-index: 3;
 }

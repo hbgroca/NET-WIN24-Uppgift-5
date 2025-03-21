@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Data.Entities;
 
@@ -24,5 +25,6 @@ public class MemberEntity
     public AddressEntity Address { get; set; } = null!;
 
     // Projects (Many-to-Many)
+    [JsonIgnore]
     public List<ProjectEntity> Projects { get; set; } = [];
 }

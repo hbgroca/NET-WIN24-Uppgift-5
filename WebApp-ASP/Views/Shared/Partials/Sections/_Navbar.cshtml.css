@@ -6,6 +6,7 @@
   padding: 1rem;
   padding-bottom: 0;
   min-height: calc(100svh - 1rem);
+  border-right: 1px solid var(--nav-border-color);
 }
 
 .navbar-header {

@@ -1,0 +1,9 @@
+.projects-container{
+  display: grid;
+}
+
+.projects-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}

@@ -9,7 +9,7 @@ namespace WebApp_ASP.Controllers
             ViewData["Title"] = "Sign In";
             return View();
         }
-
+        [Route("signup")]
         public IActionResult SignUp()
         {
             ViewData["Title"] = "Sign Up";

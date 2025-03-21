@@ -122,5 +122,16 @@ namespace WebApp_ASP.Controllers
 
             return Ok(client);
         }
+
+
+        [HttpPost]
+        [Route("deletemember/{id}")]
+        public async Task<IActionResult> DeleteMember(Guid id)
+        {
+            var result = await _memberService.Delete(id);
+
+            // Navigate to member list page
+            return RedirectToAction("Members", "Admin");
+        }
     }
 }

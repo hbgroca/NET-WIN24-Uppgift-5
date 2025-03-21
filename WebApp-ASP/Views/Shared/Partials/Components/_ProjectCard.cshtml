@@ -1,0 +1,36 @@
+﻿@model ProjectModel
+
+<div class="project">
+
+    <div class="project-header">
+        <img class="project-image"  src="@Model.ImageUrl">
+        <div class="project-header-title">
+            <h6 class="project-title">@Model.ProjectName</h6>
+            <p class="project-title-info">@Model.Client.ClientName</p>
+        </div>
+        <button class="project-btn-edit">&deg;&deg;</button>
+    </div>
+
+    <div class="project-body">
+        <p class="project-description">@Model.Description</p>
+    </div>
+
+    <div class="project-footer">
+        <div class="project-time @(Model.TimeLeftBgColor())">
+            <div class="project-time-clock">
+                <p class="project-time-clock-pointer-hour"></p>
+                <p class="project-time-clock-pointer-minute"></p>
+                <p class="project-time-clock-pointer-center">&bull;</p>
+            </div>
+            <span class="project-time-text">@Model.TimeLeft()</span>
+        </div>
+
+        <div class="project-users">
+            @foreach(var member in Model.Members)
+            {
+                <img src="@member.ImageUrl" title="@member.FullName">
+            }
+        </div>
+    </div>
+
+</div>

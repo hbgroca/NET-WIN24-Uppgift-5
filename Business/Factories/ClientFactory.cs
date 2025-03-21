@@ -20,19 +20,19 @@ public class ClientFactory
 
     public static ClientModel Create(ClientEntity entity)
     {
-        return new ClientModel
-        {
-            Id = entity.Id,
-            ImageUrl = entity.ImageUrl,
-            ClientName = entity.ClientName,
-            Email = entity.Email,
-            Phone = entity.Phone,
-            Address = AddressFactory.Create(entity.Address),
-            DateCreated = entity.DateCreated,
-            DateUpdated = entity.DateUpdated,
-            Status = entity.Status,
-            Projects = entity.Projects.Select(ProjectFactory.Create).ToList(),
-        };
+        ClientModel model = new();
+        model.Id = entity.Id;
+        model.ImageUrl = entity.ImageUrl;
+        model.ClientName = entity.ClientName;
+        model.Email = entity.Email;
+        model.Phone = entity.Phone;
+        model.Address = AddressFactory.Create(entity.Address);
+        model.DateCreated = entity.DateCreated;
+        model.DateUpdated = entity.DateUpdated;
+        model.Status = entity.Status;
+        //model.Projects = entity.Projects.Select(ProjectFactory.Create).ToList();
+
+        return model;
     }
 
     public static ClientEntity Create(ClientModel model)
@@ -48,7 +48,7 @@ public class ClientFactory
             DateCreated = model.DateCreated,
             DateUpdated = model.DateUpdated,
             Status = model.Status,
-            Projects = model.Projects.Select(ProjectFactory.Create).ToList(),
+            //Projects = model.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }
 

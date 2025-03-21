@@ -24,6 +24,8 @@ public class Program
         // Create a new builder
         var builder = WebApplication.CreateBuilder(args);
 
+        
+
         // Connection strings
         var dataConnectionString = builder.Configuration.GetConnectionString("DATAConnection") ?? throw new InvalidOperationException("Connection string 'DATAConnection' not found.");
         builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\roban\\Desktop\\Github\\NET-WIN24-Uppgift-5\\Data\\Database\\Assignment5.mdf;Integrated Security=True;Connect Timeout=30"));

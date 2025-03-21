@@ -1,0 +1,17 @@
+.home-page-wrapper{
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.home-page-container{
+/*  background-color: hotpink;*/
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  height: 300px;
+}
+
+.bike-game{
+/*  background-color: dimgray;*/
+  height: 300px;
+}

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp_ASP.Controllers
 {
-    public class ProjectsController : Controller
+    public class ProjectsController(IProjectService projectService) : Controller
     {
-        [Route("projects")]
+        private readonly IProjectService _projectService = projectService;
+
         public IActionResult Index()
         {
             ViewData["Title"] = "Projects";

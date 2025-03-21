@@ -38,7 +38,7 @@ public class MemberFactory
             Status = entity.Status,
             BirthDate = entity.BirthDate,
             Address = AddressFactory.Create(entity.Address),
-            Projects = entity.Projects.Select(ProjectFactory.Create).ToList()
+            //Projects = entity.Projects.Select(ProjectFactory.Create).ToList()
         };
     }
 

@@ -7,13 +7,13 @@ using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ProjectService(IProjectRepository projectRepository, IAddressRepository addressRepository) : IProjectService
+public class ProjectService(IProjectRepository projectRepository) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
-    private readonly IAddressRepository _addressRepository = addressRepository;
 
     // Create
     public async Task<ProjectModel> CreateProjectAsync(ProjectRegistrationform form)
@@ -56,11 +56,37 @@ public class ProjectService(IProjectRepository projectRepository, IAddressReposi
             await _projectRepository.RollbackTransactionAsync();
             return null!;
         }
-
-        // Read
-
-        // Update
-
-        // Delete
     }
+
+    // Read
+    public async Task<ProjectModel> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression)
+    {
+        var project = await _projectRepository.GetOneAsync(expression);
+        if (project == null)
+            return null!;
+        return ProjectFactory.Create(project);
+    }
+
+    public async Task<IEnumerable<ProjectModel>> GetProjectsAsync(Expression<Func<ProjectEntity, bool>> expression)
+    {
+        var project = await _projectRepository.GetAllAsync(expression);
+        if (project == null)
+            return null!;
+        return project.Select(ProjectFactory.Create);
+    }
+
+    public async Task<IEnumerable<ProjectModel>> GetAllProjectsAsync()
+    {
+        var project = await _projectRepository.GetAllAsync();
+        if (project == null)
+            return null!;
+
+        Debug.WriteLine($"! - Returning {project.Count()}");
+        return project.Select(ProjectFactory.Create);
+    }
+
+    // Update
+
+    // Delete
+
 }

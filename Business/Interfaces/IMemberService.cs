@@ -12,4 +12,5 @@ public interface IMemberService
     Task<IEnumerable<MemberModel>> GetMembersAsync(Expression<Func<MemberEntity, bool>> expression);
     Task<MemberModel> GetMemberAsync(Expression<Func<MemberEntity, bool>> expression);
     Task<bool> UpdateMember(EditMemberFormModel form);
+    Task<bool> Delete(Guid id);
 }

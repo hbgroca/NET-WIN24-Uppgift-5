@@ -1,0 +1,10 @@
+﻿@model IEnumerable<ProjectModel>
+
+<div class="projects-container">
+    <div class="projects-list">
+        @foreach (var project in Model)
+        {
+            @await Html.PartialAsync("Partials/Components/_ProjectCard", project);
+        }
+    </div>
+</div>

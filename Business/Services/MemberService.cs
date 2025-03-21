@@ -170,4 +170,37 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
 
 
     // Delete
+    public async Task<bool> Delete(Guid id)
+    {
+        // Begin transaction
+        await _memberRepository.BeginTransactionAsync();
+
+        try
+        {
+            // Get the entity
+            var memberEntity = await _memberRepository.GetOneAsync(x => x.Id == id);
+            if (memberEntity == null)
+                return false;
+
+            // Delete from dbset
+            _memberRepository.Delete(memberEntity);
+
+            // Save changes
+            var save = await _memberRepository.SaveAsync();
+            if (save == 0)
+                return false;
+
+            // Commit transaction
+            await _memberRepository.CommitTransactionAsync();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            // Rollback transaction if error
+            await _memberRepository.RollbackTransactionAsync();
+            return false;
+        }
+    }
 }

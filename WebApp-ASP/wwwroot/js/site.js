@@ -3,6 +3,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     const previewSize = 150;
 
+    // Load darkmode on start from local storage
+    var darkmode = localStorage.getItem('darkMode');
+    if (darkmode === 'true') {
+        document.body.classList.add('dark-mode');
+        const dmbtn = document.querySelector('.darkmode-btn-toggle')
+        if (dmbtn) {
+            dmbtn.checked = true
+        }
+    }
+
 
     // Open Modal
     // Find all modals

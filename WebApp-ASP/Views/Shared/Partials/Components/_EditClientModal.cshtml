@@ -12,7 +12,7 @@
         <form asp-controller="Clients" asp-action="EditClient" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="Id" />
 
-            <div class="image-previewer circle selected">
+            <div class="image-previewer circle edit">
                 <img src="" class="image-preview" />
                 <input asp-for="ProfilePicture" accept="image/*" class="hidden" />
             </div>
