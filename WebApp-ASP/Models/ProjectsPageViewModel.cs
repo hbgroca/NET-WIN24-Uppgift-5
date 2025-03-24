@@ -1,9 +1,12 @@
-﻿using Business.Models;
+﻿using Business.Interfaces;
+using Business.Models;
 
 namespace WebApp_ASP.Models
 {
-    public class ProjectsPageViewModel
+    public class ProjectsPageViewModel()
     {
+        public ProjectViewModel _projectViewModel = new();
+
         public IEnumerable<ProjectModel> Projects = [];
         public IEnumerable<ProjectModel> ProjectsStarted()
         {

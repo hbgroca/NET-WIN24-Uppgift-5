@@ -354,6 +354,7 @@ label{
   z-index:15;
 }
 .modal .modal-content{
+  position: relative;
   background-color: var(--surface);
   border-radius: 1rem;
   padding: 1.5rem;
@@ -366,6 +367,66 @@ label{
   margin-bottom: 1rem;
 }
 
+/* Add Project Modal - Add member popup */
+.project-members-list{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: .5rem;
+  padding-right: 3rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border100);
+  min-height: 48px;
+}
+.project-members-search-btn{
+  position: absolute;
+  right: 1rem;
+  top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 50%;
+  border: none;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  &:hover{
+    background-color: var(--accent);
+  }
+}
+.project-members-list-member{
+  display: flex;
+  gap: 0.5rem;
+  height: 36px;
+  padding: 0.5em;
+  background-color: var(--gray100);
+  border-radius: 0.5em;
+  width: fit-content;
+  align-items: center;
+  .project-members-list-member-name{
+    display: flex;
+    align-items: center;
+  }
+  .project-members-list-member-image{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+  .remove-member-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:transparent;
+    border: none;
+    cursor: pointer;
+    width: 16px;
+    &:hover{
+      color: var(--red);
+    }
+  }
+}
 
 
 /* Tables */
@@ -448,6 +509,10 @@ form .input-validation-error{
   outline: 3px solid rgba(235, 95, 95, 0.504);
 }
 
+.project-members-list .input-validation-error{
+  outline: 3px solid rgba(235, 95, 95, 0.504);
+}
+
 form .field-validation-error{
   position: absolute;
   color: red;
@@ -485,12 +550,12 @@ input[type="number"] {
   background-color: var(--surface);
 }
 
+
 input[type="checkbox"] {
   width: 16px;
   height: 16px;
   background-color: var(--accent);
 }
-
 
 /* Image Preview */
 .image-previewer{
@@ -520,6 +585,19 @@ input[type="checkbox"] {
 }
 
 .image-previewer.selected::after{
+  content: '';
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/images/icons/Edit.svg);
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 50%;
+  z-index: 3;
+}
+.image-previewer.selected2::after{
   content: '';
   background-color: rgba(0, 0, 0, 0.5);
   background-image: url(/images/icons/Edit.svg);

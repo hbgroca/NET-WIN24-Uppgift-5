@@ -1,10 +1,6 @@
 ﻿using Business.Interfaces;
-using Business.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models;
-using System.Diagnostics;
-using WebApp_ASP.Models;
+using Business.Models;
 
 namespace WebApp_ASP.Controllers
 {

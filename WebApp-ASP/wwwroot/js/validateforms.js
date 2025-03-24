@@ -16,6 +16,7 @@ const validateField = (field) => {
     if (field.hasAttribute("data-val-required") && value === "")
         errorMessage = field.getAttribute("data-val-required")
 
+
     // Check if the value is a valid email
     if (field.hasAttribute("data-val-regex") && value !== "") {
         let pattern = new RegExp(field.getAttribute("data-val-regex-pattern"))
@@ -23,7 +24,7 @@ const validateField = (field) => {
             errorMessage = field.getAttribute("data-val-regex")
     }
 
-    // Check if the value is a valid email
+    // Show or remove error msg
     if (errorMessage) {
         field.classList.add("input-validation-error")
         errorSpan.classList.remove("field-validation-valid")

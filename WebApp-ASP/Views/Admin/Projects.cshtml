@@ -1,14 +1,13 @@
-﻿<partial name="Partials/Components/_AddClientModal" model="new AddClientFormModel()" />
-<partial name="Partials/Components/_EditClientModal" model="new EditClientFormModel()"/>
+﻿<partial name="Partials/Components/_AddProjectModal" model="new AddProjectFormModel()" />
+<partial name="Partials/Components/_EditProjectModal" model="new EditProjectFormModel()"/>
 
 @model ProjectsPageViewModel
-
 
 <section id="projects">
 
     <header>
         <h2 class="projects-title">Projects</h2>
-        <button id="projects-add-btn" data-modal="true" data-target="#addClientModal" class="btn">+ Add Project</button>
+        <button id="projects-add-btn" data-modal="true" data-target="#addProjectModal" class="btn">+ Add Project</button>
     </header>
 
     <div class="projects-selector-bar">
@@ -55,7 +54,7 @@
 
 </section>
 
-<script src="~/js/clientModal.js"></script>
+<script src="~/js/projectModal.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

@@ -1,0 +1,227 @@
+﻿@model AddProjectFormModel
+
+
+<div id="addProjectModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3>Add Project</h3>
+            <button class="btn-close" data-close="true">&#10006;</button>
+        </div>
+
+        <form asp-controller="Projects" asp-action="AddProject" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+
+            <div class="image-previewer square">
+                <img src="" class="image-preview" /> 
+                <input asp-for="ProjectImage" accept="image/*" hidden />
+            </div>
+
+            <div class="project-name form-group">
+                <label asp-for="ProjectName" class="text-bold"></label>
+                <input asp-for="ProjectName" />
+                <span asp-validation-for="ProjectName"></span>
+            </div>
+
+            <div class="project-client form-group">
+                <label asp-for="Client" class="text-bold"></label>
+
+                <select asp-for="ClientId" id="ClientId" name="ClientId" required>
+                    <option value="" selected disabled>Select Client</option>
+                    @foreach (var client in await _clientService.GetAllClientsAsync())
+                    {
+                        <option value="@client.Id">@client.ClientName</option>
+                    }
+                </select>
+                <span asp-validation-for="ClientId"></span>
+            </div>
+
+            <div class="project-description form-group">
+                <label asp-for="Description" class="text-bold"></label>
+                <textarea asp-for="Description"></textarea>
+                <span asp-validation-for="Description"></span>
+            </div>
+
+            <div class="project-dates">
+                <div class="project-start-date form-group">
+                    <label asp-for="StartDate" class="text-bold"></label>
+                    <input type="date" asp-for="StartDate" />
+                    <span asp-validation-for="StartDate"></span>
+                </div>
+                <div class="project-end-date form-group">
+                    <label asp-for="EndDate" class="text-bold"></label>
+                    <input type="date" asp-for="EndDate" />
+                    <span asp-validation-for="EndDate"></span>
+                </div>
+            </div>
+
+            <div class="project-members form-group">
+                <label asp-for="Members" class="text-bold"></label>
+                <input type="hidden" asp-for="MembersJson" id="membersJsonInput" name="MembersJson" />
+                <div class="project-members-list">
+                    @foreach (MemberModel member in @Model.Members)
+                    {
+                        <div class="project-members-list-member" data-member-id="@member.Id">
+                            <img class="project-members-list-member-image" src="@member.ImageUrl" />
+                            <p class="project-members-list-member-name">@member.FullName</p>
+                            <button type="button" class="remove-member-btn">✕</button>
+                        </div>
+                    }
+                </div>
+                <button class="project-members-search-btn">
+                    <img src="/images/icons/Search.svg" />
+                </button>
+                <span asp-validation-for="MembersJson"></span>
+
+            </div>
+
+            <div class="project-budget form-group">
+                <label asp-for="Budget" class="text-bold"></label>
+                <input type="number" asp-for="Budget" />
+                <span asp-validation-for="Budget"></span>
+            </div>
+
+            <button class="btn btn-create" type="submit">Create</button>
+        </form>
+
+
+        <div class="project-members-add-wrapper">
+
+            <div class="project-members-add-container">
+                <ul class="project-members-add-list">
+                    @foreach (MemberModel member in await _memberService.GetAllMembersAsync())
+                    {
+                        if (Model.Members.Any(m => m.Id == member.Id))
+                            continue;
+                            
+                        <li class="project-members-add-list-object" data-member-id="@member.Id">
+                            <img class="project-members-add-image" src="@member.ImageUrl" />
+                            <p class="project-members-add-name">@member.FullName</p>
+                            <button class="btn add-member-btn" onclose="@(()=>{Model.Members.Add(member);})">+ Add</button>
+                        </li>
+                    }
+                </ul>
+
+                <button class="btn close-members-btn" type="button">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("_ValidationFormScript")
+
+<script>
+    // Creds to CoPilot(ChatGPT) for helping me with this. Even if I had to fix the problems it caused.
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cache DOM elements
+        const searchBtn = document.querySelector('.project-members-search-btn');
+        const closeBtn = document.querySelector('.close-members-btn');
+        const membersWrapper = document.querySelector('.project-members-add-wrapper');
+        const membersList = document.querySelector('.project-members-list');
+        const membersInput = document.querySelector('input[name="AddProjectFormModel.Members"]');
+        const availableMembersList = document.querySelector('.project-members-add-list');
+
+        // Selected members array to track current selections
+        let selectedMembers = [];
+
+        // Initialize selected members from the existing list items
+        document.querySelectorAll('.project-members-list-member').forEach(member => {
+            const memberId = member.getAttribute('data-member-id');
+            if (memberId) {
+                selectedMembers.push(memberId);
+            }
+        });
+
+        // Toggle the members selection UI
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent form submission
+            membersWrapper.classList.add('add-popup-active');
+            updateAvailableMembersList();
+        });
+
+        // Close Members selection Popup
+        closeBtn.addEventListener('click', function() {
+            membersWrapper.classList.remove('add-popup-active');
+            updateMembersListDisplay();
+        });
+
+        // Add member button handler
+        availableMembersList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('add-member-btn')) {
+                const listItem = e.target.closest('.project-members-add-list-object');
+                const memberId = listItem.getAttribute('data-member-id');
+                const memberImage = listItem.querySelector('.project-members-add-image').src;
+                const memberName = listItem.querySelector('.project-members-add-name').textContent;
+
+                // Add to selected members
+                selectedMembers.push(memberId);
+
+                // Create new member element in the selected list
+                const newMember = document.createElement('div');
+                newMember.className = 'project-members-list-member';
+                newMember.setAttribute('data-member-id', memberId);
+                newMember.innerHTML = `
+                    <img class="project-members-list-member-image" src="${memberImage}" />
+                    <p class="project-members-list-member-name">${memberName}</p>
+                    <button type="button" class="remove-member-btn">✕</button>
+                `;
+
+                membersList.appendChild(newMember);
+
+                // Remove from available list
+                listItem.style.display = 'none';
+
+                // Update hidden input with selected members
+                updateMembersInput();
+            }
+        });
+
+        // Add handler for removing members from selected list
+        membersList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-member-btn')) {
+                const listItem = e.target.closest('.project-members-list-member');
+                const memberId = listItem.getAttribute('data-member-id');
+
+                // Remove from selected members array
+                selectedMembers = selectedMembers.filter(id => id !== memberId);
+
+                // Remove from display
+                listItem.remove();
+
+                // Update available members list
+                updateAvailableMembersList();
+
+                // Update hidden input
+                updateMembersInput();
+            }
+        });
+
+        // Function to update the hidden input with selected members
+        function updateMembersInput() {
+            // membersInput.value = JSON.stringify(selectedMembers);
+            document.getElementById('membersJsonInput').value = JSON.stringify(selectedMembers);
+        }
+
+        // Function to update available members list based on selections
+        function updateAvailableMembersList() {
+            document.querySelectorAll('.project-members-add-list-object').forEach(item => {
+                const memberId = item.getAttribute('data-member-id');
+                if (selectedMembers.includes(memberId)) {
+                    item.style.display = 'none';
+                } else {
+                    item.style.display = 'flex';
+                }
+            });
+        }
+
+        // Function to refresh the members list display
+        function updateMembersListDisplay() {
+            // This could be expanded to fetch updated data if needed
+            console.log('Members list updated', selectedMembers);
+        }
+
+        // Initialize
+        updateMembersInput();
+    });
+
+</script>

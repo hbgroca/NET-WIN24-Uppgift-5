@@ -1,0 +1,125 @@
+﻿@model EditProjectFormModel
+
+
+<div id="editProjectModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3>Edit Project</h3>
+            <button class="btn-close" data-close="true">&#10006;</button>
+        </div>
+
+        <form asp-controller="Projects" asp-action="AddProject" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+            <input asp-for="Id" hidden />
+
+            <div class="image-previewer square selected2">
+                <img src="" class="image-preview" />
+                <input asp-for="ProjectImage" accept="image/*" hidden />
+            </div>
+
+            <div class="project-name form-group">
+                <label asp-for="ProjectName" class="text-bold"></label>
+                <input asp-for="ProjectName" />
+                <span asp-validation-for="ProjectName"></span>
+            </div>
+
+            <div class="project-client form-group">
+                <label asp-for="Client" class="text-bold"></label>
+
+                <select asp-for="ClientId" id="ClientId" name="ClientId" required>
+                    <option value="" selected disabled>Select Client</option>
+                    @foreach (var client in await _clientService.GetAllClientsAsync())
+                    {
+                        <option value="@client.Id">@client.ClientName</option>
+                    }
+                </select>
+                <span asp-validation-for="ClientId"></span>
+            </div>
+
+            <div class="project-description form-group">
+                <label asp-for="Description" class="text-bold"></label>
+                <textarea asp-for="Description"></textarea>
+                <span asp-validation-for="Description"></span>
+            </div>
+
+            <div class="project-dates">
+                <div class="project-start-date form-group">
+                    <label asp-for="StartDate" class="text-bold"></label>
+                    <input type="date" asp-for="StartDate" />
+                    <span asp-validation-for="StartDate"></span>
+                </div>
+                <div class="project-end-date form-group">
+                    <label asp-for="EndDate" class="text-bold"></label>
+                    <input type="date" asp-for="EndDate" />
+                    <span asp-validation-for="EndDate"></span>
+                </div>
+            </div>
+
+            <div class="project-members form-group">
+                <label asp-for="Members" class="text-bold"></label>
+                <input type="hidden" asp-for="MembersJson" id="membersJsonInput" class="membersJsonInput" name="MembersJson" />
+                <div class="project-members-list" id="memberList">
+
+                    @* @foreach (MemberModel member in @Model.Members) *@
+                    @* { *@
+                        @* <div class="project-members-list-member" data-member-id="@member.Id"> *@
+                        @*     <img class="project-members-list-member-image" src="@member.ImageUrl" /> *@
+                        @*     <p class="project-members-list-member-name">@member.FullName</p> *@
+                        @*     <button type="button" class="remove-member-btn">✕</button> *@
+                        @* </div> *@
+                    @* } *@
+
+                </div>
+                <button class="project-members-search-btn">
+                    <img src="/images/icons/Search.svg" />
+                </button>
+                <span asp-validation-for="MembersJson"></span>
+
+            </div>
+
+            <div class="project-budget-status-container">
+                <div class="project-budget form-group">
+                    <label asp-for="Budget" class="text-bold"></label>
+                    <input type="number" asp-for="Budget" />
+                    <span asp-validation-for="Budget"></span>
+                </div>
+
+                <div class="project-status form-group">
+                    <label asp-for="IsCompleted" class="text-bold">Status</label>
+                    <select asp-for="IsCompleted" required>
+                        <option value="false">Active</option>
+                        <option value="true">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-create" type="submit">Save</button>
+        </form>
+
+
+        <div class="project-members-add-wrapper">
+
+            <div class="project-members-add-container">
+                <ul class="project-members-add-list">
+                    
+                    @foreach (MemberModel member in await _memberService.GetAllMembersAsync()) 
+                    { 
+                        <li class="project-members-add-list-object" data-member-id="@member.Id"> 
+                            <img class="project-members-add-image" src="@member.ImageUrl" /> 
+                            <p class="project-members-add-name">@member.FullName</p> 
+                            <button class="btn add-member-btn" onclose="@(()=>{Model.Members.Add(member);})">+ Add</button> 
+                        </li> 
+                    }
+                    
+
+                </ul>
+
+                <button class="btn close-members-btn" type="button">Go back</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("_ValidationFormScript")
+@await Html.PartialAsync("_ProjectMemberFormScript")

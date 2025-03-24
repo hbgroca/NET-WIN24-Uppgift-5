@@ -1,5 +1,5 @@
 ﻿// Client Modal Script, loads client data into the edit modal
-// Creds to CoPilot
+// Creds to CoPilot for helping me with this
 document.addEventListener('DOMContentLoaded', () => {
     const editButtons = document.querySelectorAll('.client-actions-edit-btn');
 

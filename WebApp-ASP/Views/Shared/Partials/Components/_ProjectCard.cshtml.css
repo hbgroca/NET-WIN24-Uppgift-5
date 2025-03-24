@@ -1,5 +1,6 @@
 /*Project card*/
 .project {
+  position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
   width:clamp(270px, 100%,  350px);
@@ -177,6 +178,76 @@
   .project-time-clock-pointer-center{
     color: black;
   }
+}
+
+/* Popup */
+.project-card-edit-popup{
+  position: absolute;
+  display: none;
+  top: 4rem;
+  right: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: white;
+  box-shadow: 0px 5px 10px 5px rgba(0,0,0,0.1);
+  width: 70%;
+  max-width: 200px;
+  z-index: 98;
+}
+
+.pop-up-btn{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--btn-bg-gray-color);
+  border-radius: .5rem;
+  border: none;
+  padding: 0.5rem 1rem;
+  .edit{
+    scale: 1.4;
+    transform: scaleX(-1);
+  }
+  .remove{
+    scale: 1.4;
+    color: tomato;
+    background-color: transparent;
+  }
+  &:hover{
+    cursor: pointer;
+    background-color: var(--btn-bg-shadow-color);
+  }
+}
+
+.active{
+  display: flex;
+}
+
+.pop-up-remove-btns{
+  padding:0.5rem  1rem ;
+  background-color: var(--gray100);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+  align-items: center;
+  gap: 0.25rem;
+  button{
+    background-color: var(--btn-bg-shadow-color);
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 0.5rem;
+    padding: 0.15rem 0.25rem;
+    &:hover{
+      color: red;
+    }
+  }
+}
+.hidden{
+  display: none;
 }
 
 @keyframes rotate {

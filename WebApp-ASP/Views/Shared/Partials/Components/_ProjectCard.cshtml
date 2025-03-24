@@ -8,7 +8,7 @@
             <h6 class="project-title">@Model.ProjectName</h6>
             <p class="project-title-info">@Model.Client.ClientName</p>
         </div>
-        <button class="project-btn-edit">&deg;&deg;</button>
+        <span class="project-btn-edit" onclick="viewEditPopup(this)">&deg;&deg;</span>
     </div>
 
     <div class="project-body">
@@ -33,4 +33,51 @@
         </div>
     </div>
 
+    @* Pop-up *@
+    <div class="project-card-edit-popup">
+
+        <button class="pop-up-btn project-actions-edit-btn" data-modal="true" data-target="#editProjectModal" data-project-id="@Model.Id" onclick="viewEditPopup(this)">
+            <span class="edit">&#9998;</span>
+            Edit
+        </button>
+        <form class="pop-up-btn-form" asp-action="deleteproject" asp-route-id="@Model.Id" method="post" asp-controller="Projects">
+            <button type="button" class="pop-up-btn" onclick="viewDeleteConfirmButtons(this)">
+                <span class="remove">&#x1F5D1;</span>
+                Remove
+            </button>
+
+            <div class="pop-up-remove-btns hidden">
+                Sure?
+                <button type="submit">Yes</button>
+                /
+                <button type="button" onclick="viewDeleteConfirmButtons(this)">No</button>
+            </div>
+        </form>
+    </div>
+
 </div>
+
+<script>
+    // View the member edit popup
+    function viewEditPopup(e) {
+        var memberCardContainer = e.closest('.project');
+
+        var memberCardEditPopup = memberCardContainer.querySelector('.project-card-edit-popup');
+        memberCardEditPopup.classList.toggle('active');
+
+        var memberCardEditPopup = memberCardContainer.querySelector('.project-btn-edit');
+        memberCardEditPopup.classList.toggle('open');
+    }
+
+
+    // View the delete confirm buttons
+    function viewDeleteConfirmButtons(e) {
+        var deleteButtonsContainer = e.closest('.pop-up-btn-form');
+
+        var deleteButton = deleteButtonsContainer.querySelector('.pop-up-btn');
+        deleteButton.classList.toggle('hidden');
+
+        var deleteConfirmButtons = deleteButtonsContainer.querySelector('.pop-up-remove-btns');
+        deleteConfirmButtons.classList.toggle('hidden');
+    }
+</script>

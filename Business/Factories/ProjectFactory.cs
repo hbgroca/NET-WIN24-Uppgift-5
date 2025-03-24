@@ -6,21 +6,18 @@ namespace Business.Factories;
 
 public class ProjectFactory
 {
-    public static ProjectEntity Create(ProjectRegistrationform form)
+
+    public static ProjectEntity Create(AddProjectFormModel form)
     {
-        if (form == null)
-            return null!;
-        return new ProjectEntity
-        {
-            ImageUrl = form.ImageUrl,
-            ProjectName = form.ProjectName,
-            Description = form.Description,
-            Budget = form.Budget,
-            ClientId = form.Client.Id,
-            Members = form.Members.Select(MemberFactory.Create).ToList(),
-            StartDate = form.StartDate,
-            EndDate = form.EndDate,
-        };
+        var project = new ProjectEntity();
+        project.ImageUrl = form.ImageName;
+        project.ProjectName = form.ProjectName;
+        project.ClientId = form.ClientId;
+        project.Description = form.Description;
+        project.StartDate = form.StartDate;
+        project.EndDate = form.EndDate;
+        project.Budget = form.Budget;
+        return project;
     }
 
     public static ProjectModel Create(ProjectEntity entity)

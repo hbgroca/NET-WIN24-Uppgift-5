@@ -1,10 +1,7 @@
 ﻿using Business.Interfaces;
-using Business.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
+using Business.Models;
 
 namespace WebApp_ASP.Controllers
 {
