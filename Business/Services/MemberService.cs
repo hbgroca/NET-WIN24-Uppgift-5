@@ -88,7 +88,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             return null!;
 
         Debug.WriteLine($"! - Returning {member.Count()}");
-        return member.Select(MemberFactory.Create);
+        return member.Select(MemberFactory.CreateWithProjects);
     }
 
 
@@ -175,12 +175,12 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
         try
         {
             // Get the entity
-            var memberEntity = await _memberRepository.GetOneAsync(x => x.Id == id);
-            if (memberEntity == null)
+            var entity = await _memberRepository.GetOneAsync(x => x.Id == id);
+            if (entity == null)
                 return false;
 
             // Delete from dbset
-            _memberRepository.Delete(memberEntity);
+            _memberRepository.Delete(entity);
 
             // Save changes
             var save = await _memberRepository.SaveAsync();
@@ -189,6 +189,11 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
 
             // Commit transaction
             await _memberRepository.CommitTransactionAsync();
+
+            // Remove image
+            var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\members\\{entity.ImageUrl?.Substring(19)}";
+            if (File.Exists(cutString))
+                File.Delete(cutString);
 
             return true;
         }

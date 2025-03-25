@@ -4,6 +4,7 @@ using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -176,5 +177,42 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
     }
 
     // Delete
+    public async Task<bool> Delete(Guid id)
+    {
+        // Begin transaction
+        await _clientRepository.BeginTransactionAsync();
 
+        try
+        {
+            // Get the entity
+            var entity = await _clientRepository.GetOneAsync(x => x.Id == id);
+            if (entity == null)
+                return false;
+
+            // Delete from dbset
+            _clientRepository.Delete(entity);
+
+            // Save changes
+            var save = await _clientRepository.SaveAsync();
+            if (save == 0)
+                return false;
+
+            // Commit transaction
+            await _clientRepository.CommitTransactionAsync();
+
+            // Remove image
+            var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\clients\\{entity.ImageUrl?.Substring(19)}";
+            if (File.Exists(cutString))
+                File.Delete(cutString);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            // Rollback transaction if error
+            await _clientRepository.RollbackTransactionAsync();
+            return false;
+        }
+    }
 }

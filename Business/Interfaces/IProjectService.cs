@@ -12,5 +12,6 @@ namespace Business.Interfaces
         Task<IEnumerable<ProjectModel>> GetAllProjectsAsync();
         Task<ProjectModel> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression);
         Task<IEnumerable<ProjectModel>> GetProjectsAsync(Expression<Func<ProjectEntity, bool>> expression);
+        Task<bool> Update(EditProjectFormModel form);
     }
 }

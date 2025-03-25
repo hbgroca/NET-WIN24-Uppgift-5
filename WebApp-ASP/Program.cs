@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using WebApp_ASP.Data;
+using WebApp_ASP.Services;
 
 namespace WebApp_ASP;
 
@@ -49,6 +50,8 @@ public class Program
         builder.Services.AddScoped<IClientService, ClientService>();
         builder.Services.AddScoped<IMemberService, MemberService>();
         builder.Services.AddScoped<IProjectService, ProjectService>();
+        builder.Services.AddScoped<IImageService, ImageService>();
+
 
 
         var app = builder.Build();

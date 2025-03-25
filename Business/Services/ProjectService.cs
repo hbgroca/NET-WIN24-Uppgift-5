@@ -111,11 +111,85 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
     }
 
     // Update
-
     public async Task<bool> Update(EditProjectFormModel form)
     {
+        if(form == null)
+        {
+            Debug.WriteLine("EditProjectForm missing");
+            return false;
+        }
 
-        return false;
+        // Begin transaction
+        await _projectRepository.BeginTransactionAsync();
+
+        try
+        {
+            var entity = await _projectRepository.GetOneAsync(p => p.Id == form.Id);
+            if (entity == null)
+                return false!;
+
+            var updatedEntity = ProjectFactory.Update(entity, form);
+
+            // Add Members
+            if (form.Members.Count() == 0)
+            {
+                Debug.WriteLine("Error while creating project entity, members missing");
+                return false;
+            }
+            // Clear old members
+            updatedEntity.Members.Clear();
+            foreach (MemberModel member in form.Members)
+            {
+                var memberEntity = await _memberRespository.GetOneAsync(x => x.Id == member.Id);
+                if (memberEntity != null)
+                {
+                    updatedEntity.Members.Add(memberEntity);
+                }
+            }
+
+            // Handle Image
+            string? oldImageUrl = entity.ImageUrl;
+            if (!string.IsNullOrWhiteSpace(form.ImageName))
+                updatedEntity.ImageUrl = form.ImageName;
+
+            // Add Client
+            updatedEntity.Client = await _clientRepository.GetOneAsync(x => x.Id == form.ClientId);
+
+            // Set the update date
+            updatedEntity.UpdateDate = DateOnly.FromDateTime(DateTime.Now);
+
+            // Update the dbset
+            _projectRepository.Update(updatedEntity);
+
+            // Save the changes
+            var result = await _projectRepository.SaveAsync();
+            if (result == 0)
+            {
+                Debug.WriteLine("Error while saving project");
+                return false;
+            }
+                
+            // Commit the transaction
+            await _projectRepository.CommitTransactionAsync();
+
+            // Remove image if updated
+            if (form.ProjectImage is not null && form.ImageName is not null)
+            {
+                var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\projects\\{oldImageUrl?.Substring(19)}";
+                if (File.Exists(cutString))
+                    Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
+                    File.Delete(cutString);
+            }
+
+            return true;
+
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"! Failed to update project: {ex.Message}");
+            await _projectRepository.RollbackTransactionAsync();
+            return false;
+        }
     }
 
 
@@ -128,12 +202,12 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
         try
         {
             // Get the entity
-            var memberEntity = await _projectRepository.GetOneAsync(x => x.Id == id);
-            if (memberEntity == null)
+            var entity = await _projectRepository.GetOneAsync(x => x.Id == id);
+            if (entity == null)
                 return false;
 
             // Delete from dbset
-            _projectRepository.Delete(memberEntity);
+            _projectRepository.Delete(entity);
 
             // Save changes
             var save = await _projectRepository.SaveAsync();
@@ -142,6 +216,11 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
 
             // Commit transaction
             await _projectRepository.CommitTransactionAsync();
+
+            // Remove image
+            var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\projects\\{entity.ImageUrl?.Substring(19)}";
+            if (File.Exists(cutString))
+                File.Delete(cutString);
 
             return true;
         }

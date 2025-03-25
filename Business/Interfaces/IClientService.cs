@@ -6,6 +6,7 @@ namespace Business.Interfaces;
 public interface IClientService
 {
     Task<ClientModel> CreateClientAsync(AddClientFormModel form);
+    Task<bool> Delete(Guid id);
     Task<IEnumerable<ClientModel>> GetAllClientsAsync();
     Task<ClientModel> GetClientAsync(Expression<Func<ClientEntity, bool>> expression);
     Task<IEnumerable<ClientModel>> GetClientsAsync(Expression<Func<ClientEntity, bool>> expression);

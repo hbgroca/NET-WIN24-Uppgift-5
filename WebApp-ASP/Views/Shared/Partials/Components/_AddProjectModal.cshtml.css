@@ -147,12 +147,12 @@ input, select, textarea {
   display: grid;
   grid-template-rows: 1fr auto;
   width: 100%;
-  height: 100%;
   background-color: var(--surface);
   border-radius: 1rem;
   padding: 1rem;
   margin: 0;
-  max-height: 400px;
+  height: fit-content;
+  max-height: 600px;
 }
 .project-members-add-list{
   display: flex;
@@ -161,6 +161,11 @@ input, select, textarea {
   gap: 0.5rem;
   width: 100%;
   padding: 0;
+
+  overflow: scroll;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--border100) transparent;
+  scrollbar-width: thin;
 }
 .project-members-add-list-object{
   display: flex;

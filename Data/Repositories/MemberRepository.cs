@@ -8,18 +8,16 @@ namespace Data.Repositories;
 
 public class MemberRepository(DataContext context) : BaseRepository<MemberEntity>(context), IMemberRepository
 {
-    // Fake method
-    public void FakeMethod()
-    {
-        // Do nothing
-    }
-
     public override async Task<IEnumerable<MemberEntity>> GetAllAsync()
     {
         try
         {
             // Get all values and return as list
-            var result = await _dbSet.Include(x => x.Address).ToListAsync();
+            var result = await _dbSet
+                .Include(x => x.Address)
+                .Include(p => p.Projects)
+                .ThenInclude(p => p.Client)
+                .ToListAsync();
             return result ?? [];
         }
         catch
@@ -28,6 +26,7 @@ public class MemberRepository(DataContext context) : BaseRepository<MemberEntity
             return [];
         }
     }
+   
 
     public override async Task<MemberEntity?> GetOneAsync(Expression<Func<MemberEntity, bool>> expression)
     {
@@ -37,7 +36,9 @@ public class MemberRepository(DataContext context) : BaseRepository<MemberEntity
         try
         {
             // Get the first result from db that matches the expression
-            var result = await _dbSet.Include(x => x.Address).FirstOrDefaultAsync(expression);
+            var result = await _dbSet
+                .Include(x => x.Address)
+                .FirstOrDefaultAsync(expression);
             return result;
         }
         catch

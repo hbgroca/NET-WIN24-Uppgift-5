@@ -60,12 +60,12 @@
 
             <button class="pop-up-btn member-actions-edit-btn" data-modal="true" data-target="#editMemberModal" data-member-id="@Model.Id" onclick="viewEditPopup(this)"><span class="edit">&#9998;</span>Edit</button>
             <form class="pop-up-btn-form" asp-action="deletemember" asp-route-id="@Model.Id" method="post" asp-controller="Members">
-                <button type="button" class="pop-up-btn" @(Model.Projects.Count == 0 ? "" : "disabled") onclick="viewDeleteConfirmButtons(this)">
+                <button type="button" class="pop-up-btn" @(Model.Projects.Count() == 0 ? "" : "disabled") onclick="viewDeleteConfirmButtons(this)">
                     <span class="remove">&#x1F5D1;</span>
                     Remove
                 </button>
 
-                <div  class="pop-up-remove-btns hidden">
+                <div class="pop-up-remove-btns hidden">
                     Sure?
                     <button type="submit">Yes</button>
                     /

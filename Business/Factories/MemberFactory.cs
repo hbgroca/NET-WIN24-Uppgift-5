@@ -36,7 +36,26 @@ public class MemberFactory
             Status = entity.Status,
             BirthDate = entity.BirthDate,
             Address = AddressFactory.Create(entity.Address),
-            //Projects = entity.Projects.Select(ProjectFactory.Create).ToList()
+        };
+    }
+
+    public static MemberModel CreateWithProjects(MemberEntity entity)
+    {
+        return new MemberModel
+        {
+            Id = entity.Id,
+            FirstName = entity.FirstName,
+            LastName = entity.LastName,
+            Email = entity.Email,
+            ImageUrl = entity.ImageUrl,
+            Phone = entity.Phone,
+            DateCreated = entity.DateCreated,
+            DateUpdated = entity.DateUpdated,
+            Title = entity.Title,
+            Status = entity.Status,
+            BirthDate = entity.BirthDate,
+            Address = AddressFactory.Create(entity.Address),
+            Projects = entity.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }
 

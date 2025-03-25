@@ -62,4 +62,16 @@ public class ProjectFactory
             UpdateDate = model.UpdateDate,
         };
     }
+
+    public static ProjectEntity Update(ProjectEntity entity, EditProjectFormModel form)
+    {
+        entity.ProjectName = form.ProjectName;
+        entity.Description = form.Description;
+        entity.StartDate = form.StartDate;
+        entity.EndDate = form.EndDate;
+        entity.Budget = form.Budget;
+        entity.IsCompleted = form.IsCompleted;
+        entity.ClientId = form.ClientId;
+        return entity;
+    }
 }

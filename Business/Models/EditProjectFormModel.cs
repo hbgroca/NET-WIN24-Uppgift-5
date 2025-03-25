@@ -40,7 +40,7 @@ public class EditProjectFormModel
 
 
     [Display(Name = "Status")]
-    public bool IsCompleted;
+    public bool IsCompleted { get; set; }
 
 
     // Json to store the members guid

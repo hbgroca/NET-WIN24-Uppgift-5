@@ -6,18 +6,18 @@
         </div>
     </a>
     <div class="nav-links">
-        <a class=" @(Context.Request.Path == "/admin/projects" ? "active" : "")" asp-controller="Admin" asp-action="Projects">
+        <a class="" asp-controller="Admin" asp-action="Projects">
             <div class="nav-link-container">
-                <span class="nav-link-text">
+                <span class="nav-link-text @(Context.Request.Path == "/projects" ? "active" : "")">
                     <img src="/images/icons/Projects.svg">
                     Projects
                 </span>
             </div>
         </a>
 
-        <a class=" @(Context.Request.Path == "/admin/members" ? "active" : "")" asp-controller="Admin" asp-action="Members">
+        <a class="" asp-controller="Admin" asp-action="Members">
             <div class="nav-link-container">
-                <span class="nav-link-text">
+                <span class="nav-link-text @(Context.Request.Path == "/members" ? "active" : "")">
                     <img src="/images/icons/Contacts.svg">
                     Members
                 </span>
@@ -25,9 +25,9 @@
         </a>
 
 
-        <a class=" @(Context.Request.Path == "/admin/clients" ? "active" : "")" asp-controller="Admin" asp-action="Clients">
+        <a class="" asp-controller="Admin" asp-action="Clients">
             <div class="nav-link-container">
-                <span class="nav-link-text active">
+                <span class="nav-link-text @(Context.Request.Path == "/clients" ? "active" : "")">
                     <img src="/images/icons/Contacts.svg">
                     Clients
                 </span>
