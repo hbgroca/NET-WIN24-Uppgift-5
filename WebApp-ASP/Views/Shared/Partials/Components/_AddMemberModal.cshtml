@@ -9,7 +9,7 @@
             <button class="btn-close" data-close="true">&#10006;</button>
         </div>
 
-        <form asp-controller="Members" asp-action="AddMember" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+        <form id="#form" asp-controller="Members" asp-action="AddMember" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
 
             <div class="image-previewer circle">
                 <img src="" class="image-preview" />
@@ -84,7 +84,7 @@
                     <div class="member-birthdate form-group">
                         <select asp-for="Day" required>
                             <option value="not selected" selected disabled>Day</option>
-                            @for (int i = 1; i <= 12; i++)
+                            @for (int i = 1; i <= 31; i++)
                             {
                                 <option value="@i">@i</option>
                             }
@@ -114,9 +114,9 @@
                     <div class="member-birthdate form-group">
                         <select asp-for="Year" required>
                             <option disabled selected value="not selected">Year</option>
-                            @for (int i = 1; i <= 125; i++)
+                            @for (int i = DateTime.Now.Year; i >= 1900; i--)
                             {
-                                <option value="@(DateTime.Now.Year - i)">@(DateTime.Now.Year - i)</option>
+                                <option value="@i">@i</option>
                             }
                         </select>
                         <span asp-validation-for="Year"></span>

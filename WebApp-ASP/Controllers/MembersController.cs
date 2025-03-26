@@ -44,7 +44,7 @@ namespace WebApp_ASP.Controllers
                 form.ImageName = $"/uploaded/members/{fileName}";
             }
             else
-                form.ImageName = $"/images/defaultprofile.png";
+                form.ImageName = $"/images/defaultmember.png";
 
                 // Send data to service
                 var result = await _memberService.CreateMemberAsync(form);
@@ -113,7 +113,7 @@ namespace WebApp_ASP.Controllers
         [Route("getmembers/{id}")]
         public async Task<IActionResult> GetMember(Guid id)
         {
-            var client = await _memberService.GetMemberAsync(i => i.Id == id);
+            var client = await _memberService.GetMemberAsync(i => i.Id == id.ToString());
             if (client == null)
                 return NotFound();
 

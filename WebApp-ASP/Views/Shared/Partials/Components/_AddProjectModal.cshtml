@@ -9,7 +9,7 @@
             <button class="btn-close" data-close="true">&#10006;</button>
         </div>
 
-        <form asp-controller="Projects" asp-action="AddProject" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+        <form id="#form" asp-controller="Projects" asp-action="AddProject" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
 
             <div class="image-previewer square">
                 <img src="" class="image-preview" /> 
@@ -68,7 +68,8 @@
                     }
                 </div>
                 <button class="project-members-search-btn">
-                    <img src="/images/icons/Search.svg" />
+                    @* <img src="/images/icons/Search.svg" /> *@
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 <span asp-validation-for="MembersJson"></span>
 

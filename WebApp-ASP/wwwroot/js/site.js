@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Handle Submit forms
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll('.modal form');
     forms.forEach(form => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();

@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutSignIn.cshtml";
 }
+@model MemberLoginFormModel
 
 <div class="sign-in-container">
     <div class="sign-in-header">
@@ -17,38 +18,50 @@
     </div>
 
     <div class="sign-in-form">
-        <form>
+        <form asp-controller="Login" asp-action="SignIn" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+            @if (!string.IsNullOrEmpty(ViewBag?.Error))
+            {
+                <div class="sign-in-error">
+                    @ViewBag?.Error
+                </div>
+            }
+
             <div class="sign-in-entries">
-                <label class="text-medium" for="email">Email</label>
-                <input type="email" name="email" id="email" required placeholder="Your email adress">
+                <label class="text-medium" asp-for="Email"></label>
+                <input asp-for="Email" type="email">
+                <span asp-validation-for="Email"></span>
             </div>
 
             <div class="sign-in-entries">
-                <label class="text-medium" for="password">Password</label>
+                <label class="text-medium" asp-for="Password"></label>
                 <div class="sign-in-password-field">
-                    <input class="" type="password" name="password" id="password" required minlength="8" placeholder="Enter your password">
-                    <img class="sign-in-password-visible" src="/images/icons/Hide.svg" />
+                    <input asp-for="Password" type="password">
+                    <span asp-validation-for="Password"></span>
+                    @* <img class="sign-in-password-visible" src="/images/icons/Hide.svg" /> *@
                 </div>
             </div>
 
-            <div class="sign-in-chekbox">
+            <div class="sign-in-checkbox">
                 <div class="checkbox">
-                    <input type="checkbox" name="remember" id="remember">
-                    <label for="remember">Remember me</label>
+                    <input type="checkbox">
+                    <label>Remember me</label>
                 </div>
                 <div>
-                    <a href="ForgotPassword.html">Forgot password?</a>
+                    <a disabled href="ForgotPassword.html">Forgot password?</a>
                 </div>
             </div>
 
             <div class="sign-in-entries">
-                <a class="btn" asp-controller="Home" asp-action="Index">Log in</a>
-                @* <button class="btn" type="submit" onclick="">Log in</button> *@
+                <button class="btn" type="submit">Log in</button>
             </div>
         </form>
     </div>
 
     <div class="sign-in-footer">
-        <p class="text-medium">Don't have an account? <a asp-action="signup">Sign Up</a></p>
+        <p class="text-medium">Don't have an account? <a asp-action="signup">Sign Up</a></p> 
     </div>
 </div>
+
+@await Html.PartialAsync("_ValidationFormScript")

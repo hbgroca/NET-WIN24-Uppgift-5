@@ -1,11 +1,11 @@
 using Business.Interfaces;
 using Business.Services;
+using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using WebApp_ASP.Data;
 using WebApp_ASP.Services;
 
 namespace WebApp_ASP;
@@ -16,28 +16,37 @@ public class Program
     {
         JsonSerializerOptions options = new JsonSerializerOptions
         {
-            // Clean up json file
             WriteIndented = true,
-            // Prevent infinite loop when collecting db data where JOIN can cause trubble
             ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
         };
 
-        // Create a new builder
         var builder = WebApplication.CreateBuilder(args);
 
-        
-
         // Connection strings
-        var dataConnectionString = builder.Configuration.GetConnectionString("DATAConnection") ?? throw new InvalidOperationException("Connection string 'DATAConnection' not found.");
-        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\roban\\Desktop\\Github\\NET-WIN24-Uppgift-5\\Data\\Database\\Assignment5.mdf;Integrated Security=True;Connect Timeout=30"));
-        //builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("dataConnectionString"));
-        var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(defaultConnectionString));
+        builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DATAConnection")));
 
         // Identity
-        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+        builder.Services.AddIdentity<MemberEntity, IdentityRole>(o =>
+            {
+                o.SignIn.RequireConfirmedAccount = false;
+                o.User.RequireUniqueEmail = true;
+                o.Password.RequiredLength = 8;
+            })
+            //.AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<DataContext>()
+            .AddDefaultTokenProviders();
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.LoginPath = "/Login/SignIn";
+            options.SlidingExpiration = true;
+        });
+
+        // Add authorization services
+        builder.Services.AddAuthorization();
+        // Add controllers
         builder.Services.AddControllersWithViews();
+
 
         // Repositories
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
@@ -51,35 +60,24 @@ public class Program
         builder.Services.AddScoped<IMemberService, MemberService>();
         builder.Services.AddScoped<IProjectService, ProjectService>();
         builder.Services.AddScoped<IImageService, ImageService>();
+        builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
         var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseMigrationsEndPoint();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
-
+        app.UseHsts();
         app.UseHttpsRedirection();
         app.UseRouting();
-
+        app.UseAuthentication();
         app.UseAuthorization();
-
         app.MapStaticAssets();
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Login}/{action=SignIn}/{id?}")
+            pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
-        app.MapRazorPages()
-           .WithStaticAssets();
+
+        //app.MapRazorPages()
+        //   .WithStaticAssets();
 
         app.Run();
     }

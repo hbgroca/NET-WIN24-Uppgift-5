@@ -1,7 +1,77 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutSignIn.cshtml";
 }
+@model MemberSignUpFormModel
 
-<div>
-    <h5>Sign up page</h5>
+<div class="sign-in-container">
+    <div class="sign-in-header">
+        <h1>Create Account</h1>
+    </div>
+
+    <div id="btn-signin-google">
+        <button class="btn btn-gray">Sign Up with Google</button>
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" />
+    </div>
+
+    <div class="sign-in-or">
+        <p>or</p>
+    </div>
+
+    <div class="sign-in-form">
+        <form asp-controller="Login" asp-action="SignUp" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+            <div class="sign-in-entries-name">
+                <div class="member-name">
+                    <label asp-for="FirstName" class="text-bold"></label>
+                    <input asp-for="FirstName" />
+                    <span asp-validation-for="FirstName"></span>
+                </div>
+
+                <div class="member-name">
+                    <label asp-for="LastName" class="text-bold"></label>
+                    <input asp-for="LastName" />
+                    <span asp-validation-for="LastName"></span>
+                </div>
+            </div>
+
+            <div class="sign-in-entries-email">
+                <label class="text-medium" asp-for="Email"></label>
+                <input type="email" asp-for="Email">
+                <span asp-validation-for="Email"></span>
+            </div>
+
+            <div class="sign-in-entries">
+                <label class="text-medium" for="password">Password</label>
+                <div class="sign-in-password-field">
+                    <input type="password" asp-for="Password">
+                    <span asp-validation-for="Password"></span>
+                </div>
+            </div>
+
+            <div class="sign-in-entries">
+                <label class="text-medium" for="password">Confirm password</label>
+                <div class="sign-in-password-field">
+                    <input type="password" asp-for="ConfirmPassword">
+                    <span asp-validation-for="ConfirmPassword"></span>
+                </div>
+            </div>
+
+            <div class="sign-in-checkbox">
+                <div class="checkbox">
+                    <input type="checkbox" asp-for="TermsAndConditions">
+                    <label asp-for="TermsAndConditions">I accept</label>
+                </div>
+                <div>
+                    <a href="">Terms and Conditions</a>
+                </div>
+                <span asp-validation-for="TermsAndConditions"></span>
+            </div>
+
+            <div class="sign-in-entries">
+                <button class="btn" type="submit">Sign in</button>
+            </div>
+        </form>
+    </div>
+
 </div>
+
+@await Html.PartialAsync("_ValidationFormScript")

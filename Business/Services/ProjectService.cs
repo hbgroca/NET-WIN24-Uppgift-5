@@ -43,7 +43,7 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             }
             foreach(MemberModel member in form.Members)
             {
-                var entity = await _memberRespository.GetOneAsync(x => x.Id == member.Id);
+                var entity = await _memberRespository.GetOneAsync(x => x.Id == member.Id.ToString());
                 if(entity != null)
                 {
                     projectEntity.Members.Add(entity);
@@ -140,7 +140,7 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             updatedEntity.Members.Clear();
             foreach (MemberModel member in form.Members)
             {
-                var memberEntity = await _memberRespository.GetOneAsync(x => x.Id == member.Id);
+                var memberEntity = await _memberRespository.GetOneAsync(x => x.Id == member.Id.ToString());
                 if (memberEntity != null)
                 {
                     updatedEntity.Members.Add(memberEntity);

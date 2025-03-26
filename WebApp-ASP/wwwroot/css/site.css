@@ -45,7 +45,7 @@
   --project-card-time-pointer: #000000;
   --modal-bg: rgba(0, 0, 0, 0.3);
 
-
+  --form-validation-error: rgba(235, 95, 95, 0.504);
   --font-black: 900;
   --font-bold: 700;
   --font-semi-bold: 600;
@@ -506,11 +506,11 @@ form textarea {
 }
 
 form .input-validation-error{
-  outline: 3px solid rgba(235, 95, 95, 0.504);
+  outline: 3px solid var(--form-validation-error);
 }
 
 .project-members-list .input-validation-error{
-  outline: 3px solid rgba(235, 95, 95, 0.504);
+  outline: 3px solid var(--form-validation-error);
 }
 
 form .field-validation-error{

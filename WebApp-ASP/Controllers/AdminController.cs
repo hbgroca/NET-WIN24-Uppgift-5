@@ -1,10 +1,12 @@
 ﻿using Business.Interfaces;
 using Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp_ASP.Models;
 
 namespace WebApp_ASP.Controllers
 {
+    [Authorize]
     public class AdminController(IProjectService projectService,IMemberService memberService) : Controller
     {
         private readonly IProjectService _projectService = projectService;
@@ -12,7 +14,7 @@ namespace WebApp_ASP.Controllers
 
         ProjectsPageViewModel viewModel = new();
 
-        [Route("Admin")]
+  
         public IActionResult SignIn()
         {
             ViewData["Title"] = "Sign In";
@@ -20,16 +22,16 @@ namespace WebApp_ASP.Controllers
         }
 
         [Route("projects")]
-        public async Task<IActionResult> Projects(ProjectsPageViewModel viewModel)
+        public async Task<IActionResult> Projects()
         {
             ViewData["Title"] = "Projects";
-            //ProjectsPageViewModel viewModel = new();
             var memberList = await _memberService.GetAllMembersAsync();
             viewModel._projectViewModel.MembersInDb = memberList.ToList();
             viewModel.Projects = await _projectService.GetAllProjectsAsync();
             return View(viewModel);
         }
 
+        //[Authorize(Roles = "admin")]
         [Route("members")]
         public IActionResult Members()
         {

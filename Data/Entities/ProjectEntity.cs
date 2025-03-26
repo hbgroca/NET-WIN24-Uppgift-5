@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Data.Entities;
@@ -17,6 +18,7 @@ public class ProjectEntity
     public DateOnly CreateDate { get; set; }
     public DateOnly UpdateDate { get; set; }
 
+    [Precision(18,2)]
     public decimal Budget { get; set; }
     public bool IsCompleted { get; set; }
 

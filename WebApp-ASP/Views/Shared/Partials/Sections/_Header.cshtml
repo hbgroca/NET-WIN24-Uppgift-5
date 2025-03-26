@@ -1,12 +1,15 @@
 ﻿<div class="header-container">
     <div class="searchbar-container">
-        <img class="header-icon" src="/images/icons/Search.svg">
+        @* <img class="header-icon" src="/images/icons/Search.svg"> *@
+        <i class="header-icon fa-solid fa-magnifying-glass"></i>
         <input type="text" class="searchbar" placeholder="Search anything...">
     </div>
 
     <div class="header-buttons">
-        <img class="header-icon" src="/images/icons/Notification-alert.svg">
-        <img class="header-icon" src="/images/icons/Setting.svg" onclick="openPopUp()">
+        @* <img class="header-icon" src="/images/icons/Notification-alert.svg"> *@
+        <i class="fa-solid fa-bell"></i>
+        @* <img class="header-icon" src="/images/icons/Setting.svg" onclick="openPopUp()"> *@
+        <i class="fa-solid fa-gear" onclick="openPopUp()"></i>
 
         <!-- User popup menu -->
         @* @await Html.PartialAsync("Popups/_UserPopup") *@
@@ -33,7 +36,8 @@
 
         <div class="darkmode-container">
             <p>
-                <img src="/images/icons/Setting.svg" />
+                @* <img src="/images/icons/Setting.svg" /> *@
+                <i class="fa-solid fa-gear"></i>
                 Dark Mode
             </p>
             <div class="checkbox-container">
@@ -44,8 +48,9 @@
         <div >
             <a asp-action="" asp-controller="">
                 <div class="logout-container">
-                    <img src="/images/icons/Logout.svg" />
-                    <p>Logout</p>
+                    @* <img src="/images/icons/Logout.svg" /> *@
+                    <i class="fa-solid fa-person-through-window"></i>
+                    <a asp-controller="Login" asp-action="Logout">Log out</a>
                 </div>
             </a>
         </div>

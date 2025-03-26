@@ -9,7 +9,7 @@
         <a class="" asp-controller="Admin" asp-action="Projects">
             <div class="nav-link-container">
                 <span class="nav-link-text @(Context.Request.Path == "/projects" ? "active" : "")">
-                    <img src="/images/icons/Projects.svg">
+                    <i class="fa-solid fa-briefcase"></i>
                     Projects
                 </span>
             </div>
@@ -18,8 +18,8 @@
         <a class="" asp-controller="Admin" asp-action="Members">
             <div class="nav-link-container">
                 <span class="nav-link-text @(Context.Request.Path == "/members" ? "active" : "")">
-                    <img src="/images/icons/Contacts.svg">
-                    Members
+                    <i class="fa-solid fa-user-tie"></i>
+                    Team Members
                 </span>
             </div>
         </a>
@@ -28,7 +28,7 @@
         <a class="" asp-controller="Admin" asp-action="Clients">
             <div class="nav-link-container">
                 <span class="nav-link-text @(Context.Request.Path == "/clients" ? "active" : "")">
-                    <img src="/images/icons/Contacts.svg">
+                    <i class="fa-solid fa-users"></i>
                     Clients
                 </span>
             </div>

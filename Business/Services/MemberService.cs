@@ -29,7 +29,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
 
             // Remap with factory
             var memberEntity = MemberFactory.Create(form);
-            memberEntity.Id = GenerateGuid.NewGuid();
+            memberEntity.Id = GenerateGuid.NewGuid().ToString();
 
             // Create the address if not already exists
             var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
@@ -106,7 +106,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             // Begin a new transaction
             await _memberRepository.BeginTransactionAsync();
             // Get the client
-            var member = await _memberRepository.GetOneAsync(x => x.Id == form.Id);
+            var member = await _memberRepository.GetOneAsync(x => x.Id == form.Id.ToString());
 
             if (member == null)
             {
@@ -175,7 +175,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
         try
         {
             // Get the entity
-            var entity = await _memberRepository.GetOneAsync(x => x.Id == id);
+            var entity = await _memberRepository.GetOneAsync(x => x.Id == id.ToString());
             if (entity == null)
                 return false;
 

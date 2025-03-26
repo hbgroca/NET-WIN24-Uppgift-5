@@ -42,7 +42,7 @@ namespace WebApp_ASP.Controllers
                 form.ImageName = $"/uploaded/clients/{fileName}";
             }
             else
-                form.ImageName = $"/images/defaultprofile.png";
+                form.ImageName = $"/images/defaultmember.png";
 
             // Send data to service
             var result = await _clientService.CreateClientAsync(form);

@@ -43,7 +43,7 @@ namespace WebApp_ASP.Controllers
                         {
                             foreach (var id in memberIds)
                             {
-                                var member = await _memberService.GetMemberAsync(x => x.Id == id);
+                                var member = await _memberService.GetMemberAsync(x => x.Id == id.ToString());
                                 if (member != null)
                                     form.Members.Add(member);
                             }
@@ -81,7 +81,7 @@ namespace WebApp_ASP.Controllers
                     form.ImageName = await _imageService.Create(form.ProjectImage, "uploaded/projects");
                 }
                 else
-                    form.ImageName = $"/images/defaultprofile.png";
+                    form.ImageName = $"/images/defaultmember.png";
 
                 // Save the project
                 var result = await _projectService.CreateProjectAsync(form);
@@ -129,7 +129,7 @@ namespace WebApp_ASP.Controllers
                         {
                             foreach (var id in memberIds)
                             {
-                                var member = await _memberService.GetMemberAsync(x => x.Id == id);
+                                var member = await _memberService.GetMemberAsync(x => x.Id == id.ToString());
                                 if (member != null)
                                     form.Members.Add(member);
                             }
