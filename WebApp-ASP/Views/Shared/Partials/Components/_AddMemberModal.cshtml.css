@@ -227,5 +227,6 @@ input, select, textarea {
   flex-direction: column;
   gap: .5rem;
   width: 100%;
+  
 }
 

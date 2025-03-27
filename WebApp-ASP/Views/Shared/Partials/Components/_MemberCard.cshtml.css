@@ -118,7 +118,8 @@
 }
 
 .expanded{
-  width: fit-content;
+  width: 100%;
+  max-width: 716px;
   max-height: fit-content;
   .member-card-info{
     display: none;

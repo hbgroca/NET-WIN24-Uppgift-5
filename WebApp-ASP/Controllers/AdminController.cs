@@ -6,7 +6,6 @@ using WebApp_ASP.Models;
 
 namespace WebApp_ASP.Controllers
 {
-    [Authorize]
     public class AdminController(IProjectService projectService,IMemberService memberService) : Controller
     {
         private readonly IProjectService _projectService = projectService;
@@ -21,6 +20,7 @@ namespace WebApp_ASP.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("projects")]
         public async Task<IActionResult> Projects()
         {
@@ -31,6 +31,7 @@ namespace WebApp_ASP.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         //[Authorize(Roles = "admin")]
         [Route("members")]
         public IActionResult Members()
@@ -39,6 +40,7 @@ namespace WebApp_ASP.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("clients")]
         public IActionResult Clients()
         {

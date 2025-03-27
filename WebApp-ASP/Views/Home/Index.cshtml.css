@@ -5,13 +5,8 @@
 
 .home-page-container{
 /*  background-color: hotpink;*/
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  height: 300px;
-}
-
-.bike-game{
-/*  background-color: dimgray;*/
-  height: 300px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding: 0 1rem;
 }

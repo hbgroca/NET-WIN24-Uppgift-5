@@ -1,37 +1,88 @@
 ﻿@model ProjectModel
 
 <div class="project">
-
-    <div class="project-header">
-        <img class="project-image"  src="@Model.ImageUrl">
-        <div class="project-header-title">
-            <h6 class="project-title">@Model.ProjectName</h6>
-            <p class="project-title-info">@Model.Client.ClientName</p>
+    <span class="project-btn-edit" onclick="viewEditPopup(this)">&deg;&deg;</span>
+    <div class="project-card" onclick="toggleSize(this)">
+        <div class="project-header">
+            <img class="project-image" src="@Model.ImageUrl">
+            <div class="project-header-title">
+                <h6 class="project-title">@Model.ProjectName</h6>
+                <p class="project-title-info">@Model.Client.ClientName</p>
+            </div>  
         </div>
-        <span class="project-btn-edit" onclick="viewEditPopup(this)">&deg;&deg;</span>
-    </div>
 
-    <div class="project-body">
-        <p class="project-description">@Model.Description</p>
-    </div>
+        <div class="project-body">
+            <p class="project-description">@Model.Description</p>
+        </div>
 
-    <div class="project-footer">
-        <div class="project-time @(Model.TimeLeftBgColor())">
-            <div class="project-time-clock">
-                <p class="project-time-clock-pointer-hour"></p>
-                <p class="project-time-clock-pointer-minute"></p>
-                <p class="project-time-clock-pointer-center">&bull;</p>
+        <div class="project-footer">
+            <div class="project-time @(Model.TimeLeftBgColor())">
+                <div class="project-time-clock">
+                    <p class="project-time-clock-pointer-hour"></p>
+                    <p class="project-time-clock-pointer-minute"></p>
+                    <p class="project-time-clock-pointer-center">&bull;</p>
+                </div>
+                <span class="project-time-text">@Model.TimeLeft()</span>
             </div>
-            <span class="project-time-text">@Model.TimeLeft()</span>
-        </div>
 
-        <div class="project-users">
-            @foreach(var member in Model.Members)
-            {
-                <img src="@member.ImageUrl" title="@member.FullName">
-            }
+            <div class="project-users">
+                @foreach (var member in Model.Members)
+                {
+                    <img src="@member.ImageUrl" title="@member.FullName">
+                }
+            </div>
         </div>
     </div>
+
+    <div class="project-card-expanded" onclick="toggleSize(this)">
+        <div class="project-header">
+            <img class="project-image" src="@Model.ImageUrl">
+            <div class="project-header-title">
+                <h4 class="project-title">@Model.ProjectName</h4>
+                <p class="project-title-info">@Model.Client.ClientName</p>
+                <div class="project-time @(Model.TimeLeftBgColor())">
+                    <div class="project-time-clock">
+                        <p class="project-time-clock-pointer-hour"></p>
+                        <p class="project-time-clock-pointer-minute"></p>
+                        <p class="project-time-clock-pointer-center">&bull;</p>
+                    </div>
+                    <span class="project-time-text">@Model.TimeLeft()</span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="project-info">
+            @* <p>Id: <span>@Model.Id</span></p> *@
+            <p>Created date: <span>@Model.CreateDate</span></p>
+            <p>Updated date: <span>@Model.UpdateDate</span></p>
+            <p>Start date: <span>@Model.StartDate</span></p>
+            <p>End date: <span>@Model.EndDate</span></p>
+            <p>Budget: $<span>@Model.Budget</span></p>
+        
+
+        </div>
+
+        <div class="project-description">
+            <h5>Description</h5>
+            <p class="project-description">@Model.Description</p>
+        </div>
+
+        <div class="project-members">
+            <h5>Team members</h5>
+
+            <div class="project-memberslist">
+                @foreach (var member in Model.Members)
+                {
+                    <div class="flex-center gap-1">
+                        <img src="@member.ImageUrl" title="@member.FullName">
+                        <p class="text-medium">@member.FullName</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    
 
     @* Pop-up *@
     <div class="project-card-edit-popup">
@@ -58,6 +109,13 @@
 </div>
 
 <script>
+    // Toogle size 
+    function toggleSize(e) {
+        // Remove the expanded class from all member-card-continer
+        var projectCard = e.closest('.project')
+        projectCard.classList.toggle('expanded')
+    }
+
     // View the member edit popup
     function viewEditPopup(e) {
         var memberCardContainer = e.closest('.project');

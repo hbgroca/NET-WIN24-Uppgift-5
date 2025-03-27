@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         form.querySelector('[name="Title"]').value = memberdata.title;
 
                         // Extract year, month, and day from dateCreated
-                        const dateCreated = new Date(memberdata.dateCreated);
-                        form.querySelector('[name="Day"]').value = dateCreated.getDate() ;
-                        form.querySelector('[name="Month"]').value = dateCreated.getMonth() + 1;
-                        form.querySelector('[name="Year"]').value = dateCreated.getFullYear() ;
+                        const birthDate = new Date(memberdata.birthDate);
+                        form.querySelector('[name="Day"]').value = birthDate.getDate() ;
+                        form.querySelector('[name="Month"]').value = birthDate.getMonth() + 1;
+                        form.querySelector('[name="Year"]').value = birthDate.getFullYear() ;
 
                         // Set image if available
                         const imagePreview = form.querySelector('.image-preview');

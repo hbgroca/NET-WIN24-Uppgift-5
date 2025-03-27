@@ -1,5 +1,6 @@
 ﻿using Business.Models;
 using Data.Entities;
+using Domain.Models;
 using System.Linq.Expressions;
 
 namespace Business.Interfaces;

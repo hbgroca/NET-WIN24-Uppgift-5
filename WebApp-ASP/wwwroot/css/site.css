@@ -123,6 +123,9 @@ body{
   min-height: 100vh;
   
 }
+main{
+  width: fit-content;
+}
 .wrapper{
   margin: 0 auto;
   max-width: 1440px;
@@ -173,9 +176,18 @@ a {
   font-size: 15px;
   font-weight: 600;;
 }
-
 label{
   color: var(--text-color);
+}
+.pointer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  padding:0.25rem;
+  border-radius: 50%;
 }
 
 

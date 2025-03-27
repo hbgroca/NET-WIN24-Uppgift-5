@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Business.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp_ASP.Controllers
 {
+    [Authorize]
     public class MembersController(IWebHostEnvironment webHostEnvironment, IMemberService memberService) : Controller
     {
         private readonly IWebHostEnvironment _env = webHostEnvironment;

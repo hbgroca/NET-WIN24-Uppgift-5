@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces;
 using Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text.Json;
@@ -8,6 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApp_ASP.Controllers
 {
+    [Authorize]
     public class ProjectsController(IImageService imageService ,IWebHostEnvironment webHostEnvironment, IProjectService projectService, IMemberService memberService, IClientService clientService) : Controller
     {
         private readonly IProjectService _projectService = projectService;

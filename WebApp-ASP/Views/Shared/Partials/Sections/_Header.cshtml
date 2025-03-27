@@ -1,59 +1,49 @@
 ﻿<div class="header-container">
     <div class="searchbar-container">
-        @* <img class="header-icon" src="/images/icons/Search.svg"> *@
         <i class="header-icon fa-solid fa-magnifying-glass"></i>
         <input type="text" class="searchbar" placeholder="Search anything...">
     </div>
 
     <div class="header-buttons">
-        @* <img class="header-icon" src="/images/icons/Notification-alert.svg"> *@
-        <i class="fa-solid fa-bell"></i>
-        @* <img class="header-icon" src="/images/icons/Setting.svg" onclick="openPopUp()"> *@
-        <i class="fa-solid fa-gear" onclick="openPopUp()"></i>
-
-        <!-- User popup menu -->
-        @* @await Html.PartialAsync("Popups/_UserPopup") *@
+        <div class="pointer">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+        <div class="pointer" onclick="openPopUp()">
+            <i class="fa-solid fa-gear"></i>
+        </div>
 
         <div class="header-notification-menu">
-
             <!-- Notification popup menu -->
-            @* @await Html.PartialAsync("Popups/_NotificationPopup") *@
-
         </div>
     </div>
 
     <div class="header-divider"></div>
 
     <div class="header-user" onclick="openPopUp()">
-        <img class="header-user-icon" src="/images/User5.svg">
+        <img class="header-user-icon" src="/images/defaultmember.png"/>
     </div>
 
     <div class="header-options-popup surface">
         <div class="user-container">
-            <img src="/images/User5.svg" />
-            <h6>Tommy Mattin-Lassei</h6>
+            <img src="/images/defaultmember.png" />
+            <h6>Mathilda Svensson</h6>
         </div>
-
-        <div class="darkmode-container">
+        <div class="darkmode-container" onclick="toggleDarkMode(this)">
             <p>
-                @* <img src="/images/icons/Setting.svg" /> *@
                 <i class="fa-solid fa-gear"></i>
                 Dark Mode
             </p>
             <div class="checkbox-container">
-                <input class="darkmode-btn-toggle" type="checkbox" onclick="toggleDarkMode(this)" />
+                <input class="darkmode-btn-toggle" type="checkbox"  />
             </div>
         </div>
 
-        <div >
-            <a asp-action="" asp-controller="">
-                <div class="logout-container">
-                    @* <img src="/images/icons/Logout.svg" /> *@
-                    <i class="fa-solid fa-person-through-window"></i>
-                    <a asp-controller="Login" asp-action="Logout">Log out</a>
-                </div>
-            </a>
-        </div>
+        <a asp-controller="Login" asp-action="Logout">
+            <div class="signout-container">
+                <i class="fa-solid fa-person-through-window"></i>
+                <p>Log out</p>
+            </div>
+        </a>
 
     </div>
 </div>

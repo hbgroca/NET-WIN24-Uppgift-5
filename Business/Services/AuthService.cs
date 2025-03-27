@@ -1,4 +1,5 @@
-﻿using Business.Interfaces;
+﻿using Business.Factories;
+using Business.Interfaces;
 using Data.Entities;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -6,12 +7,11 @@ using System.Diagnostics;
 
 namespace Business.Services;
 
-public class AuthService(SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager) : IAuthService
+public class AuthService(SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, IAddressService addressService) : IAuthService
 {
     private readonly SignInManager<MemberEntity> _signInManager = signInManager;
     private readonly UserManager<MemberEntity> _userManager = userManager;
-
-
+    private readonly IAddressService _addressService = addressService;
 
     public async Task<bool> AuthenticateAsync(MemberLoginFormModel form)
     {
@@ -22,18 +22,19 @@ public class AuthService(SignInManager<MemberEntity> signInManager, UserManager<
 
     public async Task<bool> SignUpAsync(MemberSignUpFormModel form){
 
-        // Temporary Factory
-        var entity = new MemberEntity();
-        entity.UserName = form.Email;
-        entity.Title = "Junior";
-        entity.FirstName = form.FirstName;
-        entity.LastName = form.LastName;
-        entity.Email = form.Email;
-        entity.AddressId = 1;
-        entity.Status = "Active";
-     
-        entity.PhoneNumber = "070123456";
-        entity.BirthDate = DateOnly.Parse("01-01-1900");
+        // Do the facotry thing :)
+        var entity = MemberFactory.Create(form);
+
+        // Create the address if not already exists
+        var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
+        if (address == null)
+            throw new Exception("Error while creating the address");
+
+        entity.AddressId = address.Id;
+
+        // Set the date created and updated
+        entity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
+        entity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
 
         var result = await _userManager.CreateAsync(entity, form.Password);
 

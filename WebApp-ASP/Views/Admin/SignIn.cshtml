@@ -40,7 +40,9 @@
                         <label class="text-medium" for="password">Password</label>
                         <div class="sign-in-password-field">
                             <input class="" type="password" name="password" id="password" required minlength="8" placeholder="Enter your password">
-                            <img class="sign-in-password-visible" src="/images/icons/Hide.svg" />
+                            <div class="toggle-pwd-visibility" onclick="togglePasswordVisibility()">
+                                <i id="toggle-btn" class="fa-regular fa-eye-slash"></i>
+                            </div>
                         </div>
                     </div>
 
@@ -56,7 +58,6 @@
 
                     <div class="sign-in-entries">
                         <a class="btn" asp-controller="Home" asp-action="Index">Log in</a>
-                        @* <button class="btn" type="submit">Log in</button> *@
                     </div>
                 </form>
             </div>
@@ -65,3 +66,19 @@
 
     </div>
 </div>
+
+<script>
+    function togglePasswordVisibility(){
+        const passwordField = document.querySelector('#password');
+        const toggleIcon = document.querySelector('#toggle-btn');
+        if(passwordField.type === "password"){
+            passwordField.type = "text";
+            toggleIcon.classList.remove('fa-eye-slash')
+            toggleIcon.classList.add('fa-eye')
+        }else{
+            passwordField.type = "password";
+            toggleIcon.classList.remove('fa-eye')
+            toggleIcon.classList.add('fa-eye-slash')
+        }
+    }
+</script>

@@ -8,6 +8,30 @@ namespace WebApp_ASP.Controllers
     public class LoginController(IAuthService authService) : Controller
     {
         private readonly IAuthService _authService = authService;
+        private readonly string[] ErrorMessages = [
+            "Oops! You missed some fields.",
+            "Hey, don’t forget to fill out everything!",
+            "Almost there! Just complete all the fields.",
+            "Some fields are still empty. Give them some love!",
+            "Whoa there, you forgot something!",
+            "This form isn't going to fill itself!",
+            "Nice try, but you need to complete all fields first!",
+            "Do I look like a mind reader? Fill in the blanks!",
+            "Please fill in all required fields.",
+            "All fields must be completed before submitting.",
+            "Missing information: Ensure all fields are filled out.",
+            "Required fields cannot be left empty."
+            ];
+        private readonly string[] InvalidSingInErrorMessages = [
+            "Invalid credentials. Please try again.",
+            "Your login details don’t match our records.",
+            "Incorrect username or password. Please try again.",
+            "The credentials you entered are not valid.",
+            "Login failed. Please check your username and password.",
+            "Your account details could not be verified.",
+            "Invalid login attempt. Please try again.",
+            ];
+        Random rnd = new Random();
 
         public IActionResult SignIn(string returnUrl = "~/")
         {
@@ -24,7 +48,7 @@ namespace WebApp_ASP.Controllers
             ViewBag.Error = "";
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = "Invalid login credentials";
+                ViewBag.Error = ErrorMessages[rnd.Next(0, ErrorMessages.Count())];
                 return View(form);
             }
 
@@ -35,7 +59,7 @@ namespace WebApp_ASP.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.Error = "Invalid login credentials";
+            ViewBag.Error = InvalidSingInErrorMessages[rnd.Next(0, InvalidSingInErrorMessages.Count())];
             return View(form);
         }
 
@@ -58,7 +82,7 @@ namespace WebApp_ASP.Controllers
                 ModelState.AddModelError("TermsAndConditions", " ");
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = "Invalid credentials";
+                ViewBag.Error = ErrorMessages[rnd.Next(0, ErrorMessages.Count())];
                 return View(form);
             }
 
@@ -69,7 +93,7 @@ namespace WebApp_ASP.Controllers
                 return Redirect("~/");
             }
 
-            ViewBag.Error = "Invalid credentials";
+            ViewBag.Error = "Something went wrong, try again later";
             return View(form);
         }
 

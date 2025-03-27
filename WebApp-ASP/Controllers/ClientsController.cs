@@ -1,9 +1,11 @@
 ﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Business.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp_ASP.Controllers
 {
+    [Authorize]
     public class ClientsController(IWebHostEnvironment webHostEnvironment,IClientService clientService) : Controller
     {
         private readonly IWebHostEnvironment _env = webHostEnvironment;

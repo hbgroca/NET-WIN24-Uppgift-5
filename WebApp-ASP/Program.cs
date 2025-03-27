@@ -62,6 +62,8 @@ public class Program
         builder.Services.AddScoped<IImageService, ImageService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
 
+        
+
 
 
         var app = builder.Build();

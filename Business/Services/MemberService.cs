@@ -4,6 +4,7 @@ using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
+using Domain.Models;
 using System.Diagnostics;
 using System.Linq.Expressions;
 

@@ -1,9 +1,8 @@
 ﻿using Business.Models;
 using Data.Entities;
-using System.Diagnostics.Metrics;
-using System.IO;
+using Domain.Models;
+using System.Net;
 using System.Numerics;
-using System.Reflection.Emit;
 
 namespace Business.Factories;
 
@@ -22,6 +21,24 @@ public class MemberFactory
             Status = "Active",
             BirthDate = DateOnly.Parse($"{form.Day}-{form.Month}-{form.Year}"),
         };
+    }
+
+    public static MemberEntity Create(MemberSignUpFormModel form)
+    {
+        var entity = new MemberEntity();
+        entity.UserName = form.Email;
+        entity.FirstName = form.FirstName;
+        entity.LastName = form.LastName;
+        entity.Email = form.Email;
+
+        entity.ImageUrl = "/images/defaultmember.png";
+        entity.Title = "Junior";
+        entity.Status = "Active";
+
+        entity.PhoneNumber = form.PhoneNumber;
+        entity.BirthDate = DateOnly.Parse($"{form.Day}-{form.Month}-{form.Year}");
+
+        return entity;
     }
 
     public static MemberModel Create(MemberEntity entity)
@@ -45,22 +62,22 @@ public class MemberFactory
 
     public static MemberModel CreateWithProjects(MemberEntity entity)
     {
-        return new MemberModel
-        {
-            Id = Guid.Parse(entity.Id),
-            FirstName = entity.FirstName,
-            LastName = entity.LastName,
-            Email = entity.Email,
-            ImageUrl = entity.ImageUrl,
-            Phone = entity.PhoneNumber,
-            DateCreated = entity.DateCreated,
-            DateUpdated = entity.DateUpdated,
-            Title = entity.Title,
-            Status = entity.Status,
-            BirthDate = entity.BirthDate,
-            Address = AddressFactory.Create(entity.Address),
-            Projects = entity.Projects.Select(ProjectFactory.Create).ToList(),
-        };
+        var model = new MemberModel();
+        model.Id = Guid.Parse(entity.Id);
+        model.FirstName = entity.FirstName;
+        model.LastName = entity.LastName;
+        model.Email = entity.Email;
+        model.ImageUrl = entity.ImageUrl;
+        model.Phone = entity.PhoneNumber;
+        model.DateCreated = entity.DateCreated;
+        model.DateUpdated = entity.DateUpdated;
+        model.Title = entity.Title;
+        model.Status = entity.Status;
+        model.BirthDate = entity.BirthDate;
+        model.Address = AddressFactory.Create(entity.Address);
+        model.Projects = entity.Projects.Select(ProjectFactory.Create).ToList();
+
+        return model;
     }
 
     public static MemberEntity Create(MemberModel model)
@@ -115,9 +132,7 @@ public class MemberFactory
         member.Status = form.Status;
 
         if (!string.IsNullOrEmpty(form.ImageName))
-        {
             member.ImageUrl = form.ImageName;
-        }
 
         return member;
     }
