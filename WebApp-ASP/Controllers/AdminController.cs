@@ -31,8 +31,7 @@ namespace WebApp_ASP.Controllers
             return View(viewModel);
         }
 
-        [Authorize]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [Route("members")]
         public IActionResult Members()
         {

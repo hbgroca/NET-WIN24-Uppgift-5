@@ -1,8 +1,6 @@
 ﻿using Business.Models;
 using Data.Entities;
 using Domain.Models;
-using System.Net;
-using System.Numerics;
 
 namespace Business.Factories;
 
@@ -36,7 +34,7 @@ public class MemberFactory
         entity.Status = "Active";
 
         entity.PhoneNumber = form.PhoneNumber;
-        entity.BirthDate = DateOnly.Parse($"{form.Day}-{form.Month}-{form.Year}");
+        entity.BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}");
 
         return entity;
     }

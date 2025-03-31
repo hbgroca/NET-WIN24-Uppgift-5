@@ -1,12 +1,19 @@
 ﻿using Business.Interfaces;
+using Data.Entities;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace WebApp_ASP.Controllers
 {
-    public class LoginController(IAuthService authService) : Controller
+    public class LoginController(IAuthService authService, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager) : Controller
     {
+        private readonly SignInManager<MemberEntity> _signInManager = signInManager;
+        private readonly UserManager<MemberEntity> _userManager = userManager;
         private readonly IAuthService _authService = authService;
         private readonly string[] ErrorMessages = [
             "Oops! You missed some fields.",
@@ -98,6 +105,7 @@ namespace WebApp_ASP.Controllers
         }
 
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             var result = await _authService.LogoutAsync();
@@ -105,6 +113,83 @@ namespace WebApp_ASP.Controllers
                 return LocalRedirect("~/");
 
             return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult ExternalSignIn(string provider, string returnUrl = null!)
+        {
+            if (string.IsNullOrEmpty(provider))
+            {
+                ModelState.AddModelError("", "Invalid provider");
+                return View("SignIn");
+            }
+               
+
+            string redirectUrl = Url.Action("ExternalSignInCallback", "Login", new { returnUrl })!;
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return Challenge(properties, provider);
+        }
+
+        public async Task<IActionResult> ExternalSignInCallback(string returnUrl = null!, string remoteError = null!)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if(!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError("", $"Error from external provider: {remoteError}");
+                return View("SignIn");
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError("", "Error loading external login information.");
+                return RedirectToAction("SignIn");
+            }
+
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (signInResult.Succeeded) { 
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                string email = info.Principal.FindFirstValue(ClaimTypes.Email)!;
+                string userName = $"ext_{info.LoginProvider.ToLower()}_{email}";
+
+                var user = new MemberEntity
+                {
+                    UserName = userName,
+                    Email = email,
+                    FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)!,
+                    LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)!,
+                    BirthDate = DateOnly.Parse(info.Principal.FindFirstValue(ClaimTypes.DateOfBirth) ?? "1900-01-01"),
+                    PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone) ?? "",
+                    Status = "Active",
+                    Title = "Junior",
+                    ImageUrl = "/images/defaultmember.png",
+                    Address = new AddressEntity
+                    {
+                        Street = info.Principal.FindFirstValue(ClaimTypes.StreetAddress) ?? "",
+                        ZipCode = info.Principal.FindFirstValue(ClaimTypes.PostalCode) ?? "",
+                        City = info.Principal.FindFirstValue(ClaimTypes.StateOrProvince) ?? "",
+                        Country = info.Principal.FindFirstValue(ClaimTypes.Country) ?? "",
+                    }
+                };
+
+                var identityResult = await _userManager.CreateAsync(user);
+                if (identityResult.Succeeded)
+                {
+                    identityResult = await _userManager.AddLoginAsync(user, info);
+                    if (identityResult.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
+                }
+            }
+            return LocalRedirect("SignIn");
         }
     }
 }

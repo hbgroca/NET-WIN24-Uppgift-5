@@ -124,7 +124,7 @@ body{
   
 }
 main{
-  width: fit-content;
+  width: 100%;
 }
 .wrapper{
   margin: 0 auto;

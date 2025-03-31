@@ -1,4 +1,9 @@
-﻿<div class="header-container">
+﻿@{
+    var username = User.Identity?.Name;
+    var user = await _memberService.GetMemberAsync(x => x.UserName == username);
+}
+
+<div class="header-container">
     <div class="searchbar-container">
         <i class="header-icon fa-solid fa-magnifying-glass"></i>
         <input type="text" class="searchbar" placeholder="Search anything...">
@@ -20,13 +25,13 @@
     <div class="header-divider"></div>
 
     <div class="header-user" onclick="openPopUp()">
-        <img class="header-user-icon" src="/images/defaultmember.png"/>
+        <img class="header-user-icon" src="@user.ImageUrl"/>
     </div>
 
     <div class="header-options-popup surface">
         <div class="user-container">
-            <img src="/images/defaultmember.png" />
-            <h6>Mathilda Svensson</h6>
+            <img src="@user.ImageUrl" />
+            <h6>@user.FullName</h6>
         </div>
         <div class="darkmode-container" onclick="toggleDarkMode(this)">
             <p>

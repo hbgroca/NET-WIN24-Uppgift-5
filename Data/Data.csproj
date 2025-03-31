@@ -8,13 +8,15 @@
 
   <ItemGroup>
     <Compile Remove="Databases\**" />
+    <Compile Remove="Migrations\Identity\**" />
     <EmbeddedResource Remove="Databases\**" />
+    <EmbeddedResource Remove="Migrations\Identity\**" />
     <None Remove="Databases\**" />
+    <None Remove="Migrations\Identity\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Migrations\Identity\" />
   </ItemGroup>
 
   <ItemGroup>
