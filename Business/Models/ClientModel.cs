@@ -18,4 +18,5 @@ public class ClientModel
     public string Status { get; set; } = null!;
 
     public List<ProjectModel> Projects { get; set; } = [];
+    public int ProjectCount { get; set; }
 }

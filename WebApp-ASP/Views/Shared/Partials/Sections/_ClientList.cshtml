@@ -31,7 +31,7 @@
                         <div> @client.Address.ZipCode @client.Address.City</div>
                         <div> @client.Address.Country</div>
                     </td>
-                    
+
                     <td class="client-date">@client.DateCreated</td>
                     <td class="client-status">
                         <div class="badge @(client.Status == "Alive" ? "success" : "chaos")">
@@ -40,10 +40,37 @@
                     </td>
 
                     <td class="client-actions">
-                        <p class="client-actions-edit-btn" data-modal="true" data-target="#editClientModal" data-client-id="@client.Id">&#9998;</p>
+                        <div class="client-actions-buttons flex-center gap-2">
+                            <p class="client-actions-edit-btn" data-modal="true" data-target="#editClientModal" data-client-id="@client.Id">&#9998;</p>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <button class="remove-btn @(client.ProjectCount == 0 ? "" : "disabled")" onclick="toogleRemoveBtns(this)" @(client.ProjectCount == 0 ? "" : "disabled")>&#10006;</button>
+                            }
+                        </div>
+
+                        <div class="client-actions-remove-confirm">
+                            <span>Remove?</span>
+                            <div class="flex-center gap-3">
+                                <form asp-action="DeleteClient" asp-controller="Clients" novalidate>
+                                    <input type="hidden" value="@client.Id" name="clientId" />
+                                    <button class="remove-btn" type="submit">Yes</button>
+                                </form>
+                                /
+                                <button class="remove-btn" onclick="toogleRemoveBtns(this)">No</button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<script>
+
+    function toogleRemoveBtns(e){
+        const container = e.closest('.client-actions');
+        container.classList.toggle('remove');
+    }
+
+</script>

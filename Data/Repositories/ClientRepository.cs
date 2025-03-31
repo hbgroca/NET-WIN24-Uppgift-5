@@ -22,9 +22,10 @@ public class ClientRepository(DataContext context) : BaseRepository<ClientEntity
             var result = await _dbSet
                 .Include(x => x.Address)
                 .Include(x => x.Projects)
+                //.ThenInclude(y => y.Client)
+                .OrderBy(x => x.ClientName)
                 .ToListAsync();
 
-            result.Sort((x, y) => x.ClientName.CompareTo(y.ClientName));
             return result ?? [];
         }
         catch

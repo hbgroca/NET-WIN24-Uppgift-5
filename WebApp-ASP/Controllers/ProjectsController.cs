@@ -1,22 +1,20 @@
 ﻿using Business.Interfaces;
 using Business.Models;
+using Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text.Json;
-using WebApp_ASP.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApp_ASP.Controllers
 {
     [Authorize]
-    public class ProjectsController(IImageService imageService ,IWebHostEnvironment webHostEnvironment, IProjectService projectService, IMemberService memberService, IClientService clientService) : Controller
+    public class ProjectsController(IProjectService projectService, IMemberService memberService, IClientService clientService) : Controller
     {
         private readonly IProjectService _projectService = projectService;
         private readonly IMemberService _memberService = memberService;
         private readonly IClientService _clientService = clientService;
-        private readonly IWebHostEnvironment _env = webHostEnvironment;
-        private readonly IImageService _imageService = imageService;
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -24,7 +22,7 @@ namespace WebApp_ASP.Controllers
         {
             try
             {
-                // Update Client
+                // Get client by id and add to form
                 var client = await _clientService.GetClientAsync(c => c.Id == form.ClientId);
                 if (client != null)
                     form.Client = client;
@@ -32,7 +30,7 @@ namespace WebApp_ASP.Controllers
                     ModelState.AddModelError("ClientId", " ");
 
 
-                // Add members
+                // Add members to the project
                 if (string.IsNullOrEmpty(form.MembersJson) || form.MembersJson == "[]")
                     ModelState.AddModelError("MembersJson", "");
                 else
@@ -75,15 +73,6 @@ namespace WebApp_ASP.Controllers
 
                     return BadRequest(new { success = false, errors });
                 }
-
-                // Handle image if present
-                if (form.ProjectImage != null && form.ProjectImage.Length > 0)
-                {
-                    // Save image
-                    form.ImageName = await _imageService.Create(form.ProjectImage, "uploaded/projects");
-                }
-                else
-                    form.ImageName = $"/images/defaultmember.png";
 
                 // Save the project
                 var result = await _projectService.CreateProjectAsync(form);
@@ -155,13 +144,6 @@ namespace WebApp_ASP.Controllers
                         );
 
                     return BadRequest(new { success = false, errors });
-                }
-
-                // Handle image if present
-                if (form.ProjectImage != null && form.ProjectImage.Length > 0)
-                {
-                    // Save image
-                    form.ImageName = await _imageService.Create(form.ProjectImage, "uploaded/projects");
                 }
 
                 // Save the project

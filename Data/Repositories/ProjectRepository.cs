@@ -18,6 +18,7 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
                     .ThenInclude(x => x.Address)
                 .Include(m => m.Members)
                     .ThenInclude(a => a.Address)
+                .OrderBy(x => x.ProjectName)
                 .ToListAsync();
             return result ?? [];
         }

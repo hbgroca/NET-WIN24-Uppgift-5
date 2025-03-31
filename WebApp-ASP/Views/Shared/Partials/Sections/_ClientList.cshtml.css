@@ -20,11 +20,9 @@
     }
     .client-email{
       grid-area: email;
-      color: var(--text-dim);
     }
     .client-phone{
       grid-area: phone;
-      color: var(--text-dim);
     }
   }
 }
@@ -39,16 +37,64 @@
   padding: 1rem;
 }
 
+.client-actions{
+  position: relative;
+}
+
 .client-actions-edit-btn{
   display: flex;
   scale: 1.5;
-  color: var(--text-dim);
   cursor: pointer;
   transform: scaleX(-1);
+  transition: all 0.1s ease-in-out;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  &:hover{
+    color: white;
+    background-color: darkgoldenrod;
+  }
 }
 
 .client-location, .client-date{
   display: flex;
   flex-direction: column;
-  color: var(--text-dim);
+}
+
+.client-actions-remove-confirm{
+  display: none;
+  justify-content: center;
+  position: absolute;
+  align-items: center;
+  right: 0;
+  bottom: -50%;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--surface);
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  border: 3px solid red;
+}
+
+.remove-btn{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  border-radius: 50%;
+  scale: 1.5;
+  transition: all 0.1s ease-in-out;
+  &:nth-child(even):hover{
+    color: white;
+    background-color: darkred;
+  }
+}
+
+.remove{
+  .client-actions-remove-confirm{
+    display: flex;
+  }
 }

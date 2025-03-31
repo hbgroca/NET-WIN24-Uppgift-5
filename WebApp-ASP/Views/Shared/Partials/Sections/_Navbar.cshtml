@@ -15,7 +15,17 @@
             </div>
         </a>
 
-        @if(User.IsInRole("Admin")){
+        <a class="" asp-controller="Admin" asp-action="Clients">
+            <div class="nav-link-container">
+                <span class="nav-link-text @(Context.Request.Path == "/clients" ? "active" : "")">
+                    <i class="fa-solid fa-users"></i>
+                    Clients
+                </span>
+            </div>
+        </a>
+
+        @if (User.IsInRole("Admin"))
+        {
             <a class="" asp-controller="Admin" asp-action="Members">
                 <div class="nav-link-container">
                     <span class="nav-link-text @(Context.Request.Path == "/members" ? "active" : "")">
@@ -25,17 +35,6 @@
                 </div>
             </a>
         }
-
-        <a class="" asp-controller="Admin" asp-action="Clients">
-            <div class="nav-link-container">
-                <span class="nav-link-text @(Context.Request.Path == "/clients" ? "active" : "")">
-                    <i class="fa-solid fa-users"></i>
-                    Clients
-                </span>
-            </div>
-        </a>
-    
-
     </div>
 
     <div class="trademark">

@@ -95,9 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // If Response is OK, close the modal and reload page
                 if (response.ok) {
                     const modal = form.closest('.modal');
-                    if(modal)
+                    if (modal)
                         modal.style.display = 'none';
 
+                    if (modal.id == 'addMemberModal') {
+                        alert("Nu ska såklart vår nya team member få ett mail med sitt lösenord, 'BytMig123!'");
+                    }
+                    
                     window.location.reload();
                 }
                 // If Response is not OK, show error messages

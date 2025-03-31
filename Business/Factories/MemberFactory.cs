@@ -17,7 +17,7 @@ public class MemberFactory
             PhoneNumber = form.Phone,
             Title = form.Title,
             Status = "Active",
-            BirthDate = DateOnly.Parse($"{form.Day}-{form.Month}-{form.Year}"),
+            BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}"),
         };
     }
 

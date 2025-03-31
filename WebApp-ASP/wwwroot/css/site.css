@@ -38,8 +38,10 @@
   --nav-bg-hover-color: rgba(45, 153, 255, 0.10);
   --nav-text-color: var(--accent);
   --nav-border-color: #E3E5E8;
-  --project-card-time-hurryup: var(--red);
+  --project-card-time-hurryup: rgb(255, 142, 142);
   --project-card-time-hurryup-text: var(--dark-red);
+  --project-card-time-completed: rgba(95, 255, 71, 0.285);
+  --project-card-time-completed-text: rgba(34, 118, 0, 0.795);
   --project-card-time: var(--gray200);
   --project-card-time-circle: rgba(0, 0, 0, 0.25);
   --project-card-time-pointer: #000000;
@@ -59,7 +61,7 @@
   --primary-color: #fff;
   --secondary-color: #2D99FF;
   --text-color: #E8E8E8;
-  --text-dim: #555;
+  --text-dim: #999;
   --text-light: #000;
   --border-color: #00000030;
   --heading: #fff;
@@ -88,15 +90,17 @@
   --dark-purple: #634CD4;
   --accent-dark: #2682D9;
   --btn-bg-color: var(--accent);
-  --btn-bg-shadow-color:  var(--accent);
+  --btn-bg-shadow-color:  rgba(45, 153, 255, 0.35);
   --btn-bg-gray-color: #F5F7FA;
   --btn-text-color: var(--text-light);
   --nav-bg-color: rgba(45, 153, 255, 0.10);
   --nav-bg-hover-color: rgba(45, 153, 255, 0.10);
   --nav-text-color: var(--accent);
   --nav-border-color: rgba(235, 238, 242, 0.212);
-  --project-card-time-hurryup: var(--red);
-  --project-card-time-hurryup-text: var(--dark-red);
+  --project-card-time-hurryup: #f89d9d;
+  --project-card-time-hurryup-text: rgba(255, 0, 0, 0.555);
+  --project-card-time-completed: rgba(95, 255, 71, 0.223);
+  --project-card-time-completed-text: rgba(0, 0, 0, 0.795);
   --project-card-time: var(--gray200);
   --project-card-time-circle: rgba(0, 0, 0, 0.25);
   --project-card-time-pointer: #000000;
@@ -282,10 +286,16 @@ label{
 .success{
   background-color: var(--light-green);
   color: var(--dark-green);
+  color: black;
+  span, p{
+    color: black;
+  }
 }
 .warning{
   background-color: var(--yellow);
-  color: var(--orange);
+  span, p{
+    color: black;
+  }
 }
 .chaos{
   background-color: var(--red);
@@ -361,9 +371,18 @@ label{
   right: 0;
   bottom: 0;
   background-color: var(--modal-bg);
+  backdrop-filter: blur(5px);
   justify-content: center;
   align-items: center;
   z-index:15;
+}
+@media (max-height: 1000px) {
+  .modal{
+    margin-block: 4rem;
+    position: absolute;
+    bottom: auto;
+    background: radial-gradient(circle, var(--modal-bg) 10%, transparent 65%);
+  }
 }
 .modal .modal-content{
   position: relative;
@@ -461,6 +480,10 @@ table th, table td {
   width: 100%;
   padding: 0 1rem;
   text-align: left;
+  color: var(--heading);
+}
+table td{
+  color: var(--text-dim);
 }
 
 table thead, table tbody{
@@ -469,13 +492,14 @@ table thead, table tbody{
 
 table thead > tr{
   background-color: var(--gray100);
-  color: var(--text-dim);
+  /* color: var(--text-light); */
   border-radius: 1rem;
 }
 
 table tbody > tr{
   padding: 0.25rem 0.5rem;
   margin: 0.5rem 0;
+  /* color: var(--text-dim); */
 
   &:hover{
     background-color: var(--nav-bg-hover-color);
@@ -636,4 +660,13 @@ input[type="checkbox"] {
 .pop-up-btn-form{
   width: 100%;
   display: grid;
+}
+
+#Description{
+  background-color: var(--surface);
+}
+
+.project-start-date input[type="date"], 
+.project-end-date input[type="date"] {
+  accent-color: var(--text-color) !important;
 }

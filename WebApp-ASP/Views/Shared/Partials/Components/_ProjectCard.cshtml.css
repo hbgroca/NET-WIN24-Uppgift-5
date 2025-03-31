@@ -18,6 +18,7 @@
   grid-template-rows: auto 1fr auto;
   padding: 1.5rem;
   height: 100%;
+  cursor: pointer;
 }
 
 /* Header */
@@ -86,10 +87,14 @@
   align-items: center;
   gap: 0.5rem;
   background-color: var(--project-card-time);
+  
   padding: 0.5rem;
   font-size: 14px;
   border-radius: 10px;
   height: 34px;
+}
+.project-time-text{
+  color:black;
 }
 
 .project-time .project-time-clock {
@@ -152,28 +157,22 @@
 }
 
 .timesAlmostUpYouNeedToHurry{
-  background-color: rgba(255, 99, 71, 0.285);
+  background-color: var(--project-card-time-hurryup);
   span{
     color: rgba(255, 0, 0, 0.555);
   }
-  .project-time-clock{
-    background-color: rgba(255, 0, 0, 0.226);
-  }
-  .project-time-clock-pointer-hour{
-    background-color: rgba(255, 0, 0, 0.555);
-  }
-  .project-time-clock-pointer-minute{
-    background-color: rgba(255, 0, 0, 0.555);
-  }
+  .project-time-clock
+  .project-time-clock-pointer-hour
+  .project-time-clock-pointer-minute
   .project-time-clock-pointer-center{
-    color: rgba(255, 0, 0, 0.555);
+    color: var(--project-card-time-hurryup-text);
   }
 }
 
 .IsCompleted{
-  background-color: rgba(95, 255, 71, 0.285);
+  background-color: var(--project-card-time-completed);
   span{
-    color: rgba(34, 118, 0, 0.795);
+    color: var(--project-card-time-completed-text)
   }
   .project-time-clock{
     background-color: rgba(33, 118, 0, 0.467);
@@ -201,6 +200,16 @@
   color: var(--body-light);
   align-self: flex-start;
   padding-top: 0.5rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: var(--gray100);
+    border-radius: 0.5rem;
+    color: white;
+  }
 }
 
 .project-card-edit-popup{
@@ -288,6 +297,7 @@
   display: none;
 }
 .expanded{
+  cursor: pointer;
   width:clamp(270px, 100%,  718px);
   height: fit-content;
   min-height: 276px;

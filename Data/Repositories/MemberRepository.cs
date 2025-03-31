@@ -17,6 +17,7 @@ public class MemberRepository(DataContext context) : BaseRepository<MemberEntity
                 .Include(x => x.Address)
                 .Include(p => p.Projects)
                 .ThenInclude(p => p.Client)
+                .OrderBy(x => x.FirstName)
                 .ToListAsync();
             return result ?? [];
         }

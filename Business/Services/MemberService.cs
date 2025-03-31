@@ -5,15 +5,18 @@ using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
 using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class MemberService(IMemberRepository memberRepository, IAddressService addressService) : IMemberService
+public class MemberService(IMemberRepository memberRepository, IAddressService addressService, UserManager<MemberEntity> userManager, IImageServices imageServices) : IMemberService
 {
     private readonly IMemberRepository _memberRepository = memberRepository;
     private readonly IAddressService _addressService = addressService;
+    private readonly UserManager<MemberEntity> _userManager = userManager;
+    private readonly IImageServices _imageServices = imageServices;
 
     // Create
     public async Task<MemberModel> CreateMemberAsync(AddMemberFormModel form)
@@ -25,8 +28,15 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
         }
         try
         {
-            // Begin a new transaction
-            await _memberRepository.BeginTransactionAsync();
+            // Store image
+            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
+            {
+                var imagePath = await _imageServices.Create(form.ProfilePicture, "members");
+                if (!string.IsNullOrEmpty(imagePath))
+                    form.ImageName = imagePath;
+            }
+            else
+                form.ImageName = $"/images/defaultmember.png";
 
             // Remap with factory
             var memberEntity = MemberFactory.Create(form);
@@ -43,23 +53,20 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             memberEntity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
             memberEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
 
-            // Create the client in dbcontext
-            await _memberRepository.CreateAsync(memberEntity);
+            // Create the member
+            memberEntity.UserName = memberEntity.Email;
+            var result = await _userManager.CreateAsync(memberEntity, "BytMig123!");
+            if(result.Succeeded)
+                return MemberFactory.Create(memberEntity);
 
-            // Save the changes
-            var result = await _memberRepository.SaveAsync();
-            if (result == 0)
-                throw new Exception("Error while saving the client");
-
-            // Commit the transaction
-            await _memberRepository.CommitTransactionAsync();
-
-            // Return the client
-            return MemberFactory.Create(memberEntity);
+            // If we get here something went wrong... Sad face :(
+            _imageServices.Delete(form.ImageName!);
+            return null!;
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Something went wrong when creating new member. Error msg: {ex.Message}");
+            _imageServices.Delete(form.ImageName!);
             return null!;
         }
     }
@@ -106,6 +113,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
         {
             // Begin a new transaction
             await _memberRepository.BeginTransactionAsync();
+
             // Get the client
             var member = await _memberRepository.GetOneAsync(x => x.Id == form.Id.ToString());
 
@@ -115,7 +123,14 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
                 await _memberRepository.RollbackTransactionAsync();
                 return false;
             }
-            var imageUrl = member.ImageUrl;
+
+            // Update image
+            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
+            {
+                var imagePath = await _imageServices.Update(form.ProfilePicture, "members", member.ImageUrl!);
+                if (!string.IsNullOrEmpty(imagePath))
+                    form.ImageName = imagePath;
+            }
 
             // Remap with factory
             var memberEntity = MemberFactory.Update(form, member);
@@ -124,7 +139,7 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
             if (address == null)
             {
-                Debug.WriteLine("An error occurred while updating the client: ");
+                Debug.WriteLine("An error occurred while updating the member: ");
                 await _memberRepository.RollbackTransactionAsync();
                 return false;
             }
@@ -134,34 +149,23 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             // Set the date updated
             memberEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
 
-            // Update the client in dbcontext
+            // Update the member in dbcontext
             _memberRepository.Update(memberEntity);
 
             // Save the changes
             var result = await _memberRepository.SaveAsync();
             if (result == 0)
-                throw new Exception("Error while saving the client");
+                throw new Exception("Error while saving the member");
 
             // Commit the transaction
             await _memberRepository.CommitTransactionAsync();
-
-            /// Remove image
-            if (form.ProfilePicture is not null && imageUrl is not null)
-            {
-                var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\clients\\{imageUrl.Substring(18)}";
-                Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
-                if (File.Exists(cutString))
-                {
-                    Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
-                    File.Delete(cutString);
-                }
-            }
 
             return true;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("An error occurred while updating the client: ", ex);
+            Debug.WriteLine("An error occurred while updating the member: ", ex);
+            _imageServices.Delete(form.ImageName!);
             return false;
         }
     }
@@ -170,9 +174,6 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
     // Delete
     public async Task<bool> Delete(Guid id)
     {
-        // Begin transaction
-        await _memberRepository.BeginTransactionAsync();
-
         try
         {
             // Get the entity
@@ -180,29 +181,17 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             if (entity == null)
                 return false;
 
-            // Delete from dbset
-            _memberRepository.Delete(entity);
-
-            // Save changes
-            var save = await _memberRepository.SaveAsync();
-            if (save == 0)
-                return false;
-
-            // Commit transaction
-            await _memberRepository.CommitTransactionAsync();
+            // Delete
+            await _userManager.DeleteAsync(entity);
 
             // Remove image
-            var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\members\\{entity.ImageUrl?.Substring(19)}";
-            if (File.Exists(cutString))
-                File.Delete(cutString);
+            _imageServices.Delete(entity.ImageUrl!);
 
             return true;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex);
-            // Rollback transaction if error
-            await _memberRepository.RollbackTransactionAsync();
+            Debug.WriteLine(ex.Message);
             return false;
         }
     }

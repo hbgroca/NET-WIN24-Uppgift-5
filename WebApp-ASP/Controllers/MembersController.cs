@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApp_ASP.Controllers
 {
     [Authorize]
-    public class MembersController(IWebHostEnvironment webHostEnvironment, IMemberService memberService) : Controller
+    public class MembersController(IMemberService memberService) : Controller
     {
-        private readonly IWebHostEnvironment _env = webHostEnvironment;
         private readonly IMemberService _memberService = memberService;
         
 
@@ -28,32 +27,12 @@ namespace WebApp_ASP.Controllers
                 return BadRequest(new { success = false, errors });
             }
 
-            // Store image
-            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
-            {
-                var uploadFolder = Path.Combine(_env.WebRootPath, "uploaded/members");
-                // If folder does not exist it will be created
-                Directory.CreateDirectory(uploadFolder);
-                var fileName = Path.Combine(Path.GetFileName($"{Guid.NewGuid()}_{form.ProfilePicture.FileName}"));
-                var filePath = Path.Combine(uploadFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await form.ProfilePicture.CopyToAsync(stream);
-                }
-
-                // Set file path
-                form.ImageName = $"/uploaded/members/{fileName}";
-            }
-            else
-                form.ImageName = $"/images/defaultmember.png";
-
-                // Send data to service
-                var result = await _memberService.CreateMemberAsync(form);
+            // Send data to service
+            var result = await _memberService.CreateMemberAsync(form);
 
             if (result is null)
             {
-                var error = "Error while creating the client";
+                var error = "Error while creating the member";
                 return BadRequest(new { success = false, error });
             }
 
@@ -79,30 +58,12 @@ namespace WebApp_ASP.Controllers
                 return BadRequest(new { success = false, errors });
             }
 
-            // Store image
-            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
-            {
-                var uploadFolder = Path.Combine(_env.WebRootPath, "uploaded/members");
-                // If folder does not exist it will be created
-                Directory.CreateDirectory(uploadFolder);
-                var fileName = Path.Combine(Path.GetFileName($"{form.Id}_{form.ProfilePicture.FileName}"));
-                var filePath = Path.Combine(uploadFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await form.ProfilePicture.CopyToAsync(stream);
-                }
-
-                // Set file path
-                form.ImageName = $"/uploaded/members/{fileName}";
-            }
-
             //Send data to service
             var result = await _memberService.UpdateMember(form);
 
             if (result is false)
             {
-                var error = "Error while creating the client";
+                var error = "Error while editing the member";
                 return BadRequest(new { success = false, error });
             }
 
@@ -128,8 +89,6 @@ namespace WebApp_ASP.Controllers
         public async Task<IActionResult> DeleteMember(Guid id)
         {
             var result = await _memberService.Delete(id);
-
-            // Navigate to member list page
             return RedirectToAction("Members", "Admin");
         }
     }

@@ -10,10 +10,11 @@ using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ClientService(IClientRepository clientRepository, IAddressService addressService) : IClientService
+public class ClientService(IClientRepository clientRepository, IAddressService addressService, IImageServices imageServices) : IClientService
 {
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IAddressService _addressService = addressService;
+    private readonly IImageServices _imageServices = imageServices;
 
     // Create
     public async Task<ClientModel> CreateClientAsync(AddClientFormModel form)
@@ -28,6 +29,16 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
         {
             // Begin a new transaction
             await _clientRepository.BeginTransactionAsync();
+
+            // Store image
+            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
+            {
+                var imagePath = await _imageServices.Create(form.ProfilePicture, "clients");
+                if (!string.IsNullOrEmpty(imagePath))
+                    form.ImageName = imagePath;
+            }
+            else
+                form.ImageName = $"/images/defaultmember.png";
 
             // Remap with factory
             var clientEntity = ClientFactory.Create(form);
@@ -68,6 +79,7 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
         catch (Exception ex)
         {
             Debug.WriteLine("An error occurred while creating the client: ", ex);
+            _imageServices.Delete(form.ImageName!);
             await _clientRepository.RollbackTransactionAsync();
         }
 
@@ -125,7 +137,14 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
                 await _clientRepository.RollbackTransactionAsync();
                 return false;
             }
-            var imageUrl = client.ImageUrl;
+
+            // Update image
+            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
+            {
+                var imagePath = await _imageServices.Update(form.ProfilePicture, "clients", client.ImageUrl!);
+                if (!string.IsNullOrEmpty(imagePath))
+                    form.ImageName = imagePath;
+            }
 
             // Remap with factory
             var clientEntity = ClientFactory.Update(form, client);
@@ -155,23 +174,12 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             // Commit the transaction
             await _clientRepository.CommitTransactionAsync();
 
-            /// Remove image
-            if (form.ProfilePicture is not null && imageUrl is not null)
-            {
-                var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\clients\\{imageUrl.Substring(18)}";
-                Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
-                if (File.Exists(cutString))
-                {
-                    Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
-                    File.Delete(cutString);
-                }
-            }
-
             return true;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("An error occurred while updating the client: ", ex);
+            Debug.WriteLine("An error occurred while updating the client: ", ex.Message);
+            _imageServices.Delete(form.ImageName!);
             return false;
         }
     }
@@ -201,15 +209,13 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             await _clientRepository.CommitTransactionAsync();
 
             // Remove image
-            var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\clients\\{entity.ImageUrl?.Substring(19)}";
-            if (File.Exists(cutString))
-                File.Delete(cutString);
+            _imageServices.Delete(entity.ImageUrl!);
 
             return true;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex);
+            Debug.WriteLine(ex.Message);
             // Rollback transaction if error
             await _clientRepository.RollbackTransactionAsync();
             return false;

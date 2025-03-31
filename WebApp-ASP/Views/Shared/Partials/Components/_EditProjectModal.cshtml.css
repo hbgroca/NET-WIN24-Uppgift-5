@@ -186,7 +186,12 @@ input, select, textarea {
     background-color: lightgray;
   }
 }
+.project-members-add-name{
+  color: black;
+}
 .project-members-add-image{
   width: 36px;
   height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
 }

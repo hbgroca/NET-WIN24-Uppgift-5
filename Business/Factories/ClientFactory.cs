@@ -28,7 +28,7 @@ public class ClientFactory
         model.DateCreated = entity.DateCreated;
         model.DateUpdated = entity.DateUpdated;
         model.Status = entity.Status;
-        //model.Projects = entity.Projects.Select(ProjectFactory.Create).ToList();
+        model.ProjectCount = entity.Projects.Count();
 
         return model;
     }
@@ -46,7 +46,6 @@ public class ClientFactory
             DateCreated = model.DateCreated,
             DateUpdated = model.DateUpdated,
             Status = model.Status,
-            //Projects = model.Projects.Select(ProjectFactory.Create).ToList(),
         };
     }
 

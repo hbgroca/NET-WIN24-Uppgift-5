@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 1fr auto auto auto auto;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--nav-border-color);
 }
 
 
@@ -35,7 +35,7 @@
   grid-column: 4;
   width: 1px;
   height: 40px;
-  background-color: var(--border-color);
+  background-color: var(--nav-border-color);
 }
 
 .header-icon {

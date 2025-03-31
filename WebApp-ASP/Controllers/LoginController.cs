@@ -116,6 +116,7 @@ namespace WebApp_ASP.Controllers
         }
 
 
+        // External Sign In
         [HttpPost]
         public IActionResult ExternalSignIn(string provider, string returnUrl = null!)
         {

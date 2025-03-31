@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using System.Threading.Tasks;
-using WebApp_ASP.Services;
 
 namespace WebApp_ASP;
 
@@ -78,8 +76,8 @@ public class Program
         builder.Services.AddScoped<IClientService, ClientService>();
         builder.Services.AddScoped<IMemberService, MemberService>();
         builder.Services.AddScoped<IProjectService, ProjectService>();
-        builder.Services.AddScoped<IImageService, ImageService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddSingleton<IImageServices, ImageServices>();
 
         var app = builder.Build();
         app.UseHsts();

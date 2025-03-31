@@ -4,17 +4,17 @@ using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Repositories;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ProjectService(IProjectRepository projectRepository, IMemberRepository memberRepository, IClientRepository clientRepository) : IProjectService
+public class ProjectService(IProjectRepository projectRepository, IMemberRepository memberRepository, IClientRepository clientRepository, IImageServices imageServices) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
     private readonly IMemberRepository _memberRespository = memberRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
+    private readonly IImageServices _imageService = imageServices;
 
     // Create
     public async Task<ProjectModel> CreateProjectAsync(AddProjectFormModel form)
@@ -28,6 +28,15 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
         {
             // Begin transaction
             await _projectRepository.BeginTransactionAsync();
+
+            // Handle image if present
+            if (form.ProjectImage != null && form.ProjectImage.Length > 0)
+            {
+                // Save image
+                form.ImageName = await _imageService.Create(form.ProjectImage, "projects");
+            }
+            else
+                form.ImageName = $"/images/defaultmember.png";
 
             // Remap with factory
             var projectEntity = ProjectFactory.Create(form);
@@ -78,6 +87,7 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
+            _imageService.Delete(form.ImageName!);
             await _projectRepository.RollbackTransactionAsync();
             return null!;
         }
@@ -128,6 +138,13 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             if (entity == null)
                 return false!;
 
+            // Handle image if present
+            if (form.ProjectImage != null && form.ProjectImage.Length > 0)
+            {
+                // Save image
+                form.ImageName = await _imageService.Update(form.ProjectImage, "projects", entity.ImageUrl!);
+            }
+
             var updatedEntity = ProjectFactory.Update(entity, form);
 
             // Add Members
@@ -172,22 +189,13 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             // Commit the transaction
             await _projectRepository.CommitTransactionAsync();
 
-            // Remove image if updated
-            if (form.ProjectImage is not null && form.ImageName is not null)
-            {
-                var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\projects\\{oldImageUrl?.Substring(19)}";
-                if (File.Exists(cutString))
-                    Debug.WriteLine($"!!! - Trying to remove file: {cutString}");
-                    File.Delete(cutString);
-            }
-
             return true;
-
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"! Failed to update project: {ex.Message}");
             await _projectRepository.RollbackTransactionAsync();
+            _imageService.Delete(form.ImageName!);
             return false;
         }
     }
@@ -218,9 +226,7 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             await _projectRepository.CommitTransactionAsync();
 
             // Remove image
-            var cutString = $"{Environment.CurrentDirectory}\\wwwroot\\uploaded\\projects\\{entity.ImageUrl?.Substring(19)}";
-            if (File.Exists(cutString))
-                File.Delete(cutString);
+            _imageService.Delete(entity.ImageUrl!);
 
             return true;
         }
