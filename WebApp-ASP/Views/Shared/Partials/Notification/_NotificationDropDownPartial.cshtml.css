@@ -1,0 +1,105 @@
+.header-notification-container{
+  position: relative;
+} 
+
+#notification-dropdown-button{
+  cursor: pointer;
+}
+.dot-red{
+  position: absolute;
+  top:-3px;
+  right: 3.4rem;
+  background-color: var(--bg-color);
+  color: red;
+  width: 14px;
+  height: 14px;
+  rotate: 45deg;
+  border-radius: 50%;
+  z-index: 50;
+  display: none;
+  justify-content: center;
+  align-items:center
+}
+
+.notification-dropdown{
+display: none;
+max-width: 380px;
+width: max-content;
+position: absolute;
+top: 100%;
+right: 3rem;
+background-color: var(--surface);
+border-radius: 1rem;
+box-shadow: var(--shadow);
+padding: 1rem;
+z-index: 1000;
+}
+
+.notification-header{
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 1rem;
+}
+.notification-header-text{
+margin: 0;
+padding: 1rem 0;
+}
+.notification-number{
+background-color: orangered;
+width: 20px;
+height: 20px;
+border-radius: 50%;
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 11px;
+}
+
+.dropdown-divider{
+  border: 1px solid var(--nav-border-color);
+}
+
+.notifications{
+  max-width: 380px;
+  padding: 1rem 0;
+}
+.notifications .notification-item{
+  display: grid;
+  grid-template-areas: 
+  'image message button'
+  'image time button';
+  grid-template-columns: auto 1fr auto;
+  gap: 0 1rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-color);
+  border-radius: 1rem;
+  .message{
+    grid-area: message;
+  }
+  .image{
+    grid-area: image;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .time{
+    grid-area: time;
+    font-size: 12px;
+  }
+  .btn-close{
+    grid-area: button;
+    background-color: transparent;
+    color: var(--text);
+    scale: 0.6;
+    border: none;
+    cursor: pointer;
+    &:hover{
+      color: var(--accent);
+    }
+  }
+}
+

@@ -238,7 +238,9 @@ label{
   display: flex;
   flex-direction: column;
 }
-
+.show{
+  display: grid !important;
+}
 .gap-1 {
   gap: 0.25rem;
 }
@@ -664,9 +666,12 @@ input[type="checkbox"] {
 
 #Description{
   background-color: var(--surface);
+  color: var(--text-color);
 }
 
-.project-start-date input[type="date"], 
-.project-end-date input[type="date"] {
+input[type="date"], 
+input[type="date"] {
   accent-color: var(--text-color) !important;
 }
+
+

@@ -396,3 +396,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Folders
+WebApp-ASP/wwwroot/uploaded/clients
+WebApp-ASP/wwwroot/uploaded/members
+WebApp-ASP/wwwroot/uploaded/projects

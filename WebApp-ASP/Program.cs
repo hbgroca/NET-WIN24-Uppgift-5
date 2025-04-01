@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using WebApp_ASP.Hubs;
 
 namespace WebApp_ASP;
 
@@ -64,6 +65,8 @@ public class Program
         // Add controllers
         builder.Services.AddControllersWithViews();
 
+        // Add SignalR
+        builder.Services.AddSignalR();
 
         // Repositories
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
@@ -103,45 +106,14 @@ public class Program
             }
         }
 
-        //// Create default user
-        //using (var scope = app.Services.CreateScope())
-        //{
-        //    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<MemberEntity>>();
-        //    var user = new MemberEntity
-        //    {
-        //        DateCreated = DateOnly.FromDateTime(DateTime.Now),
-        //        DateUpdated = DateOnly.FromDateTime(DateTime.Now),
-        //        FirstName = "Admin",
-        //        LastName = "Admin",
-        //        Email = "admin@domain.com",
-        //        UserName = "admin@domain.com",
-        //        Title = "Admin",
-        //        Status = "Active",
-        //        BirthDate = DateOnly.Parse("1970-01-01"),
-        //        ImageUrl = "",
-        //        Id = Guid.NewGuid().ToString(),
-        //        AddressId = 1,
-        //        PhoneNumber = "1234567890"
-        //    };
-
-        //    var userExists = userManager.FindByEmailAsync(user.Email).Result;
-        //    if(userExists == null)
-        //    {
-        //        var result = await userManager.CreateAsync(user, "BytMig123!").ConfigureAwait(false);
-        //        if (result.Succeeded)
-        //            await userManager.AddToRoleAsync(user, "Admin").ConfigureAwait(false);
-        //    }
-
-        //}
-
         app.MapStaticAssets();
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
 
-        //app.MapRazorPages()
-        //   .WithStaticAssets();
+        app.MapHub<ChatHub>("/chatHub");
+        app.MapHub<ChatHub>("/notificationhub");
 
         app.Run();
     }

@@ -92,7 +92,11 @@
     background-color: darkred;
   }
 }
+.disabled{
+  pointer-events: visible;
+  opacity: 0.5;
 
+}
 .remove{
   .client-actions-remove-confirm{
     display: flex;

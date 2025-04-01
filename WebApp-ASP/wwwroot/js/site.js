@@ -201,3 +201,25 @@ async function processImage(file, imagePreview, previewer, previewSize = 150) {
         console.error("Failed to process image: ", error);
     }
 }
+
+
+// Handle dropdowns in header
+function toggleDropDowns(e){
+  const target = e.getAttribute('data-target');
+  const targetDropdown = document.querySelector(target);
+  
+  const dropdowns = document.querySelectorAll('.dropdown');
+  dropdowns.forEach(dropdown => {
+    if (dropdown !== targetDropdown) {
+      dropdown.classList.remove('show');
+    }
+  });
+  targetDropdown.classList.toggle('show');
+}
+
+// Toogle darkmode
+function toggleDarkMode(e) {
+  document.body.classList.toggle("dark-mode");
+  // Save darkMode to local storage
+  localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
+}

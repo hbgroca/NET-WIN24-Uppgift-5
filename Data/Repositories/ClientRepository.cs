@@ -8,21 +8,13 @@ namespace Data.Repositories;
 
 public class ClientRepository(DataContext context) : BaseRepository<ClientEntity>(context), IClientRepository
 {
-    // Fake method
-    public void FakeMethod()
-    {
-        // Do nothing
-    }
-
     public override async Task<IEnumerable<ClientEntity>> GetAllAsync()
     {
         try
         {
-            // Get all values and return as list
             var result = await _dbSet
                 .Include(x => x.Address)
                 .Include(x => x.Projects)
-                //.ThenInclude(y => y.Client)
                 .OrderBy(x => x.ClientName)
                 .ToListAsync();
 
