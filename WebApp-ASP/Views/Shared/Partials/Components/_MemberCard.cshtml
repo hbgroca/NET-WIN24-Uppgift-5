@@ -60,7 +60,7 @@
 
             <button class="pop-up-btn member-actions-edit-btn" data-modal="true" data-target="#editMemberModal" data-member-id="@Model.Id" onclick="viewEditPopup(this)"><span class="edit">&#9998;</span>Edit</button>
             <form class="pop-up-btn-form" asp-action="deletemember" asp-route-id="@Model.Id" method="post" asp-controller="Members">
-                <button type="button" class="pop-up-btn" @(Model.Projects.Count() == 0 ? "" : "disabled") title=@(Model.Projects.Count() == 0 ? "" : "Unavilable,Connected-project") onclick="viewDeleteConfirmButtons(this)">
+                <button type="button" class="pop-up-btn" onclick="viewDeleteConfirmButtons(this)"  @(Model.Projects.Count() == 0 ? "" : "disabled") title=@(Model.Projects.Count() == 0 ? "" : "Unavilable,Connected-project")>
                     <span class="remove">&#x1F5D1;</span>
                     Remove
                 </button>
@@ -74,45 +74,4 @@
             </form>
         </div>
     </div>
-
-    
 </div>
-
-
-<script>
-    function toggleSize(e) {
-        // Remove the expanded class from all member-card-continer
-        var membercardContiners = document.querySelectorAll('.member-card-continer')
-        membercardContiners.forEach(
-            (container)=>{container.classList.remove('expanded');}
-        );
-
-        // Add the expanded class to the clicked member-card-continer
-        var memberCardContainer = e.closest('.member-card');
-        memberCardContainer.classList.toggle('expanded');
-    }
-
-
-    // View the member edit popup
-    function viewEditPopup(e) {
-        var memberCardContainer = e.closest('.member-card-continer');
-
-        var memberCardEditPopup = memberCardContainer.querySelector('.member-card-edit-popup');
-        memberCardEditPopup.classList.toggle('active');
-
-        var memberCardEditPopup = memberCardContainer.querySelector('.member-btn-edit');
-        memberCardEditPopup.classList.toggle('open');
-    }
-
-
-    // View the delete confirm buttons
-    function viewDeleteConfirmButtons(e) {
-        var deleteButtonsContainer = e.closest('.pop-up-btn-form');
-
-        var deleteButton = deleteButtonsContainer.querySelector('.pop-up-btn');
-        deleteButton.classList.toggle('hidden');
-
-        var deleteConfirmButtons = deleteButtonsContainer.querySelector('.pop-up-remove-btns');
-        deleteConfirmButtons.classList.toggle('hidden');
-    }
-</script>

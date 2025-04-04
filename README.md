@@ -32,7 +32,7 @@ Webbapplikationen kan vara av typen ASP.NET - Razor Pages eller ASP.NET - MVC oc
 - Du kan lägga till viss data manuellt i databasen om det skulle behövas men projekt och användare ska läggas in via formulären. &#10003;
 - All formulärdata måste valideras med hjälp av Javascript, välj lämplig valideringsmetod för att säkerställa att datat som skickas är korrekt. &#10003;
 - All data ska hanteras i en valfri lagringslösning och du ska använda Entity Framework Core och ska tillämpa lämpliga designmönster som exempelvis Service Pattern. &#10003;
-- Du ska använda dig av Microsoft Identity (Individual Account) för grundläggande åtkomst- och behörighetskontroll, vilket innebär att det ska kunna gå att registrera sig och att logga in, samt användarspecifika sidor måste skyddas med hjälp av authorize-attributet. Ingen rollhantering behövs.
+- Du ska använda dig av Microsoft Identity (Individual Account) för grundläggande åtkomst- och behörighetskontroll, vilket innebär att det ska kunna gå att registrera sig och att logga in, samt användarspecifika sidor måste skyddas med hjälp av authorize-attributet. Ingen rollhantering behövs. &#10003;
 - Du kommer själv behöva lista ut med dina tidigare kunskaper och färdigheter från tidigare kurser hur man löser vissa delar. Viss handledning kommer ges via lektioner och tips och trix. &#10003;
 
 ## FÖR VÄL GODKÄNT KRÄVS FÖLJANDE:
@@ -44,9 +44,9 @@ Webbapplikationen kan vara av typen ASP.NET - Razor Pages eller ASP.NET - MVC oc
 - Webbapplikationen måste använda sig av Cookie Consent.
 - Det ska finnas ett separat data-lager och separat business-lager. &#10003;
 - All data ska hanteras i en valfri lagringslösning och du ska använda Entity Framework Core och ska självständigt tillämpa lämpliga designmönster. &#10003;
-- Du ska använda dig av Microsoft Identity (Individual Account) för åtkomst- och behörighetskontroll, samt sidor måste skyddas på lämpligt sätt.
-- Användare ska ha en standard roll och endast användare som är administratörer ska kunna lägga till och ta bort data bortsett från projekt.
-- Alternativt inloggningssätt måste finnas, som exempelvis Google, Meta och X.
+- Du ska använda dig av Microsoft Identity (Individual Account) för åtkomst- och behörighetskontroll, samt sidor måste skyddas på lämpligt sätt. &#10003;
+- Användare ska ha en standard roll och endast användare som är administratörer ska kunna lägga till och ta bort data bortsett från projekt. &#10003;
+- Alternativt inloggningssätt måste finnas, som exempelvis Google, Meta och X. &#10003;
 - Det måste gå att växla mellan mörkt och ljus tema. &#10003;
-- Det ska vara möjligt att få notifieringar när nya projekt har lagts till. Samt användare för administratörer.
+- Det ska vara möjligt att få notifieringar när nya projekt har lagts till. Samt användare för administratörer. &#10003;
 - Det måste gå att lägga till en bild för ett projekt och det måste gå att lägga till tillgängliga medlemmar på ett projekt. &#10003;

@@ -13,12 +13,11 @@ namespace WebApp_ASP.Controllers
 
         ProjectsPageViewModel viewModel = new();
 
-  
-        //public IActionResult SignIn()
-        //{
-        //    ViewData["Title"] = "Sign In";
-        //    return View();
-        //}
+        public IActionResult SignIn()
+        {
+            ViewData["Title"] = "Sign In";
+            return View();
+        }
 
         [Authorize]
         [Route("projects")]

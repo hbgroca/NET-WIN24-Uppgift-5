@@ -9,12 +9,13 @@ using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ProjectService(IProjectRepository projectRepository, IMemberRepository memberRepository, IClientRepository clientRepository, IImageServices imageServices) : IProjectService
+public class ProjectService(IProjectRepository projectRepository, IMemberRepository memberRepository, IClientRepository clientRepository, IImageServices imageServices, INotificationSerivces notificationSerivces) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
     private readonly IMemberRepository _memberRespository = memberRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IImageServices _imageService = imageServices;
+    private readonly INotificationSerivces _notificationServices = notificationSerivces;
 
     // Create
     public async Task<ProjectModel> CreateProjectAsync(AddProjectFormModel form)
@@ -80,6 +81,13 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
 
             // Commit the transaction
             await _projectRepository.CommitTransactionAsync();
+
+            // Send notifcations to other team members
+            if (result > 0)
+            {
+                string Message = $"Project added: {projectEntity.ProjectName}!";
+                await _notificationServices.AddNotificationAsync(2, Message, projectEntity.Id.ToString(), projectEntity.ImageUrl!, 1);
+            }
 
             // Return the client
             return ProjectFactory.Create(projectEntity);
@@ -188,6 +196,10 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
                 
             // Commit the transaction
             await _projectRepository.CommitTransactionAsync();
+
+            string Message = $"Project: {updatedEntity.ProjectName} was updated";
+            await _notificationServices.AddNotificationAsync(2, Message, updatedEntity.Id.ToString(), updatedEntity.ImageUrl!, 1);
+   
 
             return true;
         }

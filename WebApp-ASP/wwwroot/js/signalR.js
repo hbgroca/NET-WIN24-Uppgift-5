@@ -11,6 +11,16 @@ connection.on("AllReceiveNotification", (notification) => {
     notifications = notification
     printNotifications(notification);
 });
+connection.on("AdminReceiveNotification", (notification) => {
+    console.log("Admin message received")
+    // If user is admin
+    GetRole(notification);
+});
+
+connection.on("AllNotificationsDismissed", () => {
+    updateNotificationTime();
+    updateNotificationCount();
+});
 
 connection.on("NotificationDismissed", (notificationId) => {
     removeNotification(notificationId);
@@ -20,6 +30,28 @@ connection.on("NotificationDismissed", (notificationId) => {
 
 // Start signalr server
 connection.start().catch(error => console.error(error));
+
+// Get user role
+async function GetRole(notification) {
+    console.log("Checking admin role")
+    try {
+        const res = await fetch(`/api/notifications/isuseradmin`, {
+            method: 'POST'
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.success) {
+                notifications = notification
+                printNotifications(notification);
+                return true
+            }
+            return false
+        }
+    }
+    catch (error) {
+        return false;
+    }
+}
 
 // Print notifications to screen
 function printNotifications(notification) {
@@ -44,7 +76,7 @@ function printNotifications(notification) {
     document.querySelector('.dot-red').classList.add('show');
 }
 
-// Dismiss a notification
+// Call Dismiss a notification in controller
 async function dismissNotification(notificationId) {
     try {
         const res = await fetch(`/api/notifications/dismiss/${notificationId}`, {
@@ -60,15 +92,35 @@ async function dismissNotification(notificationId) {
         console.error(`Error when removing notification: `, error);
     }
 }
+// Call Dismiss all notifications in controller
+async function dismissAllNotifications(userName) {
+    try {
+        const res = await fetch(`/api/notifications/dismissall/${userName}`, {
+            method: 'POST'
+        });
+        if (res.ok) {
+            removeAllNotifications();
+        } else {
+            console.error(`Failed to dismiss all notifications`);
+        }
+    }
+    catch (error) {
+        console.error(`Error when removing notification: `, error);
+    }
+}
 
 // Remove a notification from the UI
 function removeNotification(notificationId) {
-    const item = document.querySelector(`.notification-item[data-id="${notificationId}"]`);
-    if (item) {
-        item.remove();
-        printNotifications(notification);
-        console.log(notification)
+    const element = document.querySelector(`.notification-item[data-id="${notificationId}"]`);
+    if (element) {
+        element.remove();
+        updateNotificationCount();
     }
+}
+function removeAllNotifications() {
+    const elements = document.querySelector('.notifications');
+    elements.innerHTML = '';
+    updateNotificationCount();
 }
 
 // Update the notification counter

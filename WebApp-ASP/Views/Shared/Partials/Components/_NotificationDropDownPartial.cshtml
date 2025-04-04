@@ -1,14 +1,13 @@
 ﻿@model IEnumerable<NotificationEntity>
 
 <button onclick="toggleDropDowns(this)" id="notification-dropdown-button" data-type="dropdown" data-target="#notification-dropdown" class="fa-solid fa-bell"></button>
-<div class="dot-red @(Model.Any() ? "show":"")"><div class="dot-red-circle @(Model.Any() ? "show":"")"></div></div>
-
+<div class="dot-red @(Model.Any() ? "show":"")"><div class="dot-red-circle @(Model.Any() ? "show":"")" onclick="toggleNotificationDropdownFromRedBtn()"></div></div>
 
 
 <div id="notification-dropdown" class="dropdown notification-dropdown">
     <div class="notification-header">
         <h5 class="notification-header-text">Notifications</h5>
-        <span class="notification-number">@Model.Count()</span>
+        <span class="notification-number" onclick="dismissAllNotifications('@User.FindFirst(ClaimTypes.NameIdentifier)?.Value')">@Model.Count()</span>
     </div>
     <div class="dropdown-divider"></div>
     <div class="notifications">
@@ -24,3 +23,13 @@
         }
     </div>
 </div>
+
+<script>
+    function toggleNotificationDropdownFromRedBtn(){
+        const userDropDown = document.querySelector('#user-dropdown');
+        const notificationdropDown = document.querySelector('#notification-dropdown');
+
+        userDropDown.classList.remove('show');
+        notificationdropDown.classList.toggle('show');
+    }
+</script>

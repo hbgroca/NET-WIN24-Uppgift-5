@@ -1,12 +1,4 @@
-﻿@{
-    var provider = User?.FindFirstValue(ClaimTypes.AuthenticationMethod);
-    if (string.IsNullOrEmpty(provider))
-    {
-        provider = "Local Identity";
-    }
-    var email = User?.FindFirstValue(ClaimTypes.Email);
-}
-
+﻿
 <div class="home-page-wrapper">
     <div class="home-page-header">
         <h1 class="display-4">Assignment 5 - alpha project</h1>
@@ -16,4 +8,48 @@
         <h4>My take on this assignment</h4>
         <p>bla bla bla</p>
     </div>
+
+    <div>
+
+        <button onclick="test()">General notification</button>
+        <button onclick="testadmin()">Admin notification</button>
+    </div>
 </div>
+
+<script>
+    async function test(){
+        try {
+        const res = await fetch(`api/notifications/sendtest`, {
+            method: 'POST'
+        });
+        if (res.ok) {
+            console.error(`Notice sent`);
+            return true
+        } else {
+            return false
+            console.error(`Im not admin and is not getting this notice`);
+        }
+    }
+    catch (error) {
+        console.error(`Error when removing notification: `, error);
+        }
+    }
+
+
+    async function testadmin(){
+        try {
+        const res = await fetch(`api/notifications/sendadmintest`, {
+            method: 'POST'
+        });
+        if (res.ok) {
+            console.error(`Admin Notice sent`);
+            return true
+        } else {
+            return false
+        }
+    }
+    catch (error) {
+        console.error(`Error when removing notification: `, error);
+        }
+    }
+</script>

@@ -225,3 +225,39 @@ function toggleDarkMode(e) {
 }
 
 
+
+// Toogle Member card size and remove buttons
+function toggleSize(e) {
+    // Remove the expanded class from all member-card-continer
+    var membercardContiners = document.querySelectorAll('.member-card-continer')
+    membercardContiners.forEach(
+        (container) => { container.classList.remove('expanded'); }
+    );
+
+    // Add the expanded class to the clicked member-card-continer
+    var memberCardContainer = e.closest('.member-card');
+    memberCardContainer.classList.toggle('expanded');
+}
+
+
+// View the member edit popup
+function viewEditPopup(e) {
+    var memberCardContainer = e.closest('.member-card-continer');
+
+    var memberCardEditPopup = memberCardContainer.querySelector('.member-card-edit-popup');
+    memberCardEditPopup.classList.toggle('active');
+
+    var memberCardEditPopup = memberCardContainer.querySelector('.member-btn-edit');
+    memberCardEditPopup.classList.toggle('open');
+}
+
+
+// View the delete confirm buttons
+function viewDeleteConfirmButtons(e) {
+    var deleteButtonsContainer = e.closest('.pop-up-btn-form');
+    var deleteButton = deleteButtonsContainer.querySelector('.pop-up-btn');
+    deleteButton.classList.toggle('hidden');
+
+    var deleteConfirmButtons = deleteButtonsContainer.querySelector('.pop-up-remove-btns');
+    deleteConfirmButtons.classList.toggle('hidden');
+}

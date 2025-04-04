@@ -83,7 +83,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
                 case 2:
                     {
                         // Admins only
-                        await _notificationHub.Clients.Group("Admins").SendAsync("AdminReceiveNotification", notificationObject);
+                        await _notificationHub.Clients.All.SendAsync("AdminReceiveNotification", notificationObject);
                         break;
                     }
             }
@@ -126,5 +126,24 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
             Debug.WriteLine("Failed to dismiss notification");
 
         await _notificationHub.Clients.User(userId).SendAsync("DismissNotification", notificationId);
+    }
+
+    // Dismiss all notifications for current user
+    public async Task DismissAllNotificationsAsync(string userId)
+    {
+        var notifications = await _notificationsRepository.GetNotificationsAsync(userId, 9999);
+
+        foreach (var notification in notifications)
+        {
+            var notificationDismiss = new NotificationDismissEntity
+            {
+                UserId = userId,
+                NotificationId = notification.Id
+            };
+
+            var result = await _notificationsRepository.AddDismissNotificationAsync(notificationDismiss);
+        }
+
+        await _notificationHub.Clients.User(userId).SendAsync("DismissAllNotification");
     }
 }

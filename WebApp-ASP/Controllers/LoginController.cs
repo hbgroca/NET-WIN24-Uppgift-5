@@ -8,11 +8,12 @@ using System.Security.Claims;
 
 namespace WebApp_ASP.Controllers
 {
-    public class LoginController(IAuthService authService, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager) : Controller
+    public class LoginController(IAuthService authService, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, INotificationSerivces notificationSerivces) : Controller
     {
         private readonly SignInManager<MemberEntity> _signInManager = signInManager;
         private readonly UserManager<MemberEntity> _userManager = userManager;
         private readonly IAuthService _authService = authService;
+        private readonly INotificationSerivces _notificationService = notificationSerivces;
         private readonly string[] ErrorMessages = [
             "Oops! You missed some fields.",
             "Hey, don’t forget to fill out everything!",
@@ -180,6 +181,11 @@ namespace WebApp_ASP.Controllers
                 var identityResult = await _userManager.CreateAsync(user);
                 if (identityResult.Succeeded)
                 {
+                    // Send notification to members
+                    string Message = $"Member {user.FirstName} {user.LastName} signed up!";
+                    await _notificationService.AddNotificationAsync(3, Message, user.Id, user.ImageUrl!, 2);
+
+
                     identityResult = await _userManager.AddLoginAsync(user, info);
                     if (identityResult.Succeeded)
                     {

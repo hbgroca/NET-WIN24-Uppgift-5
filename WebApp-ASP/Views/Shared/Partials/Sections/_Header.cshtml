@@ -4,7 +4,15 @@
     var userId = user?.Id;
     var notifications = await _notificationService.GetNotificationsAsync(userId.ToString()!, 100);
     if (notifications != null)
+    {
         notifications = notifications.OrderByDescending(x => x.Created).ToList();
+        var isAdmin = User.FindFirst(ClaimTypes.Role)?.Value;
+        if (isAdmin == null)
+        {
+            var test = notifications.Where(x => x.TargetGroupId != 2).ToList();
+            notifications = test.ToList();
+        }
+    }
 }
 
 <div class="header-container">
@@ -18,7 +26,7 @@
             @await Html.PartialAsync("Partials/Components/_NotificationDropDownPartial", notifications)
         </div>
 
-        <div class="pointer" onclick="toggleDropDowns(this)">
+        <div class="pointer" onclick="toogleUserDropDownFromSettingsButtonDamnThisWasAnLongFunctionNameMaybeIShouldConciderDoingThisShorter()">
             <i class="fa-solid fa-gear"></i>
         </div>
 
@@ -54,3 +62,13 @@
 
     </div>
 </div>
+
+<script>
+    function toogleUserDropDownFromSettingsButtonDamnThisWasAnLongFunctionNameMaybeIShouldConciderDoingThisShorter(){
+        const userDropDown = document.querySelector('#user-dropdown');
+        const notificationdropDown = document.querySelector('#notification-dropdown');
+
+        userDropDown.classList.toggle('show');
+        notificationdropDown.classList.remove('show');
+    }
+</script>

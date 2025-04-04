@@ -10,11 +10,12 @@ using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class ClientService(IClientRepository clientRepository, IAddressService addressService, IImageServices imageServices) : IClientService
+public class ClientService(IClientRepository clientRepository, IAddressService addressService, IImageServices imageServices, INotificationSerivces notificationSerivces) : IClientService
 {
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IAddressService _addressService = addressService;
     private readonly IImageServices _imageServices = imageServices;
+    private readonly INotificationSerivces _notificationsServices = notificationSerivces;
 
     // Create
     public async Task<ClientModel> CreateClientAsync(AddClientFormModel form)
@@ -72,6 +73,13 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
 
             // Commit the transaction
             await _clientRepository.CommitTransactionAsync();
+
+            // Send notifcations to other team members
+            if (result > 0)
+            {
+                string Message = $"New Client: {clientEntity.ClientName}!";
+                await _notificationsServices.AddNotificationAsync(1, Message, clientEntity.Id.ToString(), clientEntity.ImageUrl!, 1);
+            }
 
             // Return the client
             return ClientFactory.Create(clientEntity);
@@ -173,6 +181,13 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
 
             // Commit the transaction
             await _clientRepository.CommitTransactionAsync();
+
+            // Send notifcations to other team members
+            if (result > 0)
+            {
+                string Message = $"Client: {clientEntity.ClientName} was updated.";
+                await _notificationsServices.AddNotificationAsync(1, Message, clientEntity.Id.ToString(), clientEntity.ImageUrl!, 1);
+            }
 
             return true;
         }

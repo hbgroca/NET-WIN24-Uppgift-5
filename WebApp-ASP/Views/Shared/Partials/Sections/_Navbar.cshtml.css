@@ -69,7 +69,9 @@
 
 .trademark{
   margin: 0 auto;
+  
   p{
     margin: 0;
+    color: var(--text-color);
   }
 }

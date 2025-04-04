@@ -56,15 +56,16 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
             // Create the member
             memberEntity.UserName = memberEntity.Email;
             var result = await _userManager.CreateAsync(memberEntity, "BytMig123!");
-            if(result.Succeeded)
-                return MemberFactory.Create(memberEntity);
 
-            // Send notifcations to other team members
+            // Send notifcations to other team members then return
             if (result.Succeeded)
             {
-                string Message = $"Welcome our newest member {memberEntity.FirstName} {memberEntity.LastName}!";
+                string Message = $"New member: {memberEntity.FirstName} {memberEntity.LastName}!";
                 await _notificationsServices.AddNotificationAsync(3, Message, memberEntity.Id, memberEntity.ImageUrl!, 2);
+
+                return MemberFactory.Create(memberEntity);
             }
+
 
             // If we get here something went wrong... Sad face :(
             _imageServices.Delete(form.ImageName!);
@@ -166,6 +167,13 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
 
             // Commit the transaction
             await _memberRepository.CommitTransactionAsync();
+
+            // Send notifcations to other team members
+            if (result > 0)
+            {
+                string Message = $"Member {memberEntity.FirstName} {memberEntity.LastName} was updated.";
+                await _notificationsServices.AddNotificationAsync(3, Message, memberEntity.Id, memberEntity.ImageUrl!, 2);
+            }
 
             return true;
         }

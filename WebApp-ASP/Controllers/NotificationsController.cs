@@ -11,8 +11,6 @@ namespace WebApp_ASP.Controllers
     {
         private readonly INotificationSerivces _notificationServices = notificationSerivces;
 
-
-
         [HttpPost]
         public async Task<IActionResult> CreateNotification(NotificationEntity entity)
         {
@@ -50,6 +48,43 @@ namespace WebApp_ASP.Controllers
 
             await _notificationServices.DismissNotificationAsync(userId, notificationId);
             return Ok( new { success = true, });
+        }
+
+        [HttpPost("dismissall/{userName}")]
+        public async Task<IActionResult> DismissAllNotifications(string userName)
+        {
+            if (string.IsNullOrEmpty(userName) || userName == "anonymous")
+                return Unauthorized("User not authenticated");
+
+            await _notificationServices.DismissAllNotificationsAsync(userName);
+            return Ok(new { success = true, });
+        }
+
+        [HttpPost("isuseradmin")]
+        public IActionResult GetRole()
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "Admin")
+            {
+                return Ok(new { success = true });
+            }
+            else
+            {
+                return Ok(new { success = false });
+            }
+        }
+
+        [HttpPost("sendtest")]
+        public async Task<IActionResult> test()
+        {
+            await _notificationServices.AddNotificationAsync(1, "Test message", "Anonomous", "/images/defaultmember.png", 1);
+            return Ok(new { success = true });
+        }
+        [HttpPost("sendadmintest")]
+        public async Task<IActionResult> testadmin()
+        {
+            await _notificationServices.AddNotificationAsync(2, "Admin Test message", "Anonomous", "/images/defaultmember.png", 2);
+            return Ok(new { success = true });
         }
     }
 }

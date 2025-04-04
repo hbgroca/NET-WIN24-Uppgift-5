@@ -17,15 +17,6 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
     public async Task<bool> AuthenticateAsync(MemberLoginFormModel form)
     {
         var result = await _signInManager.PasswordSignInAsync(form.Email, form.Password, false, false);
-        if (result.Succeeded)
-        {
-            var user = await _userManager.FindByEmailAsync(form.Email!);
-            if (user != null)
-            {
-                string Message = $"{user.FirstName} {user.LastName} is live!";
-                await _notificationSerivces.AddNotificationAsync(1, Message, user.Id, user.ImageUrl!,1);
-            }
-        }
         return result.Succeeded;
     }
 
@@ -49,7 +40,7 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
 
         if (result.Succeeded)
         {
-            string Message = $"Welcome our newest member {entity.FirstName} {entity.LastName}!";
+            string Message = $"Member {entity.FirstName} {entity.LastName} has signed up!";
             await _notificationSerivces.AddNotificationAsync(3, Message, entity.Id, entity.ImageUrl!, 2);
             
         }
