@@ -4,19 +4,19 @@ using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
-using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Business.Services;
 
-public class MemberService(IMemberRepository memberRepository, IAddressService addressService, UserManager<MemberEntity> userManager, IImageServices imageServices) : IMemberService
+public class MemberService(INotificationSerivces notificationSerivces ,IMemberRepository memberRepository, IAddressService addressService, UserManager<MemberEntity> userManager, IImageServices imageServices) : IMemberService
 {
     private readonly IMemberRepository _memberRepository = memberRepository;
     private readonly IAddressService _addressService = addressService;
     private readonly UserManager<MemberEntity> _userManager = userManager;
     private readonly IImageServices _imageServices = imageServices;
+    private readonly INotificationSerivces _notificationsServices = notificationSerivces;
 
     // Create
     public async Task<MemberModel> CreateMemberAsync(AddMemberFormModel form)
@@ -58,6 +58,13 @@ public class MemberService(IMemberRepository memberRepository, IAddressService a
             var result = await _userManager.CreateAsync(memberEntity, "BytMig123!");
             if(result.Succeeded)
                 return MemberFactory.Create(memberEntity);
+
+            // Send notifcations to other team members
+            if (result.Succeeded)
+            {
+                string Message = $"Welcome our newest member {memberEntity.FirstName} {memberEntity.LastName}!";
+                await _notificationsServices.AddNotificationAsync(3, Message, memberEntity.Id, memberEntity.ImageUrl!, 2);
+            }
 
             // If we get here something went wrong... Sad face :(
             _imageServices.Delete(form.ImageName!);

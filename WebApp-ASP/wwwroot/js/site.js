@@ -223,3 +223,5 @@ function toggleDarkMode(e) {
   // Save darkMode to local storage
   localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
 }
+
+

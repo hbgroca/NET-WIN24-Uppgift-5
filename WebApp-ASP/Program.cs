@@ -1,3 +1,4 @@
+using Business.Hubs;
 using Business.Interfaces;
 using Business.Services;
 using Data.Entities;
@@ -73,6 +74,7 @@ public class Program
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<IMemberRepository, MemberRepository>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+        builder.Services.AddScoped<INotificationsRepository, NotificationsRepository>();
 
         // Services
         builder.Services.AddScoped<IAddressService, AddressService>();
@@ -80,7 +82,8 @@ public class Program
         builder.Services.AddScoped<IMemberService, MemberService>();
         builder.Services.AddScoped<IProjectService, ProjectService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
-        builder.Services.AddSingleton<IImageServices, ImageServices>();
+        builder.Services.AddScoped<IImageServices, ImageServices>();
+        builder.Services.AddScoped<INotificationSerivces, NotificationSerivces>();
 
         var app = builder.Build();
         app.UseHsts();
@@ -112,8 +115,7 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
 
-        app.MapHub<ChatHub>("/chatHub");
-        app.MapHub<ChatHub>("/notificationhub");
+        app.MapHub<NotificationHub>("/notificationHub");
 
         app.Run();
     }

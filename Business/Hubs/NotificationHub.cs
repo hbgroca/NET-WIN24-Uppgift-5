@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace WebApp_ASP.Hubs;
+namespace Business.Hubs;
 
-public class NotificationsHub : Hub
+public class NotificationHub : Hub
 {
-    public async Task SendNotificationToAll(object notification)
+    public async Task SendNotification(object notification)
     {
         await Clients.All.SendAsync("AllReceiveNotification", notification);
     }
 
     public async Task SendNotificationToAdmins(object notification)
     {
-        await Clients.All.SendAsync("AdminReceiveNotification", notification);
+        await Clients.Group("Admins").SendAsync("AdminReceiveNotification", notification);
     }
 }

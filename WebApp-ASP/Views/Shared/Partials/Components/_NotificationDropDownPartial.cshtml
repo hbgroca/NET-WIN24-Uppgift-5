@@ -1,0 +1,26 @@
+﻿@model IEnumerable<NotificationEntity>
+
+<button onclick="toggleDropDowns(this)" id="notification-dropdown-button" data-type="dropdown" data-target="#notification-dropdown" class="fa-solid fa-bell"></button>
+<div class="dot-red @(Model.Any() ? "show":"")"><div class="dot-red-circle @(Model.Any() ? "show":"")"></div></div>
+
+
+
+<div id="notification-dropdown" class="dropdown notification-dropdown">
+    <div class="notification-header">
+        <h5 class="notification-header-text">Notifications</h5>
+        <span class="notification-number">@Model.Count()</span>
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="notifications">
+
+        @foreach(var notification in Model)
+        {
+            <div class="notification-item" data-id="@notification.Id">
+                <img class="image" src="@notification.Image" />
+                <div class="message">@notification.Message</div>
+                <div class="notification-time" data-created="@notification.Created.ToString("s")">@notification.Created</div>
+                <button class="btn-close" onclick="dismissNotification('@notification.Id')">&#10006;</button>
+            </div>
+        }
+    </div>
+</div>

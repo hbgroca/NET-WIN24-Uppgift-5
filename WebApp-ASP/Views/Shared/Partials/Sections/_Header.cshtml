@@ -1,6 +1,10 @@
 ﻿@{
     var username = User.Identity?.Name;
     var user = await _memberService.GetMemberAsync(x => x.UserName == username);
+    var userId = user?.Id;
+    var notifications = await _notificationService.GetNotificationsAsync(userId.ToString()!, 100);
+    if (notifications != null)
+        notifications = notifications.OrderByDescending(x => x.Created).ToList();
 }
 
 <div class="header-container">
@@ -11,10 +15,8 @@
 
     <div class="header-buttons">
         <div class="header-notification-container">
-            <!-- Notification popup menu -->
-            <partial name="Partials/Notification/_NotificationDropDownPartial" />
+            @await Html.PartialAsync("Partials/Components/_NotificationDropDownPartial", notifications)
         </div>
-
 
         <div class="pointer" onclick="toggleDropDowns(this)">
             <i class="fa-solid fa-gear"></i>
@@ -25,13 +27,13 @@
     <div class="header-divider"></div>
 
     <div class="header-user" data-target="#user-dropdown" onclick="toggleDropDowns(this)">
-        <img class="header-user-icon" src="@user.ImageUrl"/>
+        <img class="header-user-icon" src="@user?.ImageUrl"/>
     </div>
 
     <div id="user-dropdown" class="dropdown header-options-popup surface">
         <div class="user-container">
-            <img src="@user.ImageUrl" />
-            <h6>@user.FullName</h6>
+            <img src="@user?.ImageUrl" />
+            <h6>@user?.FullName</h6>
         </div>
         <div class="darkmode-container" onclick="toggleDarkMode(this)">
             <p>
