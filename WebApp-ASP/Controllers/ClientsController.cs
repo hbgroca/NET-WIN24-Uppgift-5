@@ -1,8 +1,8 @@
 ﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
+using Business.Dtos;
 
 namespace WebApp_ASP.Controllers
 {

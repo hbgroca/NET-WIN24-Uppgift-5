@@ -1,5 +1,5 @@
-﻿using Business.Interfaces;
-using Business.Models;
+﻿using Business.Dtos;
+using Business.Interfaces;
 using Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -183,7 +183,7 @@ namespace WebApp_ASP.Controllers
             var result = await _projectService.Delete(id);
 
             // Navigate to member list page
-            return RedirectToAction("Projects", "Admin");
+            return Redirect("/projects");
         }
     }
 }

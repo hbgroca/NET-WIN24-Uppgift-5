@@ -129,6 +129,9 @@ input, select, textarea {
 }
 
 /* Add Members popup */
+.project-members-list{
+  border-radius: 1rem ;
+}
 .project-members-add-wrapper{
   display: none;
   position: absolute;
@@ -164,6 +167,7 @@ input, select, textarea {
   gap: 0.5rem;
   width: 100%;
   padding: 0;
+  padding-top: 2rem;
   overflow: scroll;
   scroll-behavior: smooth;
   scrollbar-color: var(--border100) transparent;
@@ -173,10 +177,11 @@ input, select, textarea {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.5rem 1rem;
+  padding:  0.5rem  0.5rem 0.5rem 1rem;
   align-items: center;
-  border-radius: 0.5rem;
-  background-color: var(--btn-bg-gray-color);
+  border-radius: 1rem;
+  color: var(--text-color);
+  background-color: var(--bg-color);
   transition: background-color 0.2s;
   .btn{
     max-width: 4rem;
@@ -184,10 +189,13 @@ input, select, textarea {
 
   &:hover{
     background-color: lightgray;
+    .project-members-add-name{
+      color:black;
+    }
   }
 }
 .project-members-add-name{
-  color: black;
+  color:var(--text-color);
 }
 .project-members-add-image{
   width: 36px;

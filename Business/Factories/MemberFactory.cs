@@ -1,26 +1,11 @@
-﻿using Business.Models;
+﻿using Business.Dtos;
+using Business.Models;
 using Data.Entities;
-using Domain.Models;
 
 namespace Business.Factories;
 
 public class MemberFactory
 {
-    public static MemberEntity Create(AddMemberFormModel form)
-    {
-        return new MemberEntity
-        {
-            FirstName = form.FirstName,
-            LastName = form.LastName,
-            Email = form.Email,
-            ImageUrl = form.ImageName,
-            PhoneNumber = form.Phone,
-            Title = form.Title,
-            Status = "Active",
-            BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}"),
-        };
-    }
-
     public static MemberEntity Create(MemberSignUpFormModel form)
     {
         var entity = new MemberEntity();
@@ -32,6 +17,9 @@ public class MemberFactory
         entity.ImageUrl = "/images/defaultmember.png";
         entity.Title = "Junior";
         entity.Status = "Active";
+
+        entity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
+        entity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
 
         entity.PhoneNumber = form.PhoneNumber;
         entity.BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}");
@@ -46,15 +34,15 @@ public class MemberFactory
             Id = Guid.Parse(entity.Id),
             FirstName = entity.FirstName,
             LastName = entity.LastName,
-            Email = entity.Email,
+            Email = entity.Email!,
             ImageUrl = entity.ImageUrl,
-            Phone = entity.PhoneNumber,
+            Phone = entity.PhoneNumber!,
             DateCreated = entity.DateCreated,
             DateUpdated = entity.DateUpdated,
             Title = entity.Title,
             Status = entity.Status,
             BirthDate = entity.BirthDate,
-            Address = AddressFactory.Create(entity.Address),
+            Address = AddressFactory.Create(entity.Address!),
         };
     }
 
@@ -64,15 +52,15 @@ public class MemberFactory
         model.Id = Guid.Parse(entity.Id);
         model.FirstName = entity.FirstName;
         model.LastName = entity.LastName;
-        model.Email = entity.Email;
+        model.Email = entity.Email!;
         model.ImageUrl = entity.ImageUrl;
-        model.Phone = entity.PhoneNumber;
+        model.Phone = entity.PhoneNumber!;
         model.DateCreated = entity.DateCreated;
         model.DateUpdated = entity.DateUpdated;
         model.Title = entity.Title;
         model.Status = entity.Status;
         model.BirthDate = entity.BirthDate;
-        model.Address = AddressFactory.Create(entity.Address);
+        model.Address = AddressFactory.Create(entity.Address!);
         model.Projects = entity.Projects.Select(ProjectFactory.Create).ToList();
 
         return model;

@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+namespace Business.Dtos;
 
-namespace Business.Models;
-
-public class EditMemberFormModel
+public class AddMemberFormModel
 {
-    [Required]
-    public Guid Id { get; set; }
     public IFormFile? ProfilePicture { get; set; }
     public string? ImageName { get; set; }
 
@@ -48,7 +45,7 @@ public class EditMemberFormModel
 
     [Display(Name = "City", Prompt = "Enter city...")]
     [Required(ErrorMessage = " ")]
-    [MinLength(2, ErrorMessage = " ")]
+    [MinLength(2, ErrorMessage =  " ")]
     public string City { get; set; } = null!;
 
     [Display(Name = "Country", Prompt = "Enter country...")]
@@ -70,11 +67,6 @@ public class EditMemberFormModel
 
     [Display(Name = "Day", Prompt = "Enter day...")]
     [Required(ErrorMessage = " ")]
-    [RegularExpression(@"^(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = " ")]
+    [RegularExpression(@"^(0?[1-9]|[31][0-9]|3[01])$", ErrorMessage = " ")]
     public int Day { get; set; }
-
-    [Display(Name = "Status")]
-    [Required(ErrorMessage = " ")]
-    [MinLength(3, ErrorMessage = " ")]
-    public string Status { get; set; } = null!;
 }

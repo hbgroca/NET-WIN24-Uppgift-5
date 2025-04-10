@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.querySelector('#editProjectModal .close-members-btn');
     const membersWrapper = document.querySelector('#editProjectModal .project-members-add-wrapper');
     const membersList = document.querySelector('#editProjectModal .project-members-list');
-    const membersInput = document.querySelector('#editProjectModal input[name="Members"]');
     const availableMembersList = document.querySelector('#editProjectModal .project-members-add-list');
 
     let selectedMembers = [];

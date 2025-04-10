@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using WebApp_ASP.Hubs;
 
 namespace WebApp_ASP;
 
@@ -34,9 +33,10 @@ public class Program
                 o.User.RequireUniqueEmail = true;
                 o.Password.RequiredLength = 8;
             })
-            //.AddRoles<IdentityRole>()
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<DataContext>()
             .AddDefaultTokenProviders();
+
 
         builder.Services.ConfigureApplicationCookie(options =>
         {
@@ -75,6 +75,8 @@ public class Program
         builder.Services.AddScoped<IMemberRepository, MemberRepository>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
         builder.Services.AddScoped<INotificationsRepository, NotificationsRepository>();
+        builder.Services.AddScoped<IClientStatusRepository, ClientStatusRepository>();
+        builder.Services.AddScoped<IMemberStatusRepository, MemberStatusRepository>();
 
         // Services
         builder.Services.AddScoped<IAddressService, AddressService>();
@@ -84,6 +86,7 @@ public class Program
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IImageServices, ImageServices>();
         builder.Services.AddScoped<INotificationSerivces, NotificationSerivces>();
+        builder.Services.AddScoped<IStatusServices, StatusServices>();
 
         var app = builder.Build();
         app.UseHsts();
@@ -97,7 +100,7 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            string[] roleNames = { "Admin", "User" };
+            string[] roleNames = { "Admin", "Member" };
 
             foreach (var roleName in roleNames)
             {
@@ -108,6 +111,8 @@ public class Program
                 }
             }
         }
+
+        // Create Notification 
 
         app.MapStaticAssets();
         app.MapControllerRoute(

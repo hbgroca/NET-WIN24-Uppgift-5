@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Business.Models;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Business.Models;
+namespace Business.Dtos;
 
-public class EditProjectFormModel
+public class AddProjectFormModel
 {
-    public Guid Id { get; set; }
     public IFormFile? ProjectImage { get; set; }
     public string? ImageName { get; set; }
 
@@ -37,10 +37,6 @@ public class EditProjectFormModel
     [Display(Name = "Budget")]
     [Required(ErrorMessage = " ")]
     public decimal Budget { get; set; }
-
-
-    [Display(Name = "Status")]
-    public bool IsCompleted { get; set; }
 
 
     // Json to store the members guid

@@ -38,8 +38,27 @@
 
             <div class="project-description form-group">
                 <label asp-for="Description" class="text-bold"></label>
-                <textarea asp-for="Description"></textarea>
-                <span asp-validation-for="Description"></span>
+                <div class="rich-text">
+                    <textarea asp-for="Description" id="editDescription" class="project-description-textarea"></textarea>
+                    <div id="project-edit-rich-text-editor"></div>
+                    <div id="project-edit-rich-text-toolbar">
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                        </span>
+                        <span class="ql-formats ql-divider">
+                            <button class="ql-align" value=""></button>
+                            <button class="ql-align" value="center"></button>
+                            <button class="ql-align" value="right"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-link"></button>
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <div class="project-dates">
@@ -59,23 +78,13 @@
                 <label asp-for="Members" class="text-bold"></label>
                 <input type="hidden" asp-for="MembersJson" id="membersJsonInput" class="membersJsonInput" name="MembersJson" />
                 <div class="project-members-list" id="memberList">
-
-                    @* @foreach (MemberModel member in @Model.Members) *@
-                    @* { *@
-                        @* <div class="project-members-list-member" data-member-id="@member.Id"> *@
-                        @*     <img class="project-members-list-member-image" src="@member.ImageUrl" /> *@
-                        @*     <p class="project-members-list-member-name">@member.FullName</p> *@
-                        @*     <button type="button" class="remove-member-btn">✕</button> *@
-                        @* </div> *@
-                    @* } *@
-
+                    @* Members goes here *@
                 </div>
                 <button class="project-members-search-btn">
                     @* <img src="/images/icons/Search.svg" /> *@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 <span asp-validation-for="MembersJson"></span>
-
             </div>
 
             <div class="project-budget-status-container">
@@ -88,21 +97,18 @@
                 <div class="project-status form-group">
                     <label asp-for="IsCompleted" class="text-bold">Status</label>
                     <select asp-for="IsCompleted" required>
-                        <option value="false">Active</option>
+                        <option value="false">In progress</option>
                         <option value="true">Completed</option>
                     </select>
                 </div>
             </div>
-
             <button class="btn btn-create" type="submit">Save</button>
         </form>
 
 
         <div class="project-members-add-wrapper">
-
             <div class="project-members-add-container">
                 <ul class="project-members-add-list">
-                    
                     @foreach (MemberModel member in await _memberService.GetAllMembersAsync()) 
                     { 
                         <li class="project-members-add-list-object" data-member-id="@member.Id"> 
@@ -111,14 +117,11 @@
                             <button class="btn add-member-btn" onclose="@(()=>{Model.Members.Add(member);})">+ Add</button> 
                         </li> 
                     }
-                    
-
                 </ul>
 
                 <button class="btn close-members-btn" type="button">Go back</button>
             </div>
         </div>
-
     </div>
 </div>
 

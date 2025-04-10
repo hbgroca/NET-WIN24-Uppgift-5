@@ -76,10 +76,11 @@
                 <div class="member-status form-group">
                     <label asp-for="Status" class="text-bold"></label>
                     <select asp-for="Status" required>
-                        <option value="" selected disabled></option>
-                        <option value="Active">Active</option>
-                        <option value="Vacation">Vacation</option>
-                        <option value="Inactive">Inactive</option>
+                        <option value="" selected disabled>Select status</option>
+                        @foreach (var status in await _statusService.GetMemberStatuses())
+                        {
+                            <option value="@status.Description">@status.Description</option>
+                        }
                     </select>
                     <span asp-validation-for="Status"></span>
                 </div>
@@ -139,9 +140,6 @@
                         </select>
                         <span asp-validation-for="Year"></span>
                     </div>
-                    @{
-                        // Console.WriteLine($"{@Model.Day}-{@Model.Month}-{@Model.Year}");
-                    }
                 </div>
             </div>
 

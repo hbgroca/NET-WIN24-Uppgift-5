@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load darkmode on start from local storage
     var darkmode = localStorage.getItem('darkMode');
     if (darkmode === 'true') {
-        document.body.classList.add('dark-mode');
+        document.body.parentElement.classList.add('dark-mode');
         const dmbtn = document.querySelector('.darkmode-btn-toggle')
         if (dmbtn) {
             dmbtn.checked = true
@@ -219,9 +219,9 @@ function toggleDropDowns(e){
 
 // Toogle darkmode
 function toggleDarkMode(e) {
-  document.body.classList.toggle("dark-mode");
+    document.body.parentElement.classList.toggle("dark-mode");
   // Save darkMode to local storage
-  localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
+    localStorage.setItem("darkMode", document.body.parentElement.classList.contains("dark-mode"));
 }
 
 
@@ -260,4 +260,35 @@ function viewDeleteConfirmButtons(e) {
 
     var deleteConfirmButtons = deleteButtonsContainer.querySelector('.pop-up-remove-btns');
     deleteConfirmButtons.classList.toggle('hidden');
+}
+
+
+// Toggle Password Eye icon
+function togglePasswordVisibility(e) {
+    //const passwordField = document.querySelector('#password');
+    //const toggleIcon = document.querySelector('#toggle-btn');
+    const passwordField = e.parentElement.querySelector('#password');
+    const toggleIcon = e.querySelector('#toggle-btn');
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.classList.remove('fa-eye-slash')
+        toggleIcon.classList.add('fa-eye')
+    } else {
+        passwordField.type = "password";
+        toggleIcon.classList.remove('fa-eye')
+        toggleIcon.classList.add('fa-eye-slash')
+    }
+}
+function togglePasswordConfirmVisibility(e) {
+    const passwordField = e.parentElement.querySelector('#confirmPassword');
+    const toggleIcon = e.querySelector('#toggle-btn');
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.classList.remove('fa-eye-slash')
+        toggleIcon.classList.add('fa-eye')
+    } else {
+        passwordField.type = "password";
+        toggleIcon.classList.remove('fa-eye')
+        toggleIcon.classList.add('fa-eye-slash')
+    }
 }

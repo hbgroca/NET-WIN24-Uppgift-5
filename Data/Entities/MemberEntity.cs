@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Data.Entities;
 
 public class MemberEntity : IdentityUser
 {
-    [Key]
     public string? ImageUrl { get; set; }
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;

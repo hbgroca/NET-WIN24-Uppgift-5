@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.ok) {
                         const memberdata = await response.json();
 
+                        description = memberdata.client.description;
+
+                        // Start initilize of rich text
+                        initEditRichText('#project-edit-rich-text-editor', '#project-edit-rich-text-toolbar', '#editDescription', memberdata.description);
+
                         // Populate form fields
                         const form = document.querySelector('#editProjectModal form');
                         form.querySelector('[name="Id"]').value = memberdata.id;
@@ -61,3 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+function initEditRichText(richTextEditorId, richTextToolbarId, textAreaId, content) {
+    const textarea = document.querySelector(textAreaId);
+
+    const quill = new Quill(richTextEditorId, {
+        modules: {
+            syntax: true,
+            toolbar: richTextToolbarId
+        },
+        placeholder: 'Project description...',
+        theme: 'snow'
+    })
+
+    if (content)
+        quill.root.innerHTML = content;
+
+    quill.on('text-change', () => {
+        textarea.value = quill.root.innerHTML;
+    })
+}

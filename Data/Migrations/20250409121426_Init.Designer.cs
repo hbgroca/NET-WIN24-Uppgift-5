@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250401135602_NotificationsAdded")]
-    partial class NotificationsAdded
+    [Migration("20250409121426_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,6 +92,40 @@ namespace Data.Migrations
                     b.HasIndex("AddressId");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Data.Entities.ClientStatusEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Active"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Inactive"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Banned"
+                        });
                 });
 
             modelBuilder.Entity("Data.Entities.MemberEntity", b =>
@@ -192,6 +226,45 @@ namespace Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Data.Entities.MemberStatusEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MemberStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Active"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Busy"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Vacation"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Inactive"
+                        });
+                });
+
             modelBuilder.Entity("Data.Entities.NotificationDismissEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -225,7 +298,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Icon")
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -551,13 +624,13 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.MemberEntity", null)
                         .WithMany()
                         .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Data.Entities.ProjectEntity", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

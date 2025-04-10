@@ -1,21 +1,32 @@
-﻿using Business.Factories;
+﻿using Business.Dtos;
+using Business.Factories;
 using Business.Interfaces;
 using Data.Entities;
-using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
 
 namespace Business.Services;
 
-public class AuthService(INotificationSerivces notificationSerivces, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, IAddressService addressService) : IAuthService
+public class AuthService(INotificationSerivces notificationSerivces, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, IAddressService addressService, IMemberService memberService) : IAuthService
 {
     private readonly SignInManager<MemberEntity> _signInManager = signInManager;
     private readonly UserManager<MemberEntity> _userManager = userManager;
     private readonly IAddressService _addressService = addressService;
     private readonly INotificationSerivces _notificationSerivces = notificationSerivces;
+    private readonly IMemberService _memberService = memberService;
 
     public async Task<bool> AuthenticateAsync(MemberLoginFormModel form)
     {
+        var result = await _signInManager.PasswordSignInAsync(form.Email, form.Password, false, false);
+        return result.Succeeded;
+    }
+
+    public async Task<bool> AuthenticateAdminAsync(MemberLoginFormModel form)
+    {
+        var isAdmin = await _memberService.IsMemberAdmin(form.Email);
+        if (!isAdmin)
+            return false;
+
         var result = await _signInManager.PasswordSignInAsync(form.Email, form.Password, false, false);
         return result.Succeeded;
     }
@@ -30,19 +41,18 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
         if (address == null)
             throw new Exception("Error while creating the address");
 
+        // Set Address ID
         entity.AddressId = address.Id;
 
-        // Set the date created and updated
-        entity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
-        entity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
-
+        // Create User
         var result = await _userManager.CreateAsync(entity, form.Password);
-
         if (result.Succeeded)
         {
+            // Add the user to the default role
+            await _userManager.AddToRoleAsync(entity, "Member");
+            // Send a notification to admins 
             string Message = $"Member {entity.FirstName} {entity.LastName} has signed up!";
             await _notificationSerivces.AddNotificationAsync(3, Message, entity.Id, entity.ImageUrl!, 2);
-            
         }
 
         return result.Succeeded;

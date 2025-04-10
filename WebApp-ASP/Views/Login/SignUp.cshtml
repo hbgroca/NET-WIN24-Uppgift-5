@@ -51,16 +51,22 @@
                 <div class="sign-in-entries">
                     <label class="text-medium" for="password">Password</label>
                     <div class="sign-in-password-field">
-                        <input type="password" asp-for="Password">
+                        <input type="password" asp-for="Password" id="password">
                         <span asp-validation-for="Password"></span>
+                        <div class="toggle-pwd-visibility" onclick="togglePasswordVisibility(this)">
+                            <i id="toggle-btn" class="fa-regular fa-eye-slash"></i>
+                        </div>
                     </div>
                 </div>
 
                 <div class="sign-in-entries">
                     <label class="text-medium" for="password">Confirm password</label>
                     <div class="sign-in-password-field">
-                        <input type="password" asp-for="ConfirmPassword">
+                        <input type="password" asp-for="ConfirmPassword" id="confirmPassword">
                         <span asp-validation-for="ConfirmPassword"></span>
+                        <div class="toggle-pwd-visibility" onclick="togglePasswordConfirmVisibility(this)">
+                            <i id="toggle-btn" class="fa-regular fa-eye-slash"></i>
+                        </div>
                     </div>
                 </div>
 

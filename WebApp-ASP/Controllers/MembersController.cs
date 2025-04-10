@@ -1,9 +1,9 @@
 ﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Business.Dtos;
 
 namespace WebApp_ASP.Controllers
 {
@@ -13,32 +13,32 @@ namespace WebApp_ASP.Controllers
         private readonly IMemberService _memberService = memberService;
         
 
-        // Add member
-        public async Task<IActionResult> AddMember(AddMemberFormModel form)
-        {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState
-                    .Where(x => x.Value?.Errors.Count > 0)
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
-                    );
+        //// Add member
+        //public async Task<IActionResult> AddMember(AddMemberFormModel form)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var errors = ModelState
+        //            .Where(x => x.Value?.Errors.Count > 0)
+        //            .ToDictionary(
+        //                kvp => kvp.Key,
+        //                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+        //            );
 
-                return BadRequest(new { success = false, errors });
-            }
+        //        return BadRequest(new { success = false, errors });
+        //    }
 
-            // Send data to service
-            var result = await _memberService.CreateMemberAsync(form);
+        //    // Send data to service
+        //    var result = await _memberService.CreateMemberAsync(form);
 
-            if (result is null)
-            {
-                var error = "Error while creating the member";
-                return BadRequest(new { success = false, error });
-            }
+        //    if (result is null)
+        //    {
+        //        var error = "Error while creating the member";
+        //        return BadRequest(new { success = false, error });
+        //    }
 
-            return Ok(new { success = true });
-        }
+        //    return Ok(new { success = true });
+        //}
 
 
         // Edit member

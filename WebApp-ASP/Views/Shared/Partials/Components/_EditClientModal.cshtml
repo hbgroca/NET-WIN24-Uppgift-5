@@ -67,8 +67,10 @@
                 <label asp-for="Status" class="text-bold"></label>
                 <select asp-for="Status" required>
                     <option value="" selected disabled></option>
-                    <option value="Alive">Alive</option>
-                    <option value="Dead">Dead</option>
+                    @foreach (var status in await _statusService.GetClientStatuses())
+                    {
+                        <option value="@status.Description">@status.Description</option>
+                    }
                 </select>
                 <span asp-validation-for="Status"></span>
             </div>

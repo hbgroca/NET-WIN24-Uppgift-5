@@ -1,4 +1,5 @@
-﻿using Business.Factories;
+﻿using Business.Dtos;
+using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
@@ -61,7 +62,7 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             clientEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
 
             // Set the status
-            clientEntity.Status = "Alive";
+            clientEntity.Status = "Active";
 
             // Create the client in dbcontext
             await _clientRepository.CreateAsync(clientEntity);

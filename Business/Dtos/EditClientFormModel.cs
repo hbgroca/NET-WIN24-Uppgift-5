@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace Business.Models;
-
-public class AddClientFormModel
+namespace Business.Dtos;
+public class EditClientFormModel
 {
+    [Required]
+    public Guid Id { get; set; }
 
     [DataType(DataType.Upload)]
     public IFormFile? ProfilePicture { get; set; }
@@ -45,4 +46,9 @@ public class AddClientFormModel
     [Required(ErrorMessage = " ")]
     [MinLength(2, ErrorMessage = " ")]
     public string Country { get; set; } = null!;
+
+    [Display(Name = "Status")]
+    [Required(ErrorMessage = " ")]
+    [MinLength(3, ErrorMessage = " ")]
+    public string Status { get; set; } = null!;
 }

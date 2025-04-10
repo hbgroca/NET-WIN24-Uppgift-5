@@ -9,3 +9,28 @@
   justify-content:center;
   align-items:center;
 }
+
+.home-page-test-panel{
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  background-color: var(--surface);
+  border-radius: 1rem;
+}
+.home-page-test-panel-header{
+  margin: 0;
+}
+
+.home-page-test-panel-btns{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+

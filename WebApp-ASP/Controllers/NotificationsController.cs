@@ -77,13 +77,13 @@ namespace WebApp_ASP.Controllers
         [HttpPost("sendtest")]
         public async Task<IActionResult> test()
         {
-            await _notificationServices.AddNotificationAsync(1, "Test message", "Anonomous", "/images/defaultmember.png", 1);
+            await _notificationServices.AddNotificationAsync(1, "Test notifcation", "Anonomous", "/images/defaultmember.png", 1);
             return Ok(new { success = true });
         }
         [HttpPost("sendadmintest")]
         public async Task<IActionResult> testadmin()
         {
-            await _notificationServices.AddNotificationAsync(2, "Admin Test message", "Anonomous", "/images/defaultmember.png", 2);
+            await _notificationServices.AddNotificationAsync(2, "Admin test notification", "Anonomous", "/images/defaultmember.png", 2);
             return Ok(new { success = true });
         }
     }

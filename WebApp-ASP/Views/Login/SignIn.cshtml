@@ -19,7 +19,7 @@
     </div>
 
     <div class="sign-in-form">
-        <form asp-controller="Login" asp-action="SignIn" method="post" enctype="multipart/form-data" asp-antiforgery="true" novalidate>
+        <form asp-controller="Login" asp-action="SignIn" method="post" novalidate>
             <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
 
             @if (!string.IsNullOrEmpty(ViewBag?.Error))
@@ -38,9 +38,11 @@
             <div class="sign-in-entries">
                 <label class="text-medium" asp-for="Password"></label>
                 <div class="sign-in-password-field">
-                    <input asp-for="Password" type="password">
+                    <input asp-for="Password" type="password" id="password">
                     <span asp-validation-for="Password"></span>
-                    @* <img class="sign-in-password-visible" src="/images/icons/Hide.svg" /> *@
+                    <div class="toggle-pwd-visibility" onclick="togglePasswordVisibility(this)">
+                        <i id="toggle-btn" class="fa-regular fa-eye-slash"></i>
+                    </div>
                 </div>
             </div>
 

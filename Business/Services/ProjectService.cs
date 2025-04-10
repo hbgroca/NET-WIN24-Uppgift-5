@@ -1,4 +1,5 @@
-﻿using Business.Factories;
+﻿using Business.Dtos;
+using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
@@ -75,10 +76,10 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             if (result == 0)
             {
                 Debug.WriteLine("Error while saving project");
+                _imageService.Delete(form.ImageName!);
                 return null!;
             }
                 
-
             // Commit the transaction
             await _projectRepository.CommitTransactionAsync();
 

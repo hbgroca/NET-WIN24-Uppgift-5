@@ -9,11 +9,25 @@
         <p>bla bla bla</p>
     </div>
 
-    <div>
-
-        <button onclick="test()">General notification</button>
-        <button onclick="testadmin()">Admin notification</button>
-    </div>
+    @if (User.IsInRole("Admin")) 
+    { 
+        <div class="home-page-test-panel">
+            <h6 class="home-page-test-panel-header">Test Panel</h6>
+            <div class="home-page-test-panel-btns">
+                <button class="btn btn-primary" onclick="test()">General notification</button>
+                <button class="btn btn-secondary" onclick="testadmin()">Admin only notification</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="home-page-test-panel">
+            <p>User Controls</p>
+            <form asp-controller="Admin" asp-action="ConvertToAdmin" asp-route-userName="@User.Identity!.Name" method="post">
+                <button type="submit" class="btn btn-secondary">Make admin</button>
+            </form>
+        </div>
+    }
 </div>
 
 <script>
@@ -23,15 +37,14 @@
             method: 'POST'
         });
         if (res.ok) {
-            console.error(`Notice sent`);
+            console.log(`Test notifcation received`);
             return true
         } else {
             return false
-            console.error(`Im not admin and is not getting this notice`);
         }
     }
     catch (error) {
-        console.error(`Error when removing notification: `, error);
+        console.error(`Error when sending test notification: `, error);
         }
     }
 
@@ -42,14 +55,14 @@
             method: 'POST'
         });
         if (res.ok) {
-            console.error(`Admin Notice sent`);
+            console.log(`Admin test notification received`);
             return true
         } else {
             return false
         }
     }
     catch (error) {
-        console.error(`Error when removing notification: `, error);
+        console.error(`Error when sending testadmin notification: `, error);
         }
     }
 </script>

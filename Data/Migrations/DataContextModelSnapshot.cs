@@ -91,6 +91,40 @@ namespace Data.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("Data.Entities.ClientStatusEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Active"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Inactive"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Banned"
+                        });
+                });
+
             modelBuilder.Entity("Data.Entities.MemberEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -187,6 +221,45 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.MemberStatusEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MemberStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Active"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Busy"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Vacation"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Inactive"
+                        });
                 });
 
             modelBuilder.Entity("Data.Entities.NotificationDismissEntity", b =>
@@ -548,13 +621,13 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.MemberEntity", null)
                         .WithMany()
                         .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Data.Entities.ProjectEntity", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

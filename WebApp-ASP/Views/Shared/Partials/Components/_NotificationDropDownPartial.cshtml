@@ -15,7 +15,7 @@
         @foreach(var notification in Model)
         {
             <div class="notification-item" data-id="@notification.Id">
-                <img class="image" src="@notification.Image" />
+                <img class="@(notification.NotificationType.NotificationType == "Project" ? "image-square" : "image")" src="@notification.Image" />
                 <div class="message">@notification.Message</div>
                 <div class="notification-time" data-created="@notification.Created.ToString("s")">@notification.Created</div>
                 <button class="btn-close" onclick="dismissNotification('@notification.Id')">&#10006;</button>

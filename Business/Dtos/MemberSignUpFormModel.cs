@@ -1,39 +1,46 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-namespace Business.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class AddMemberFormModel
+namespace Business.Dtos;
+
+public class MemberSignUpFormModel
 {
-    public IFormFile? ProfilePicture { get; set; }
-    public string? ImageName { get; set; }
-
-    [Display(Name = "First Name", Prompt = "Enter first name...")]
+    [Display(Name = "First Name")]
     [Required(ErrorMessage = " ")]
-    [MinLength(2, ErrorMessage = " ")]
     public string FirstName { get; set; } = null!;
 
-    [Display(Name = "Last Name", Prompt = "Enter last name...")]
+    [Display(Name = "Last Name")]
     [Required(ErrorMessage = " ")]
-    [MinLength(2, ErrorMessage = " ")]
     public string LastName { get; set; } = null!;
 
-    [Display(Name = "Email address", Prompt = "Enter email address...")]
+    [Display(Name = "Email")]
     [Required(ErrorMessage = " ")]
-    [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = " ")]
+    [EmailAddress(ErrorMessage = " ")]
     public string Email { get; set; } = null!;
 
-    [Display(Name = "Phonenumber", Prompt = "Enter phonenumber...")]
+    [Display(Name = "Password")]
+    [MinLength(8, ErrorMessage = " ")]
+    [Required(ErrorMessage = " ")]
+    [DataType(DataType.Password)]
+    public string Password { get; set; } = null!;
+
+    [Display(Name = "Confirm Password")]
+    [Required(ErrorMessage = " ")]
+    [DataType(DataType.Password)]
+    [Compare("Password", ErrorMessage = " ")]
+    public string ConfirmPassword { get; set; } = null!;
+
+    [Display(Name = "Terms and Conditions")]
+    [Required(ErrorMessage = "Accept our terms and conditions to continue")]
+    public bool TermsAndConditions { get; set; }
+
+
+    [Display(Name = "Phone Number", Prompt = "Enter phone number...")]
     [Required(ErrorMessage = " ")]
     [RegularExpression(@"^([0-9]{8,12})$", ErrorMessage = " ")]
-    public string Phone { get; set; } = null!;
-
-    [Display(Name = "Title", Prompt = "Enter members title...")]
-    [Required(ErrorMessage = " ")]
-    [MinLength(2, ErrorMessage = " ")]
-    public string Title { get; set; } = null!;
+    public string PhoneNumber { get; set; } = null!;
 
     // Address
-    [Display(Name = "Streetname", Prompt = "Enter streetname...")]
+    [Display(Name = "Street Name", Prompt = "Enter street name...")]
     [Required(ErrorMessage = " ")]
     [MinLength(2, ErrorMessage = " ")]
     public string Street { get; set; } = null!;
@@ -45,7 +52,7 @@ public class AddMemberFormModel
 
     [Display(Name = "City", Prompt = "Enter city...")]
     [Required(ErrorMessage = " ")]
-    [MinLength(2, ErrorMessage =  " ")]
+    [MinLength(2, ErrorMessage = " ")]
     public string City { get; set; } = null!;
 
     [Display(Name = "Country", Prompt = "Enter country...")]

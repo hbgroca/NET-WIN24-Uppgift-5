@@ -1,0 +1,43 @@
+﻿@{
+    var statuses = await _statusService.GetClientStatuses();
+}
+@model ClientStatusFormModel
+
+<div class="status-card">
+    <h4 class="status-header">Client status</h4>
+    <div class="status-add">
+        <form asp-controller="Status" asp-action="AddClientStatus" class="form-group" novalidate>
+            <input asp-for="Description" class="status-input-field" />
+            <button type="submit" class="btn btn-status-add">+</button>
+        </form>
+    </div>
+    <ul class="status-list">
+        @foreach (var status in statuses)
+        {
+            <li>
+                <div class="status-list-item">
+                    <p class="status-list-description">@status.Description</p>
+                    <button class="btn btn-small @(statuses.Count() > 1 ? "" : "btn-disabled" )" type="submit" onclick="removeClientStatus(@status.Id) @(statuses.Count() > 1 ? "" : "disabled" )" title=@(statuses.Count() == 1 ? "Min1statusRequired" : "Delete")>X</button>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+<script>
+    async function removeClientStatus(status) {
+        try {
+            const res = await fetch(`/Status/RemoveClientStatus/${status}`, {
+                method: 'POST'
+            });
+            if (res.ok) {
+                location.reload();
+            }else{
+                console.error("Error removing status");
+            }
+        }
+        catch (error) {
+            return false;
+        }
+    }
+</script>

@@ -37,8 +37,27 @@
 
             <div class="project-description form-group">
                 <label asp-for="Description" class="text-bold"></label>
-                <textarea asp-for="Description"></textarea>
-                <span asp-validation-for="Description"></span>
+                <div class="rich-text">
+                    <textarea asp-for="Description" class="project-description-textarea"></textarea>
+                    <div id="rich-text-editor"></div>
+                    <div id="rich-text-toolbar">
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                        </span>
+                        <span class="ql-formats ql-divider">
+                            <button class="ql-align" value=""></button>
+                            <button class="ql-align" value="center"></button>
+                            <button class="ql-align" value="right"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-link" ></button>
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <div class="project-dates">
@@ -57,7 +76,7 @@
             <div class="project-members form-group">
                 <label asp-for="Members" class="text-bold"></label>
                 <input type="hidden" asp-for="MembersJson" id="membersJsonInput" name="MembersJson" />
-                <div class="project-members-list">
+                <div class="project-members-list" >
                     @foreach (MemberModel member in @Model.Members)
                     {
                         <div class="project-members-list-member" data-member-id="@member.Id">
@@ -119,7 +138,6 @@
         const closeBtn = document.querySelector('.close-members-btn');
         const membersWrapper = document.querySelector('.project-members-add-wrapper');
         const membersList = document.querySelector('.project-members-list');
-        const membersInput = document.querySelector('input[name="AddProjectFormModel.Members"]');
         const availableMembersList = document.querySelector('.project-members-add-list');
 
         // Selected members array to track current selections
@@ -223,6 +241,27 @@
 
         // Initialize
         updateMembersInput();
+        initEditRichText('#rich-text-editor', '#rich-text-toolbar', '#Description', @Model.Description);
     });
+
+    function initEditRichText(richTextEditorId, richTextToolbarId, textAreaId, content){
+        const textarea = document.querySelector(textAreaId);
+
+        const quill = new Quill(richTextEditorId, {
+            modules: {
+                syntax: true,
+                toolbar: richTextToolbarId
+            },
+            placeholder: 'Project description...',
+            theme: 'snow'
+        })
+
+        if(content)
+        quill.root.innerHTML = content;
+
+        quill.on('text-change', () => {
+            textarea.value = quill.root.innerHTML;
+        })
+    }
 
 </script>

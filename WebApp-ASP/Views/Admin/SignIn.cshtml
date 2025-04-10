@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutSignIn.cshtml";
 }
+@model MemberLoginFormModel
 
 <div class="admin-login-container">
 
@@ -21,8 +22,11 @@
             </div>
 
             <div id="btn-signin-google">
-                <button class="btn btn-gray">Login with Google</button>
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" />
+                <form class="external-sign-in-container" asp-controller="Admin" asp-action="ExternalSignIn" method="post" novalidate>
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                    <button class="btn btn-gray" type="submit" name="provider" value="Google">Sign in with Google</button>
+                    <img src="https://img.icons8.com/color/48/000000/google-logo.png" />
+                </form>
             </div>
 
             <div class="sign-in-or">
@@ -30,17 +34,28 @@
             </div>
 
             <div class="sign-in-form">
-                <form>
+                <form asp-controller="Admin" asp-action="SignIn" method="post" novalidate>
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                    @if (!string.IsNullOrEmpty(ViewBag?.Error))
+                    {
+                        <div class="sign-in-error">
+                            @ViewBag?.Error
+                        </div>
+                    }
+
                     <div class="sign-in-entries">
-                        <label class="text-medium" for="email">Email</label>
-                        <input type="email" name="email" id="email" required placeholder="Your email adress">
+                        <label class="text-medium" asp-for="Email"></label>
+                        <input asp-for="Email" type="email">
+                        <span asp-validation-for="Email"></span>
                     </div>
 
                     <div class="sign-in-entries">
-                        <label class="text-medium" for="password">Password</label>
+                        <label class="text-medium" asp-for="Password"></label>
                         <div class="sign-in-password-field">
-                            <input class="" type="password" name="password" id="password" required minlength="8" placeholder="Enter your password">
-                            <div class="toggle-pwd-visibility" onclick="togglePasswordVisibility()">
+                            <input asp-for="Password" type="password" id="password">
+                            <span asp-validation-for="Password"></span>
+                            <div class="toggle-pwd-visibility" onclick="togglePasswordVisibility(this)">
                                 <i id="toggle-btn" class="fa-regular fa-eye-slash"></i>
                             </div>
                         </div>
@@ -57,28 +72,10 @@
                     </div>
 
                     <div class="sign-in-entries">
-                        <a class="btn" asp-controller="Home" asp-action="Index">Log in</a>
+                        <button class="btn" type="submit">Log in</button>
                     </div>
                 </form>
             </div>
         </div>
-
-
     </div>
 </div>
-
-<script>
-    function togglePasswordVisibility(){
-        const passwordField = document.querySelector('#password');
-        const toggleIcon = document.querySelector('#toggle-btn');
-        if(passwordField.type === "password"){
-            passwordField.type = "text";
-            toggleIcon.classList.remove('fa-eye-slash')
-            toggleIcon.classList.add('fa-eye')
-        }else{
-            passwordField.type = "password";
-            toggleIcon.classList.remove('fa-eye')
-            toggleIcon.classList.add('fa-eye-slash')
-        }
-    }
-</script>
