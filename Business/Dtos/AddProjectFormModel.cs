@@ -11,8 +11,8 @@ public class AddProjectFormModel
     public string? ImageName { get; set; }
 
     [Display(Name = "Project Name", Prompt = "Enter project name...")]
-    [Required(ErrorMessage = " ")]
-    [MinLength(2, ErrorMessage = " ")]
+    [Required(ErrorMessage = "Invalid")]
+    [MinLength(2, ErrorMessage = "Invalid")]
     public string ProjectName { get; set; } = null!;
 
 

@@ -47,6 +47,81 @@
     </div>
 
     <div class="trademark">
+        <div class="">
+            <div class="btn-admin-secret" onclick="openAdminPanel()">&#10094;</div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="home-page-test-panel">
+                    <h6 class="home-page-test-panel-header">Hasses menu</h6>
+                    <p class="home-page-test-panel-header">Notifications</p>
+                    <div class="home-page-test-panel-btns">
+                        <button class="btn btn-admin-panel" onclick="test()">Send notification</button>
+                        <button class="btn btn-admin-panel" onclick="testadmin()">Send admin notification</button>
+                    </div>
+                    <p>Member Controls</p>
+                    <form asp-controller="Admin" asp-action="ConvertToMember" asp-route-userName="@User.Identity!.Name" method="post">
+                        <button type="submit" class="btn btn-admin-panel">Make admin -> member</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="home-page-test-panel">
+                    <h6 class="home-page-test-panel-header">Hasses menu</h6>
+                    <p>Member Controls</p>
+                    <form asp-controller="Admin" asp-action="ConvertToAdmin" asp-route-userName="@User.Identity!.Name" method="post">
+                        <button type="submit" class="btn btn-admin-panel">Make member -> admin</button>
+                    </form>
+                </div>
+            }
+        </div>
+        
+
         <p>© 2025 DBP Develop</p>
     </div>
 </nav>
+
+<script>
+    function openAdminPanel(){
+        const button = document.querySelector('.btn-admin-secret');
+        button.classList.toggle('isOpen');
+
+        const element = document.querySelector('.home-page-test-panel');
+        element.classList.toggle('show-test-panel');
+    }
+
+    async function test(){
+        try {
+        const res = await fetch(`api/notifications/sendtest`, {
+            method: 'POST'
+        });
+        if (res.ok) {
+            console.log(`Test notifcation received`);
+            return true
+        } else {
+            return false
+        }
+    }
+    catch (error) {
+        console.error(`Error when sending test notification: `, error);
+        }
+    }
+
+
+    async function testadmin(){
+        try {
+        const res = await fetch(`api/notifications/sendadmintest`, {
+            method: 'POST'
+        });
+        if (res.ok) {
+            console.log(`Admin test notification received`);
+            return true
+        } else {
+            return false
+        }
+    }
+    catch (error) {
+        console.error(`Error when sending testadmin notification: `, error);
+        }
+    }
+</script>

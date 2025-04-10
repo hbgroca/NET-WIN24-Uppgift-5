@@ -523,6 +523,7 @@ form{
   
 }
 
+
 form .form-group{
   position: relative;
   margin-bottom: 1rem;
@@ -559,7 +560,7 @@ form .field-validation-error{
   border-radius: 0.5rem 0.5rem 0 0;
 }
 form .field-validation-error::after{
-  content: 'Invalid \26A0';
+  content: ' \26A0';
   font-size: 0.8rem;
 }
 

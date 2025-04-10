@@ -124,5 +124,18 @@ namespace WebApp_ASP.Controllers
 
             return RedirectToAction("SignIn", "Admin");
         }
+
+        [HttpPost]
+        [Route("ConvertToMember/{userName}")]
+        public async Task<IActionResult> ConvertToMember(string userName)
+        {
+            var entity = await _userManager.FindByNameAsync(userName);
+            if (entity != null)
+                await _userManager.RemoveFromRoleAsync(entity, "Admin");
+
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("SignIn", "Login");
+        }
     }
 }

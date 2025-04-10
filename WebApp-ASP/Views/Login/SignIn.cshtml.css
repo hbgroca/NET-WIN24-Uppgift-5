@@ -124,3 +124,7 @@
   box-sizing: border-box;
   display: block; /* Ensures block display */
 }
+
+.toggle-pwd-visibility{
+  color: var(--text-color);
+}

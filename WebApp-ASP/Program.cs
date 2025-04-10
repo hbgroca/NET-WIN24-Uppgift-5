@@ -37,7 +37,6 @@ public class Program
             .AddEntityFrameworkStores<DataContext>()
             .AddDefaultTokenProviders();
 
-
         builder.Services.ConfigureApplicationCookie(options =>
         {
             options.LoginPath = "/Login/SignIn";
@@ -69,6 +68,14 @@ public class Program
         // Add SignalR
         builder.Services.AddSignalR();
 
+        // Cookie concent
+        //builder.Services.Configure<CookiePolicyOptions>(options =>
+        //{
+        //    options.CheckConsentNeeded = context => true;
+        //    options.MinimumSameSitePolicy = SameSiteMode.None;
+        //    options.ConsentCookieValue = "true"; 
+        //});
+
         // Repositories
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
@@ -91,6 +98,7 @@ public class Program
         var app = builder.Build();
         app.UseHsts();
         app.UseHttpsRedirection();
+        //app.UseCookiePolicy();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();

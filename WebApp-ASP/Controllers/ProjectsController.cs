@@ -17,7 +17,6 @@ namespace WebApp_ASP.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProject(AddProjectFormModel form)
         {
             try
@@ -92,7 +91,6 @@ namespace WebApp_ASP.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProject(EditProjectFormModel form)
         {
 

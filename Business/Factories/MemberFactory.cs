@@ -6,6 +6,21 @@ namespace Business.Factories;
 
 public class MemberFactory
 {
+    public static MemberEntity Create(AddMemberFormModel form)
+    {
+        return new MemberEntity
+        {
+            FirstName = form.FirstName,
+            LastName = form.LastName,
+            Email = form.Email,
+            ImageUrl = form.ImageName,
+            PhoneNumber = form.Phone,
+            Title = form.Title,
+            Status = "Active",
+            BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}"),
+        };
+    }
+
     public static MemberEntity Create(MemberSignUpFormModel form)
     {
         var entity = new MemberEntity();

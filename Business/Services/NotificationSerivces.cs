@@ -1,4 +1,5 @@
-﻿using Business.Hubs;
+﻿using Business.Helpers;
+using Business.Hubs;
 using Business.Interfaces;
 using Data.Entities;
 using Data.Interfaces;
@@ -11,7 +12,6 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
 {
     private readonly INotificationsRepository _notificationsRepository = notificationsRepository;
     private readonly IHubContext<NotificationHub> _notificationHub = notificationhub;
-
 
     public async Task AddNotificationAsync(int notificationTypeId, string message, string userId = "anonymous", string image = null!, int notificationTargetGroup = 1)
     {
@@ -109,7 +109,6 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
     // Dismiss notification for current user
     public async Task DismissNotificationAsync(string userId, string notificationId)
     {
-
         var alreadyDismissed = await _notificationsRepository.DismissNotificationAsync(userId, notificationId);
 
         if (alreadyDismissed)
@@ -131,6 +130,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
     // Dismiss all notifications for current user
     public async Task DismissAllNotificationsAsync(string userId)
     {
+
         var notifications = await _notificationsRepository.GetNotificationsAsync(userId, 9999);
 
         foreach (var notification in notifications)

@@ -5,7 +5,7 @@
   align-items: center;
   width: 300px;
   max-height: 460px;
-  min-height: 427.6px;
+  min-height: 430px;
   border: none;
   border-radius: 1rem;
   background-color: var(--surface);
@@ -20,12 +20,13 @@
 }
 
 .member-card-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
   cursor: pointer;
   padding: 0.5rem 1.5rem ;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 1rem;
 }
 .member-info{
@@ -33,7 +34,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1rem;
+  gap: 0.25rem;
+  min-height: 3rem;
 }
 .member-name{
   max-width: 268px;

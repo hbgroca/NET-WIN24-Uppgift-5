@@ -49,7 +49,7 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
         if (result.Succeeded)
         {
             // Add the user to the default role
-            await _userManager.AddToRoleAsync(entity, "Member");
+            //await _userManager.AddToRoleAsync(entity, "Member");
             // Send a notification to admins 
             string Message = $"Member {entity.FirstName} {entity.LastName} has signed up!";
             await _notificationSerivces.AddNotificationAsync(3, Message, entity.Id, entity.ImageUrl!, 2);
@@ -57,6 +57,8 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
 
         return result.Succeeded;
     }
+
+
 
 
     public async Task<bool> LogoutAsync()

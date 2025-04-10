@@ -12,14 +12,12 @@
         <partial name="Partials/_ExternalAuthGooglePartial" />
     </div>
 
-    
-
     <div class="sign-in-or">
         <p>or</p>
     </div>
 
-    <div class="sign-in-form">
-        <form asp-controller="Login" asp-action="SignIn" method="post" novalidate>
+    <div class="sign-in-form forms-to-validate">
+        <form asp-controller="Login" asp-action="SignIn" method="post">
             <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
 
             @if (!string.IsNullOrEmpty(ViewBag?.Error))

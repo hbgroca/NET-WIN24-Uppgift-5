@@ -1,5 +1,4 @@
 ﻿using Data.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +35,7 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
                 .HasOne<ProjectEntity>()
                 .WithMany()
                 .HasForeignKey("ProjectsId")
-                .OnDelete(DeleteBehavior.Restrict), 
+                .OnDelete(DeleteBehavior.Cascade), 
             join => join
                 .HasOne<MemberEntity>()
                 .WithMany()

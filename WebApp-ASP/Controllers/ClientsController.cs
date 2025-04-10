@@ -84,7 +84,7 @@ namespace WebApp_ASP.Controllers
             if (result is false)
                 Debug.WriteLine( "Error while deleting the client");
 
-            return RedirectToAction("clients", "Admin");
+            return Redirect("~/clients");
         }
     }
 }

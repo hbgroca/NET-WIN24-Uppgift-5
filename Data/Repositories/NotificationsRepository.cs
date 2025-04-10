@@ -14,6 +14,7 @@ public class NotificationsRepository(DataContext context) : BaseRepository<Notif
             .ToListAsync();
 
         var notifications = await _context.Notifications
+            //.Where(u => u.Created >= fromDate)
             .Where(x => !dismissedIds.Contains(x.Id))
             .Include(x => x.NotificationType)
             .Include(x => x.TargetGroup)

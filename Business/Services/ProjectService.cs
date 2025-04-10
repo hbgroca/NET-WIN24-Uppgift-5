@@ -232,8 +232,12 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
 
             // Save changes
             var save = await _projectRepository.SaveAsync();
-            if (save == 0)
+            if (save < 1)
+            {
+                await _projectRepository.RollbackTransactionAsync();
                 return false;
+            }
+                
 
             // Commit transaction
             await _projectRepository.CommitTransactionAsync();

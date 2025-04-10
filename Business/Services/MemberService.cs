@@ -20,7 +20,67 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
     private readonly INotificationSerivces _notificationsServices = notificationSerivces;
 
     // Create
-    // Is created throu AuthService
+    public async Task<MemberModel> CreateMemberAsync(AddMemberFormModel form)
+    {
+        if (form == null)
+        {
+            Debug.WriteLine("Registrationform missing.");
+            return null!;
+        }
+        try
+        {
+            // Store image
+            if (form.ProfilePicture != null && form.ProfilePicture.Length >= 0)
+            {
+                var imagePath = await _imageServices.Create(form.ProfilePicture, "members");
+                if (!string.IsNullOrEmpty(imagePath))
+                    form.ImageName = imagePath;
+            }
+            else
+                form.ImageName = $"/images/defaultmember.png";
+
+            // Remap with factory
+            var memberEntity = MemberFactory.Create(form);
+            memberEntity.Id = GenerateGuid.NewGuid().ToString();
+
+            // Create the address if not already exists
+            var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
+            if (address == null)
+                throw new Exception("Error while creating the address");
+
+            memberEntity.AddressId = address.Id;
+
+            // Set the date created and updated
+            memberEntity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
+            memberEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+
+            // Create the member
+            memberEntity.UserName = memberEntity.Email;
+            var result = await _userManager.CreateAsync(memberEntity, "BytMig123!");
+
+            // Add the user to the default role
+            //await _userManager.AddToRoleAsync(memberEntity, "Member");
+
+            // Send notifcations to other team members then return
+            if (result.Succeeded)
+            {
+                string Message = $"New member: {memberEntity.FirstName} {memberEntity.LastName}!";
+                await _notificationsServices.AddNotificationAsync(3, Message, memberEntity.Id, memberEntity.ImageUrl!, 2);
+
+                return MemberFactory.Create(memberEntity);
+            }
+
+            // If we get here something messed up... Sad face :(
+            _imageServices.Delete(form.ImageName!);
+            return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Something went wrong when creating new member. Error msg: {ex.Message}");
+            _imageServices.Delete(form.ImageName!);
+            return null!;
+        }
+    }
 
 
     // Read

@@ -225,3 +225,7 @@
 .active{
   display: flex;
 }
+
+.toggle-pwd-visibility{
+  color: var(--text-color);
+}

@@ -13,4 +13,5 @@ public interface IMemberService
     Task<bool> UpdateMember(EditMemberFormModel form);
     Task<bool> Delete(Guid id);
     Task<bool> IsMemberAdmin(string userName);
+    Task<MemberModel> CreateMemberAsync(AddMemberFormModel form);
 }

@@ -69,9 +69,81 @@
 
 .trademark{
   margin: 0 auto;
-  
+  text-align: center;
   p{
     margin: 0;
     color: var(--text-color);
+  }
+}
+.btn-admin-secret{
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: var(--nav-bg-color);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  rotate: 90deg;
+  margin-bottom: 1rem;
+  animation: pulsate 3s infinite;
+  transition: all 0.3s ease-in-out;
+}
+.isOpen{
+  rotate: -90deg;
+}
+.home-page-test-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: Start;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  background-color: var(--nav-bg-color);
+  transition: all 0.5s ease-in-out;
+  height: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.home-page-test-panel-btns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+.home-page-test-panel-header{
+  margin: 0 auto;
+}
+.btn-admin-panel{
+  max-height: 2rem;
+}
+.show-test-panel{
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--nav-border-color);
+  padding: 1rem;
+  height: fit-content;
+  overflow: auto;
+}
+
+@keyframes pulsate{
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
   }
 }
