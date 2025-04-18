@@ -112,12 +112,15 @@
                     {
                         if (Model.Members.Any(m => m.Id == member.Id))
                             continue;
-                            
-                        <li class="project-members-add-list-object" data-member-id="@member.Id">
-                            <img class="project-members-add-image" src="@member.ImageUrl" />
-                            <p class="project-members-add-name">@member.FullName</p>
-                            <button class="btn add-member-btn" onclose="@(()=>{Model.Members.Add(member);})">+ Add</button>
-                        </li>
+
+                        if(member.Status != "Inactive")
+                        {
+                            <li class="project-members-add-list-object" data-member-id="@member.Id">
+                                <img class="project-members-add-image" src="@member.ImageUrl" />
+                                <p class="project-members-add-name">@member.FullName</p>
+                                <button class="btn add-member-btn" onclose="@(()=>{Model.Members.Add(member);})">+ Add</button>
+                            </li>
+                        }
                     }
                 </ul>
 
