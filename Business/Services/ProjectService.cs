@@ -38,7 +38,7 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
                 form.ImageName = await _imageService.Create(form.ProjectImage, "projects");
             }
             else
-                form.ImageName = $"/images/defaultmember.png";
+                form.ImageName = $"/images/defaultproject.png";
 
             // Remap with factory
             var projectEntity = ProjectFactory.Create(form);

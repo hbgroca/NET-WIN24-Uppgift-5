@@ -28,7 +28,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
                 // Project
                 case 2:
                     {
-                        image = "/images/defaultmember.png";
+                        image = "/images/defaultproject.png";
                         break;
                     }
                 // Member

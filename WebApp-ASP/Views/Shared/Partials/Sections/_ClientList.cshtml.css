@@ -30,7 +30,7 @@
 .client-list table tr{
   display: grid;
   grid-template-areas: "info location date status actions";
-  grid-template-columns: 4fr 2fr  2fr auto auto;
+  grid-template-columns: 4fr 2fr  2fr 100px 80px;
   align-items: center;
   width: 100%;
   border-radius: 1rem;

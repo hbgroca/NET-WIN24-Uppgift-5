@@ -1,11 +1,11 @@
 ﻿// Creds to Hasse
 
 const validateField = (field) => {
-    console.log("Validating fields")
+    //console.log("Validating fields")
     // Get the error span for the field
     let errorSpan = document.querySelector(`span[data-valmsg-for='${field.name}']`)
     if (!errorSpan) {
-        console.error(`Could not find a span with the data-valmsg-for attribute equal to ${field.name}`)
+        //console.error(`Could not find a span with the data-valmsg-for attribute equal to ${field.name}`)
         return;
     }
 
@@ -40,22 +40,22 @@ const validateField = (field) => {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("Loading Validation script")
+    //console.log("Loading Validation script")
     const form = document.querySelector('.forms-to-validate')
 
     if (!form) {
-        console.error("Could not find a form element")
+        //console.error("Could not find a form element")
         return;
     }
 
     // Get all the fields that need to be validated
     const fields = form.querySelectorAll("input[data-val='true']")
-    console.log("Fields found to validate: ", fields)
+    //console.log("Fields found to validate: ", fields)
 
     // Add an event listener to each field
     fields.forEach(field => {
         field.addEventListener("input", function () {
-            console.log("Validating: ", field)
+            //console.log("Validating: ", field)
             validateField(field)
         })
     })

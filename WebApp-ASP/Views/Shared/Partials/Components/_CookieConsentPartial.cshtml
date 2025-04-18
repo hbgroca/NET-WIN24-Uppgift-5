@@ -1,0 +1,59 @@
+﻿    
+<div id="cookieModal">
+    <form id="cookieConsentForm" class="cookie-container">
+        <div class="cookie-header-container">
+            <h4 class="cookie-header">Cookie Policy</h4>
+            <p class="cookie-info">
+                This website uses cookies to enhance your browsing experience, analyze site traffic, and personalize content. By clicking "Accept All", you consent to the use of all cookies. You can also manage your preferences by selecting "Accept Selected". For more information, please read our
+                <a href="/PrivacyPolicy" target="_blank">Privacy Policy</a>.
+            </p>
+        </div>
+
+        <div class="cookie-selections">
+            
+            <div class="cookie-options">
+                <label class="switch-label">
+                    <i class="surface-solid fa-chevron-down"></i>
+                    Enable Essential Cookies
+                    <input type="checkbox" for="cookieEssential" id="cookieEssential" checked disabled />
+                </label>
+            </div>
+
+            <div class="cookie-options">
+                <label class="switch-label">
+                    <i class="surface-solid fa-chevron-down"></i>
+                    Enable Functional Cookies
+                    <input type="checkbox" for="cookieFunctional" id="cookieFunctional" name="Functional" />
+                </label>
+            </div>
+
+            @* Not used  *@
+            @* <div class="cookie-options"> *@
+            @*     <label class="switch-label"> *@
+            @*         <i class="surface-solid fa-chevron-down"></i> *@
+            @*         Enable Anatlytic Cookies *@
+            @*         <input type="checkbox" for="cookieAnalytic" id="cookieAnalytic" name="Analytic" /> *@
+            @*     </label> *@
+            @* </div> *@
+
+            @* <div class="cookie-options"> *@
+            @*     <label class="switch-label"> *@
+            @*         <i class="surface-solid fa-chevron-down"></i> *@
+            @*         Enable Marketing Cookies *@
+            @*         <input type="checkbox" for="cookieMarketing" id="cookieMarketing" name="Marketing" /> *@
+            @*     </label> *@
+            @* </div> *@
+        </div>
+            
+
+        <div class="cookie-buttons">
+            <button type="button" class="btn btn-gray" onclick="acceptSelectedCookies()">Accept selected</button>
+            <button type="button" class="btn btn-primary" onclick="acceptAllCookies()">Accept all</button>
+        </div>
+    </form>
+</div>
+    
+
+<div class="cookieConsentIcon" onclick="showCookieModal()">
+    <i class="fa-solid fa-cookie-bite"></i>
+</div>

@@ -101,27 +101,6 @@ public class MemberFactory
         };
     }
 
-    public static AddMemberFormModel CreateRegistrationUpdateForm(MemberModel model)
-    {
-        var form = new AddMemberFormModel();
-
-        form.FirstName = model.FirstName;
-        form.LastName = model.LastName;
-        form.Email = model.Email;
-        form.ImageName = model.ImageUrl;
-        form.Phone = model.Phone;
-        form.Title = model.Title ?? "";
-        form.Street = model.Address.Street;
-        form.ZipCode = model.Address.ZipCode;
-        form.City = model.Address.City;
-        form.Country = model.Address.Country;
-        form.Day = model.BirthDate.Day;
-        form.Month = model.BirthDate.Month;
-        form.Year = model.BirthDate.Year;
-   
-        return form;
-    }
-
     public static MemberEntity Update(EditMemberFormModel form, MemberEntity member)
     {
         member.FirstName = form.FirstName;

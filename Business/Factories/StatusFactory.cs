@@ -7,14 +7,6 @@ namespace Business.Factories
     public static class StatusFactory
     {
         // Clients
-        public static ClientStatusEntity Create(ClientStatusModel status)
-        {
-            return new ClientStatusEntity
-            {
-                Id = status.Id,
-                Description = status.Description
-            };
-        }
         public static ClientStatusEntity Create(ClientStatusFormModel status)
         {
             return new ClientStatusEntity
@@ -33,14 +25,6 @@ namespace Business.Factories
 
 
         // Projects
-        public static MemberStatusEntity Create(MemberStatusModel status)
-        {
-            return new MemberStatusEntity
-            {
-                Id = status.Id,
-                Description = status.Description
-            };
-        }
         public static MemberStatusEntity Create(MemberStatusFormModel status)
         {
             return new MemberStatusEntity

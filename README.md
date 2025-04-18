@@ -1,9 +1,4 @@
-# .NET-WIN24-Uppgift-5 &#10003;
-
-Min vy på uppgiften
-- Fylls i under uppgiftens gång....
-
-
+# .NET-WIN24-Uppgift-5
 
 Inlämningsuppgift 5 - ASP.NET
 - I denna inlämningsuppgift ska du bygga en webbapplikation med hjälp av ASP.NET Core. Det är ditt ansvar att se till att din webbapplikation uppfyller kraven för godkänt respektive väl godkänt. Ja det är stora skillnader kunskapsmässigt mellan godkänt och väl godkänt. Detta enligt nya riktlinjer från EC och Myndigheten för Yrkeshögskolan, samt att väl godkänt är det högsta betyget du kan få och du ska självständigt och på ett fördjupat sätt kunna bevisa dina kunskaper enligt kursplanen.
@@ -39,9 +34,9 @@ Webbapplikationen kan vara av typen ASP.NET - Razor Pages eller ASP.NET - MVC oc
 - Du ska samtliga sidor för väl godkänt som finns med i designfilen. &#10003;
 - Du ska använda dig av Views och Partial Views samt ViewModels där det är lämpligt. &#10003;
 - Du ska utifrån designfilen självständigt kunna se vad som behöver byggas upp och finnas med för att få sidan att fungera enligt designfilen. &#10003;
-- Om data måste läggas in såsom olika statuslägen så måste det finnas en extra sida, som bara en administratör kan komma åt, där denna information läggs in och administreras.
+- Om data måste läggas in såsom olika statuslägen så måste det finnas en extra sida, som bara en administratör kan komma åt, där denna information läggs in och administreras. &#10003;
 - All formulärdata måste valideras med hjälp av både Javascript och ModelState. &#10003;
-- Webbapplikationen måste använda sig av Cookie Consent.
+- Webbapplikationen måste använda sig av Cookie Consent. &#10003;
 - Det ska finnas ett separat data-lager och separat business-lager. &#10003;
 - All data ska hanteras i en valfri lagringslösning och du ska använda Entity Framework Core och ska självständigt tillämpa lämpliga designmönster. &#10003;
 - Du ska använda dig av Microsoft Identity (Individual Account) för åtkomst- och behörighetskontroll, samt sidor måste skyddas på lämpligt sätt. &#10003;

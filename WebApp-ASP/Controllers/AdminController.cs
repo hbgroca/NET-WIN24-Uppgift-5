@@ -26,7 +26,7 @@ namespace WebApp_ASP.Controllers
         [Route("members")]
         public IActionResult Members()
         {
-            ViewData["Title"] = "Members management";
+            ViewData["Title"] = "Members";
             return View();
         }
 
@@ -34,7 +34,7 @@ namespace WebApp_ASP.Controllers
         [Route("status")]
         public IActionResult Status()
         {
-            ViewData["Title"] = "Status management";
+            ViewData["Title"] = "Status";
             return View();
         }
 

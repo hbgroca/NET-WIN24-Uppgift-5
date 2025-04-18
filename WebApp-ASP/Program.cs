@@ -60,21 +60,19 @@ public class Program
             options.SignInScheme = IdentityConstants.ExternalScheme;
         });
 
-        // Add authorization services
+        // Authorization services
         builder.Services.AddAuthorization();
-        // Add controllers
+        // Controllers
         builder.Services.AddControllersWithViews();
-
-        // Add SignalR
+        // SignalR
         builder.Services.AddSignalR();
-
         // Cookie concent
-        //builder.Services.Configure<CookiePolicyOptions>(options =>
-        //{
-        //    options.CheckConsentNeeded = context => true;
-        //    options.MinimumSameSitePolicy = SameSiteMode.None;
-        //    options.ConsentCookieValue = "true"; 
-        //});
+        builder.Services.Configure<CookiePolicyOptions>(options =>
+        {
+            // Check if the user has already given consent
+            options.CheckConsentNeeded = context => !context.Request.Cookies.ContainsKey("cookieConsent");
+            options.MinimumSameSitePolicy = SameSiteMode.Lax;
+        });
 
         // Repositories
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
@@ -98,13 +96,12 @@ public class Program
         var app = builder.Build();
         app.UseHsts();
         app.UseHttpsRedirection();
-        //app.UseCookiePolicy();
         app.UseRouting();
+        app.UseCookiePolicy();
         app.UseAuthentication();
         app.UseAuthorization();
 
-
-        // Create roles
+        // Create roles if they dont already exists
         using (var scope = app.Services.CreateScope())
         {
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -119,8 +116,6 @@ public class Program
                 }
             }
         }
-
-        // Create Notification 
 
         app.MapStaticAssets();
         app.MapControllerRoute(

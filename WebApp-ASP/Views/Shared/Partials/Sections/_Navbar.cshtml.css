@@ -9,12 +9,6 @@
   border-right: 1px solid var(--nav-border-color);
 }
 
-@media (max-width: 900px) {
-  .nav-menu{
-    display: none;
-  }
-}
-
 .navbar-header {
   height: 32px;
   display: flex;

@@ -1,11 +1,13 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories;
 
-public class NotificationsRepository(DataContext context) : BaseRepository<NotificationEntity>(context), INotificationsRepository
+public class NotificationsRepository(DataContext context, UserManager<MemberEntity> userManager) : BaseRepository<NotificationEntity>(context), INotificationsRepository
 {
+    private readonly UserManager<MemberEntity> _userManager = userManager;
     public async Task<IEnumerable<NotificationEntity>> GetNotificationsAsync(string userId, int take = 100)
     {
         var dismissedIds = await _context.NotificationDismisses
@@ -13,8 +15,17 @@ public class NotificationsRepository(DataContext context) : BaseRepository<Notif
             .Select(x => x.NotificationId)
             .ToListAsync();
 
+
+        // Get the create time of user so we dont get notifications from before that date
+        DateTime dateCreated = DateTime.UtcNow.AddYears(-1); // Default to 1 year ago
+        if (userId != "Anonomous")
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            dateCreated = DateTime.Parse(user!.DateCreated.ToString());
+        }
+
         var notifications = await _context.Notifications
-            //.Where(u => u.Created >= fromDate)
+            .Where(u => u.Created >= dateCreated)
             .Where(x => !dismissedIds.Contains(x.Id))
             .Include(x => x.NotificationType)
             .Include(x => x.TargetGroup)
@@ -22,7 +33,8 @@ public class NotificationsRepository(DataContext context) : BaseRepository<Notif
             .Take(take)
             .ToListAsync();
 
-        return notifications ?? [];
+        
+            return notifications ?? [];
     }
 
     public async Task<bool> DismissNotificationAsync(string userId, string notificationId)

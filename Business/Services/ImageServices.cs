@@ -27,6 +27,10 @@ public class ImageServices : IImageServices
         catch(Exception ex)
         {
             Debug.WriteLine($"An error occurred while saving the image: {ex.Message}");
+            if(saveFolder == "projects")
+            {
+                return $"/images/defaultproject.png";
+            }
             return $"/images/defaultmember.png";
         }
     }
