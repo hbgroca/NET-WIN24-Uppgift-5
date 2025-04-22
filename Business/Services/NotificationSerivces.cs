@@ -1,10 +1,10 @@
-﻿using Business.Helpers;
-using Business.Hubs;
+﻿using Business.Hubs;
 using Business.Interfaces;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Business.Services;
 
@@ -15,7 +15,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
 
     public async Task AddNotificationAsync(int notificationTypeId, string message, string userId = "anonymous", string image = null!, int notificationTargetGroup = 1)
     {
-        if (string.IsNullOrEmpty(image))
+        if (!File.Exists(image) || string.IsNullOrEmpty(image))
         {
             switch (notificationTypeId)
             {
@@ -101,6 +101,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
     public async Task<IEnumerable<NotificationEntity>> GetNotificationsAsync(string userId, int take = 10)
     {
         var notifications = await _notificationsRepository.GetNotificationsAsync(userId, take);
+
         return notifications;
     }
 

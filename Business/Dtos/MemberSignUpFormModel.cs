@@ -74,6 +74,6 @@ public class MemberSignUpFormModel
 
     [Display(Name = "Day", Prompt = "Enter day...")]
     [Required(ErrorMessage = "Invalid")]
-    [RegularExpression(@"^(0?[1-9]|[31][0-9]|3[01])$", ErrorMessage = "Invalid")]
+    [RegularExpression(@"^(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "Invalid")]
     public int Day { get; set; }
 }

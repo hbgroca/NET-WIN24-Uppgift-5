@@ -1,6 +1,5 @@
 ﻿using Business.Dtos;
 using Business.Factories;
-using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
@@ -41,7 +40,7 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
 
             // Remap with factory
             var memberEntity = MemberFactory.Create(form);
-            memberEntity.Id = GenerateGuid.NewGuid().ToString();
+            memberEntity.Id = Guid.NewGuid().ToString();
 
             // Create the address if not already exists
             var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);
@@ -51,8 +50,8 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
             memberEntity.AddressId = address.Id;
 
             // Set the date created and updated
-            memberEntity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
-            memberEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+            memberEntity.DateCreated = DateTime.Now;
+            memberEntity.DateUpdated = DateTime.Now;
 
             // Create the member
             memberEntity.UserName = memberEntity.Email;
@@ -170,7 +169,7 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
             memberEntity.AddressId = address.Id;
 
             // Set the date updated
-            memberEntity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+            memberEntity.DateUpdated = DateTime.Now;
 
             // Update the member in dbcontext
             _memberRepository.Update(memberEntity);

@@ -26,11 +26,11 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     {
         base.OnModelCreating(modelBuilder);
 
+        // Configure the many-to-many relationship between MemberEntity and ProjectEntity
         modelBuilder.Entity<MemberEntity>()
         .HasMany(m => m.Projects)
         .WithMany(p => p.Members)
         .UsingEntity<Dictionary<string, object>>(
-            "MemberEntityProjectEntity",
             join => join
                 .HasOne<ProjectEntity>()
                 .WithMany()
@@ -43,6 +43,7 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
                 .OnDelete(DeleteBehavior.Restrict)
         );
 
+        // Add base data for ClientStatusEntity, MemberStatusEntity, NotificationTargetGroupEntity, and NotificationTypeEntity
         modelBuilder.Entity<ClientStatusEntity>()
             .HasData(
                 new ClientStatusEntity { Id = 1, Description = "Active" },
@@ -56,7 +57,18 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
                 new MemberStatusEntity { Id = 3, Description = "Vacation" },
                 new MemberStatusEntity { Id = 4, Description = "Inactive" }
             );
-
+        modelBuilder.Entity<NotificationTargetGroupEntity>()
+            .HasData(
+                new NotificationTargetGroupEntity { Id = 1, TargetGroup = "Member" },
+                new NotificationTargetGroupEntity { Id = 2, TargetGroup = "Admin" }
+            );
+        modelBuilder.Entity<NotificationTypeEntity>()
+            .HasData(
+                new NotificationTypeEntity { Id = 1, NotificationType = "Client" },
+                new NotificationTypeEntity { Id = 2, NotificationType = "Member" },
+                new NotificationTypeEntity { Id = 3, NotificationType = "Project" },
+                new NotificationTypeEntity { Id = 4, NotificationType = "Admin" }
+            );
     }
 }
 

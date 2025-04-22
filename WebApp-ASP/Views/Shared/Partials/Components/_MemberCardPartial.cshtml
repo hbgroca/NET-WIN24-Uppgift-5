@@ -1,5 +1,22 @@
 ﻿@model MemberModel
 
+@{
+    var user = await _memberService.GetMemberAsync(x => x.UserName == User.Identity!.Name);
+    bool deleteDisabled = false;
+    string deleteTitle = "";
+
+    if(Model.Projects.Count() > 0)
+    {
+        deleteDisabled = true;
+        deleteTitle = "Unavilable, Connected to project";
+    }
+    if(user != null && Model.Id == user.Id)
+    {
+        deleteDisabled = true;
+        deleteTitle = "Unavilable, Can't delete yourself !";
+    }
+}
+
 <div class="member-card-continer">
     <div class="member-card">
         <p class="member-btn-edit" onclick="viewEditPopup(this)">&deg;&deg;</p>
@@ -48,8 +65,8 @@
 
                     <h6>Info</h6>
                     <p>Birthdate: <span>@Model.BirthDate</span></p>
-                    <p>Date created: <span>@Model.DateCreated</span></p>
-                    <p>Date updated: <span>@Model.DateUpdated</span></p>
+                    <p>Created: <span>@Model.DateCreated</span></p>
+                    <p>Updated: <span>@Model.DateUpdated</span></p>
                 </div>
             </div>
             <button class="btn btn-gray">Message</button>
@@ -60,7 +77,7 @@
 
             <button class="pop-up-btn member-actions-edit-btn" data-modal="true" data-target="#editMemberModal" data-member-id="@Model.Id" onclick="viewEditPopup(this)"><span class="edit">&#9998;</span>Edit</button>
             <form class="pop-up-btn-form" asp-action="deletemember" asp-route-id="@Model.Id" method="post" asp-controller="Members">
-                <button type="button" class="pop-up-btn" onclick="viewDeleteConfirmButtons(this)"  @(Model.Projects.Count() == 0 ? "" : "disabled") title=@(Model.Projects.Count() == 0 ? "" : "Unavilable,Connected-project")>
+                <button type="button" class="pop-up-btn" onclick="viewDeleteConfirmButtons(this)" @(deleteDisabled ? "disabled" : "") title="@deleteTitle">
                     <span class="remove">&#x1F5D1;</span>
                     Remove
                 </button>

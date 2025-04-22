@@ -1,6 +1,5 @@
 ﻿using Business.Dtos;
 using Business.Factories;
-using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
@@ -44,7 +43,7 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             var projectEntity = ProjectFactory.Create(form);
 
             // Set Id
-            projectEntity.Id = GenerateGuid.NewGuid();
+            projectEntity.Id = Guid.NewGuid();
 
             // Add Members
             if(form.Members.Count() == 0)

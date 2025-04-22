@@ -11,8 +11,8 @@ public class MemberModel
     public string Title { get; set; } = null!;
 
     public DateOnly BirthDate { get; set; }
-    public DateOnly DateCreated { get; set; }
-    public DateOnly DateUpdated { get; set; }
+    public DateTime DateCreated { get; set; }
+    public DateTime DateUpdated { get; set; }
 
     public AddressModel Address { get; set; } = null!;
     public List<ProjectModel> Projects { get; set; } = [];

@@ -105,8 +105,8 @@ namespace Data.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    DateCreated = table.Column<DateOnly>(type: "date", nullable: false),
-                    DateUpdated = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -368,7 +368,7 @@ namespace Data.Migrations
                         column: x => x.ProjectsId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -390,6 +390,26 @@ namespace Data.Migrations
                     { 2, "Busy" },
                     { 3, "Vacation" },
                     { 4, "Inactive" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NotificationTargetGroups",
+                columns: new[] { "Id", "TargetGroup" },
+                values: new object[,]
+                {
+                    { 1, "Member" },
+                    { 2, "Admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NotificationTypes",
+                columns: new[] { "Id", "NotificationType" },
+                values: new object[,]
+                {
+                    { 1, "Client" },
+                    { 2, "Member" },
+                    { 3, "Project" },
+                    { 4, "Admin" }
                 });
 
             migrationBuilder.CreateIndex(

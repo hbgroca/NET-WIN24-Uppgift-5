@@ -175,7 +175,9 @@ namespace WebApp_ASP.Controllers
                         ZipCode = info.Principal.FindFirstValue(ClaimTypes.PostalCode) ?? "",
                         City = info.Principal.FindFirstValue(ClaimTypes.StateOrProvince) ?? "",
                         Country = info.Principal.FindFirstValue(ClaimTypes.Country) ?? "",
-                    }
+                    },
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
                 };
 
                 var identityResult = await _userManager.CreateAsync(user);

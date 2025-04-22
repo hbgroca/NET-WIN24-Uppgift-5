@@ -44,7 +44,7 @@
                             <p class="client-actions-edit-btn" data-modal="true" data-target="#editClientModal" data-client-id="@client.Id">&#9998;</p>
                             @if (User.IsInRole("Admin"))
                             {
-                                <button class="remove-btn @(client.ProjectCount == 0 ? "" : "disabled")" onclick="toogleRemoveBtns(this)" @(client.ProjectCount == 0 ? "" : "disabled") title=@(client.ProjectCount==0 ? "" : "Unavailable,Connected-project")>&#10006;</button>
+                                <button class="remove-btn @(client.ProjectCount == 0 ? "" : "disabled")" onclick="toogleRemoveBtns(this)" @(client.ProjectCount == 0 ? "" : "disabled") title="@(client.ProjectCount==0 ? "" : "Unavailable, Connected project")">&#10006;</button>
                             }
                         </div>
 

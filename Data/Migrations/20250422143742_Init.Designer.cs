@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250410183801_Init")]
+    [Migration("20250422143742_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -146,11 +146,11 @@ namespace Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("DateCreated")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("DateUpdated")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -336,6 +336,18 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("NotificationTargetGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            TargetGroup = "Member"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            TargetGroup = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Data.Entities.NotificationTypeEntity", b =>
@@ -353,6 +365,28 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("NotificationTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NotificationType = "Client"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NotificationType = "Member"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NotificationType = "Project"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NotificationType = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Data.Entities.ProjectEntity", b =>
@@ -630,7 +664,7 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.ProjectEntity", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

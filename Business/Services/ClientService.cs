@@ -1,6 +1,5 @@
 ﻿using Business.Dtos;
 using Business.Factories;
-using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
 using Data.Entities;
@@ -44,7 +43,7 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
 
             // Remap with factory
             var clientEntity = ClientFactory.Create(form);
-            clientEntity.Id = GenerateGuid.NewGuid();
+            clientEntity.Id = Guid.NewGuid();
 
             // Create the address
             var address = await _addressService.CreateAddressAsync(form.Street, form.ZipCode, form.City, form.Country);

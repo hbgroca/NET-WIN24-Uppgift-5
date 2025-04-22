@@ -33,8 +33,8 @@ public class MemberFactory
         entity.Title = "Junior";
         entity.Status = "Active";
 
-        entity.DateCreated = DateOnly.FromDateTime(DateTime.Now);
-        entity.DateUpdated = DateOnly.FromDateTime(DateTime.Now);
+        entity.DateCreated = DateTime.Now;
+        entity.DateUpdated = DateTime.Now;
 
         entity.PhoneNumber = form.PhoneNumber;
         entity.BirthDate = DateOnly.Parse($"{form.Year}-{form.Month}-{form.Day}");
