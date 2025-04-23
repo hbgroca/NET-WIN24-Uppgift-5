@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Business.Dtos;
 
 namespace WebApp_ASP.Controllers
@@ -38,6 +37,33 @@ namespace WebApp_ASP.Controllers
             }
 
             return Ok(new { success = true });
+        }
+
+        // Profile edit
+        public async Task<IActionResult> ProfileEdit(Guid id)
+        {
+            var user = await _memberService.GetMemberAsync(x => x.Id == id.ToString());
+
+            EditMemberFormModel form = new EditMemberFormModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Phone = user.Phone,
+                Title = user.Title,
+                Street = user.Address.Street,
+                ZipCode = user.Address.ZipCode,
+                City = user.Address.City,
+                Country = user.Address.Country,
+                Day = user.BirthDate.Day,
+                Month = user.BirthDate.Month,
+                Year = user.BirthDate.Year,
+                ImageName = user.ImageUrl,
+                Status = user.Status,
+            };
+
+            return View(form);
         }
 
 

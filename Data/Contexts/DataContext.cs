@@ -65,8 +65,8 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
         modelBuilder.Entity<NotificationTypeEntity>()
             .HasData(
                 new NotificationTypeEntity { Id = 1, NotificationType = "Client" },
-                new NotificationTypeEntity { Id = 2, NotificationType = "Member" },
-                new NotificationTypeEntity { Id = 3, NotificationType = "Project" },
+                new NotificationTypeEntity { Id = 2, NotificationType = "Project" },
+                new NotificationTypeEntity { Id = 3, NotificationType = "Member" },
                 new NotificationTypeEntity { Id = 4, NotificationType = "Admin" }
             );
     }

@@ -15,7 +15,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
 
     public async Task AddNotificationAsync(int notificationTypeId, string message, string userId = "anonymous", string image = null!, int notificationTargetGroup = 1)
     {
-        if (!File.Exists(image) || string.IsNullOrEmpty(image))
+        if (string.IsNullOrEmpty(image))
         {
             switch (notificationTypeId)
             {

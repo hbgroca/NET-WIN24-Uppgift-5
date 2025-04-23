@@ -1,10 +1,12 @@
 ﻿using Business.Interfaces;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace WebApp_ASP.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NotificationsController(INotificationSerivces notificationSerivces) : ControllerBase

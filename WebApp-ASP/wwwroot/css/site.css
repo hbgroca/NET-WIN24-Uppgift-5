@@ -1029,3 +1029,36 @@ form .status-input-field{
   75% { border-color: green }
   100% { border-color: hotpink }
 }
+
+
+/* Profile edit page */
+.profile-edit-wrapper{
+  padding: 0 2rem 2rem 2rem;
+}
+.profile-edit{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+
+  .image-preview{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    z-index: 2;
+  }
+}
+.profile-edit > div{
+  padding: 1rem;
+    outline: 1px  dimgray;
+    outline-style: dashed;
+    border-radius: 1rem;
+    width: fit-content;
+    height: fit-content;
+}
+.profile-save-status{
+  width: 100%;
+  padding: 0.5rem 1rem ;
+  text-align: center;
+  border-radius: 1rem;
+}
