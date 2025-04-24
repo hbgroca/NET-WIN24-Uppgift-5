@@ -4,7 +4,6 @@ using Data.Entities;
 using Data.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Business.Services;
 

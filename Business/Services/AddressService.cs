@@ -36,9 +36,6 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
 
         try
         {
-            // Begin a new transaction
-            //await _addressRepository.BeginTransactionAsync();
-
             // Remap with factory
             var address = AddressFactory.Create(form);
 
@@ -48,10 +45,10 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
             // Save the changes
             var result = await _addressRepository.SaveAsync();
             if (result == 0)
-                throw new Exception("Error while saving the address");
-
-            // Commit the transaction
-            //await _addressRepository.CommitTransactionAsync();
+            {
+                Debug.WriteLine("! Error while saving the address");
+                return null!;
+            }
 
             // Get the address from db
             var updatedEntity = await _addressRepository.GetOneAsync(
@@ -62,14 +59,16 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
                 c.Country == form.Country
                 );
             if (updatedEntity is null)
-                throw new Exception("Error while saving the address");
+            {
+                Debug.WriteLine("! Error while saving the address");
+                return null!;
+            }
 
             return AddressFactory.Create(updatedEntity);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("An error occurred while creating the address: ", ex);
-            await _addressRepository.RollbackTransactionAsync();
+            Debug.WriteLine("An error occurred while creating the address: ", ex.Message);
         }
 
         return null!;
@@ -99,5 +98,10 @@ public class AddressService(IAddressRepository addressRepository) : IAddressServ
         // Remap the entity to model
         var model = AddressFactory.Create(entity);
         return model;
+    }
+
+    public int GetAddressCount()
+    {
+        return _addressRepository.GetCount();
     }
 }

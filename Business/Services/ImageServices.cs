@@ -19,6 +19,7 @@ public class ImageServices : IImageServices
         {
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
+                // Save the image to the specified path
                 await projectImage.CopyToAsync(stream);
             }
 

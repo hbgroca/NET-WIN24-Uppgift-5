@@ -128,6 +128,11 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
         return project.Select(ProjectFactory.Create);
     }
 
+    public int GetProjectCount()
+    {
+        return _projectRepository.GetCount();
+    }
+
     // Update
     public async Task<bool> Update(EditProjectFormModel form)
     {

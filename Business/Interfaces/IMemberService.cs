@@ -14,4 +14,5 @@ public interface IMemberService
     Task<bool> Delete(Guid id);
     Task<bool> IsMemberAdmin(string userName);
     Task<MemberModel> CreateMemberAsync(AddMemberFormModel form);
+    int GetMembersCount();
 }

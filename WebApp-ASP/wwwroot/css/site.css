@@ -1062,3 +1062,37 @@ form .status-input-field{
   text-align: center;
   border-radius: 1rem;
 }
+
+.home-page-stats{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+.home-page-stats-card{
+  padding: 1rem;
+  background-color: var(--surface);
+  border-radius: 1rem;
+  width: fit-content;
+  min-width: 220px;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .home-page-stats-header{
+    margin: 0;
+    padding: 0;
+  }
+  .home-page-stats-counter{
+    font-size: 4rem;
+    margin: 0;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: auto;
+  }
+}

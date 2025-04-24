@@ -10,9 +10,10 @@ public class HomeController(IProjectService projectService, IMemberService membe
 {
     private readonly IProjectService _projectService = projectService;
     private readonly IMemberService _memberService = memberService;
+
     ProjectsPageViewModel viewModel = new();
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         ViewData["Title"] = "Home";
         return View();

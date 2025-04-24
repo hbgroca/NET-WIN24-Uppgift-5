@@ -15,6 +15,8 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
     private readonly INotificationSerivces _notificationSerivces = notificationSerivces;
     private readonly IMemberService _memberService = memberService;
 
+
+    // Sign in
     public async Task<bool> AuthenticateAsync(MemberLoginFormModel form)
     {
         var result = await _signInManager.PasswordSignInAsync(form.Email, form.Password, false, false);
@@ -31,6 +33,9 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
         return result.Succeeded;
     }
 
+
+
+    // Sign up
     public async Task<bool> SignUpAsync(MemberSignUpFormModel form){
 
         // Do the facotry thing :)
@@ -48,8 +53,6 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
         var result = await _userManager.CreateAsync(entity, form.Password);
         if (result.Succeeded)
         {
-            // Add the user to the default role
-            //await _userManager.AddToRoleAsync(entity, "Member");
             // Send a notification to admins 
             string Message = $"Member {entity.FirstName} {entity.LastName} has signed up!";
             await _notificationSerivces.AddNotificationAsync(3, Message, entity.Id, entity.ImageUrl!, 2);
@@ -60,7 +63,7 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
 
 
 
-
+    // Sign out
     public async Task<bool> LogoutAsync()
     {
         try

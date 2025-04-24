@@ -122,6 +122,11 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
         return clients.Select(ClientFactory.Create);
     }
 
+    public int GetClientsCount()
+    {
+        return _clientRepository.GetCount();
+    }
+
     // Update
 
     public async Task<bool> UpdateClient(EditClientFormModel form)

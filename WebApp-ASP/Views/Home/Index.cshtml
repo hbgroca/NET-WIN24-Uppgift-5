@@ -12,4 +12,23 @@
 
         <p>Hasses meny hittar du nere till vänster. Här kan du skicka notifikationer samt lägga till eller ta bort admin status för aktuell användare.</p>
     </div>
+
+    <div class="home-page-stats">
+        <div class="home-page-stats-card">
+            <h4 class="home-page-stats-header">Projects</h4>
+            <p class="home-page-stats-counter">@_projectService.GetProjectCount()</p>
+        </div>
+        <div class="home-page-stats-card">
+            <h4 class="home-page-stats-header">Clients</h4>
+            <p class="home-page-stats-counter">@_clientService.GetClientsCount()</p>
+        </div>
+        <div class="home-page-stats-card">
+            <h4 class="home-page-stats-header">Team members</h4>
+            <p class="home-page-stats-counter">@_memberService.GetMembersCount()</p>
+        </div>
+        <div class="home-page-stats-card">
+            <h4 class="home-page-stats-header">Addresses</h4>
+            <p class="home-page-stats-counter">@_addressService.GetAddressCount()</p>
+        </div>
+    </div>
 </div>

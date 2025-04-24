@@ -26,7 +26,7 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure the many-to-many relationship between MemberEntity and ProjectEntity
+        // Set the many-to-many relationship between MemberEntity and ProjectEntity. Would get an OnDelete error if i dont set it here.
         modelBuilder.Entity<MemberEntity>()
         .HasMany(m => m.Projects)
         .WithMany(p => p.Members)

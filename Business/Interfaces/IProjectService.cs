@@ -11,6 +11,7 @@ namespace Business.Interfaces
         Task<bool> Delete(Guid id);
         Task<IEnumerable<ProjectModel>> GetAllProjectsAsync();
         Task<ProjectModel> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression);
+        int GetProjectCount();
         Task<IEnumerable<ProjectModel>> GetProjectsAsync(Expression<Func<ProjectEntity, bool>> expression);
         Task<bool> Update(EditProjectFormModel form);
     }

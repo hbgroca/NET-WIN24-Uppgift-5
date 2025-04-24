@@ -141,6 +141,19 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
         }
     }
 
+    public virtual int GetCount()
+    {
+        try
+        {
+            return _dbSet.Count();
+        }
+        catch
+        {
+            Debug.WriteLine("Count - Error getting address count");
+            return 0;
+        }
+    }
+
 
     // UPDATE
     public virtual bool Update(TEntity entity)

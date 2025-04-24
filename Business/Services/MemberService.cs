@@ -121,6 +121,11 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
         return member.Select(MemberFactory.CreateWithProjects);
     }
 
+    public int GetMembersCount()
+    {
+        return _memberRepository.GetCount();
+    }
+
 
     // Update
     public async Task<bool> UpdateMember(EditMemberFormModel form)
