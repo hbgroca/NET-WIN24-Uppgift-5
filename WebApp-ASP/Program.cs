@@ -7,7 +7,6 @@ using Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace WebApp_ASP;
 
@@ -15,12 +14,6 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        JsonSerializerOptions options = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
-        };
-
         var builder = WebApplication.CreateBuilder(args);
 
         // Connection strings
