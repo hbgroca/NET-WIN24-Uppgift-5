@@ -1,6 +1,8 @@
 ﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services;
 
@@ -17,11 +19,13 @@ public class ImageServices : IImageServices
 
         try
         {
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                // Save the image to the specified path
-                await projectImage.CopyToAsync(stream);
-            }
+            // CoPilot (Claude 3.5) was used to figure out how to resize the image in the best possible way
+            using var imageStream = image.OpenReadStream();
+            using var img = await Image.LoadAsync(imageStream);
+            // Resize the image to a width and height of 256 pixels
+            img.Mutate(x => x.Resize(256, 256));
+            // Save the image to the specified path
+            await img.SaveAsync(filePath);
 
             return $"/uploaded/{saveFolder}/{fileName}";
         }
