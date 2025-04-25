@@ -4,17 +4,14 @@
 });
 
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/notificationHub")
+    .withUrl("/notificationhub")
     .build();
 
 connection.on("AllReceiveNotification", (notification) => {
-    notifications = notification
     printNotifications(notification);
 });
 connection.on("AdminReceiveNotification", (notification) => {
-    console.log("Admin message received")
-    // If user is admin
-    GetRole(notification);
+    printNotifications(notification);
 });
 
 connection.on("AllNotificationsDismissed", () => {
@@ -30,28 +27,6 @@ connection.on("NotificationDismissed", (notificationId) => {
 
 // Start signalr server
 connection.start().catch(error => console.error(error));
-
-// Get user role
-async function GetRole(notification) {
-    console.log("Checking admin role")
-    try {
-        const res = await fetch(`/api/notifications/isuseradmin`, {
-            method: 'POST'
-        });
-        if (res.ok) {
-            const data = await res.json();
-            if (data.success) {
-                notifications = notification
-                printNotifications(notification);
-                return true
-            }
-            return false
-        }
-    }
-    catch (error) {
-        return false;
-    }
-}
 
 // Print notifications to screen
 function printNotifications(notification) {

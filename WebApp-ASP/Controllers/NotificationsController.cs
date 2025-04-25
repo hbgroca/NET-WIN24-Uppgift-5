@@ -1,7 +1,9 @@
-﻿using Business.Interfaces;
+﻿using Business.Hubs;
+using Business.Interfaces;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace WebApp_ASP.Controllers
@@ -9,9 +11,10 @@ namespace WebApp_ASP.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class NotificationsController(INotificationSerivces notificationSerivces) : ControllerBase
+    public class NotificationsController(INotificationSerivces notificationSerivces, IHubContext<NotificationHub> hubContext) : ControllerBase
     {
         private readonly INotificationSerivces _notificationServices = notificationSerivces;
+        private readonly IHubContext<NotificationHub> _notificationHub = hubContext;
 
         [HttpPost]
         public async Task<IActionResult> CreateNotification(NotificationEntity entity)
@@ -19,8 +22,8 @@ namespace WebApp_ASP.Controllers
             if (entity == null)
                 return BadRequest("Notification entity cannot be null");
 
-            await _notificationServices.AddNotificationAsync(entity.NotificationTypeId, entity.Message, "Anonomous", entity.Image, entity.TargetGroupId);
-            
+            await _notificationServices.AddNotificationAsync(entity);
+
             return Ok(new { success =true, message = "Notification created successfully" });
         }
 
@@ -33,9 +36,9 @@ namespace WebApp_ASP.Controllers
             if(string.IsNullOrEmpty(userId) || userId == "anonymous")
                 return Unauthorized("User not authenticated");
 
+            // Get the last 100 notifications for the user
             var notifications = await _notificationServices.GetNotificationsAsync(userId, 100);
-            if (notifications == null || !notifications.Any())
-                return NotFound("No notifications found");
+
             return Ok(notifications);
         }
 
@@ -48,7 +51,11 @@ namespace WebApp_ASP.Controllers
             if (string.IsNullOrEmpty(userId) || userId == "anonymous")
                 return Unauthorized("User not authenticated");
 
+            // Remove the notification from the database
             await _notificationServices.DismissNotificationAsync(userId, notificationId);
+            // Remove the notification from the user's view
+            await _notificationHub.Clients.User(userId).SendAsync("NotificationDismissed", notificationId);
+
             return Ok( new { success = true, });
         }
 
@@ -57,8 +64,12 @@ namespace WebApp_ASP.Controllers
         {
             if (string.IsNullOrEmpty(userName) || userName == "anonymous")
                 return Unauthorized("User not authenticated");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "anonymous";
 
+            // Remove the notifications from the database
             await _notificationServices.DismissAllNotificationsAsync(userName);
+            // Remove the notifications from the user's view
+            await _notificationHub.Clients.User(userId).SendAsync("AllNotificationsDismissed");
             return Ok(new { success = true, });
         }
 
@@ -77,15 +88,39 @@ namespace WebApp_ASP.Controllers
         }
 
         [HttpPost("sendtest")]
-        public async Task<IActionResult> test()
+        public async Task<IActionResult> Test()
         {
-            await _notificationServices.AddNotificationAsync(1, "Test notifcation", "Anonomous", "/images/defaultmember.png", 1);
+            string Message = $"All user notification test!";
+
+            var notification = new NotificationEntity
+            {
+                Message = Message,
+                Created = DateTime.Now,
+                Image = "",
+                TargetGroupId = 1, // All users
+                NotificationTypeId = 1, // Client
+            };
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "anonymous";
+            await _notificationServices.AddNotificationAsync(notification, userId);
+
             return Ok(new { success = true });
         }
         [HttpPost("sendadmintest")]
-        public async Task<IActionResult> testadmin()
+        public async Task<IActionResult> Testadmin()
         {
-            await _notificationServices.AddNotificationAsync(2, "Admin test notification", "Anonomous", "/images/defaultmember.png", 2);
+            string Message = $"Admin notification test!";
+
+            var notification = new NotificationEntity
+            {
+                Message = Message,
+                Created = DateTime.Now,
+                Image = "",
+                TargetGroupId = 2, // Admins only
+                NotificationTypeId = 2, // Project
+            };
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "anonymous";
+            await _notificationServices.AddNotificationAsync(notification, userId);
+
             return Ok(new { success = true });
         }
     }

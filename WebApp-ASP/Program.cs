@@ -123,7 +123,7 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
 
-        app.MapHub<NotificationHub>("/notificationHub");
+        app.MapHub<NotificationHub>("/notificationhub");
 
         app.Run();
     }

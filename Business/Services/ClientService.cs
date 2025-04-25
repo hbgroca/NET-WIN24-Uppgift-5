@@ -74,11 +74,21 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             // Commit the transaction
             await _clientRepository.CommitTransactionAsync();
 
-            // Send notifcations to other team members
             if (result > 0)
             {
+                // Send a notification to all users 
                 string Message = $"New Client: {clientEntity.ClientName}!";
-                await _notificationsServices.AddNotificationAsync(1, Message, clientEntity.Id.ToString(), clientEntity.ImageUrl!, 1);
+
+                var notification = new NotificationEntity
+                {
+                    Message = Message,
+                    Created = DateTime.Now,
+                    Image = clientEntity.ImageUrl ?? "",
+                    TargetGroupId = 1, // All users
+                    NotificationTypeId = 1, // Client
+                };
+
+                await _notificationsServices.AddNotificationAsync(notification);
             }
 
             // Return the client
@@ -187,11 +197,21 @@ public class ClientService(IClientRepository clientRepository, IAddressService a
             // Commit the transaction
             await _clientRepository.CommitTransactionAsync();
 
-            // Send notifcations to other team members
             if (result > 0)
             {
+                // Send a notification to all users 
                 string Message = $"Client: {clientEntity.ClientName} was updated.";
-                await _notificationsServices.AddNotificationAsync(1, Message, clientEntity.Id.ToString(), clientEntity.ImageUrl!, 1);
+
+                var notification = new NotificationEntity
+                {
+                    Message = Message,
+                    Created = DateTime.Now,
+                    Image = clientEntity.ImageUrl ?? "",
+                    TargetGroupId = 1, // All users
+                    NotificationTypeId = 1, // Client
+                };
+
+                await _notificationsServices.AddNotificationAsync(notification);
             }
 
             return true;

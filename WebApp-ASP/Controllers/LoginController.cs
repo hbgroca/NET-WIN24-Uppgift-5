@@ -183,11 +183,6 @@ namespace WebApp_ASP.Controllers
                 var identityResult = await _userManager.CreateAsync(user);
                 if (identityResult.Succeeded)
                 {
-                    // Send notification to members
-                    string Message = $"Member {user.FirstName} {user.LastName} signed up!";
-                    await _notificationService.AddNotificationAsync(3, Message, user.Id, user.ImageUrl!, 2);
-
-
                     identityResult = await _userManager.AddLoginAsync(user, info);
                     if (identityResult.Succeeded)
                     {

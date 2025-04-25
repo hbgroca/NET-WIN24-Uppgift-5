@@ -1,19 +1,22 @@
 ﻿using Business.Dtos;
 using Business.Factories;
+using Business.Hubs;
 using Business.Interfaces;
 using Data.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
 
 namespace Business.Services;
 
-public class AuthService(INotificationSerivces notificationSerivces, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, IAddressService addressService, IMemberService memberService) : IAuthService
+public class AuthService(INotificationSerivces notificationSerivces, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, IAddressService addressService, IMemberService memberService, IHubContext<NotificationHub> hubContext) : IAuthService
 {
     private readonly SignInManager<MemberEntity> _signInManager = signInManager;
     private readonly UserManager<MemberEntity> _userManager = userManager;
     private readonly IAddressService _addressService = addressService;
-    private readonly INotificationSerivces _notificationSerivces = notificationSerivces;
     private readonly IMemberService _memberService = memberService;
+    private readonly INotificationSerivces _notificationSerivces = notificationSerivces;
+    private readonly IHubContext<NotificationHub> _notificationHub = hubContext;
 
 
     // Sign in
@@ -53,14 +56,25 @@ public class AuthService(INotificationSerivces notificationSerivces, SignInManag
         var result = await _userManager.CreateAsync(entity, form.Password);
         if (result.Succeeded)
         {
+            var user = _userManager.FindByEmailAsync(form.Email);
+
             // Send a notification to admins 
             string Message = $"Member {entity.FirstName} {entity.LastName} has signed up!";
-            await _notificationSerivces.AddNotificationAsync(3, Message, entity.Id, entity.ImageUrl!, 2);
+
+            var notification = new NotificationEntity
+            {
+                Message = Message,
+                Created = DateTime.Now,
+                Image = entity.ImageUrl ?? "",
+                TargetGroupId = 2, // Admins only
+                NotificationTypeId = 3, // Team Member
+            };
+
+            await _notificationSerivces.AddNotificationAsync(notification, user.Id.ToString());
         }
 
         return result.Succeeded;
     }
-
 
 
     // Sign out

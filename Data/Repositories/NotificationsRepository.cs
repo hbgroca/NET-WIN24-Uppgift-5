@@ -17,14 +17,13 @@ public class NotificationsRepository(DataContext context, UserManager<MemberEnti
 
 
         // Get the create time of user so we dont get notifications from before that date
-        DateTime dateCreated = DateTime.UtcNow.AddDays(-7);
-        if (userId != "Anonomous")
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if(user != null)    
-                dateCreated = DateTime.Parse(user!.DateCreated.ToString());
-        }
+        var user = await _userManager.FindByIdAsync(userId);
+        if(user == null)
+            return [];
 
+        var dateCreated = DateTime.Parse(user!.DateCreated.ToString());
+
+        // Get notifications for the user
         var notifications = await _context.Notifications
             .Where(u => u.Created >= dateCreated)
             .Where(x => !dismissedIds.Contains(x.Id))
@@ -34,7 +33,7 @@ public class NotificationsRepository(DataContext context, UserManager<MemberEnti
             .Take(take)
             .ToListAsync();
 
-            return notifications ?? [];
+        return notifications ?? [];
     }
 
     public async Task<bool> DismissNotificationAsync(string userId, string notificationId)

@@ -1040,10 +1040,14 @@ form .status-input-field{
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+  .image-previewer{
+    width: 256px;
+    height: 256px;
+  }
 
   .image-preview{
-    width: 150px;
-    height: 150px;
+    width: 256px;
+    height: 256px;
     object-fit: cover;
     z-index: 2;
   }

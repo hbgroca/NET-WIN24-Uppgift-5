@@ -13,7 +13,7 @@ public class HomeController(IProjectService projectService, IMemberService membe
 
     ProjectsPageViewModel viewModel = new();
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         ViewData["Title"] = "Home";
         return View();

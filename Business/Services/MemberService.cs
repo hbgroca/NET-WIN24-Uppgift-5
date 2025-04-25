@@ -57,14 +57,22 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
             memberEntity.UserName = memberEntity.Email;
             var result = await _userManager.CreateAsync(memberEntity, "BytMig123!");
 
-            // Add the user to the default role
-            //await _userManager.AddToRoleAsync(memberEntity, "Member");
-
             // Send notifcations to other team members then return
             if (result.Succeeded)
             {
+                // Send a notification to team members
                 string Message = $"New member: {memberEntity.FirstName} {memberEntity.LastName}!";
-                await _notificationsServices.AddNotificationAsync(3, Message, memberEntity.Id, memberEntity.ImageUrl!, 2);
+
+                var notification = new NotificationEntity
+                {
+                    Message = Message,
+                    Created = DateTime.Now,
+                    Image = memberEntity.ImageUrl ?? "",
+                    TargetGroupId = 2, // Team members only
+                    NotificationTypeId = 3, // Member
+                };
+
+                await _notificationsServices.AddNotificationAsync(notification, memberEntity.Id);
 
                 return MemberFactory.Create(memberEntity);
             }
@@ -187,11 +195,21 @@ public class MemberService(INotificationSerivces notificationSerivces ,IMemberRe
             // Commit the transaction
             await _memberRepository.CommitTransactionAsync();
 
-            // Send notifcations to other team members
             if (result > 0)
             {
+                // Send a notification to team members
                 string Message = $"Member {memberEntity.FirstName} {memberEntity.LastName} was updated.";
-                await _notificationsServices.AddNotificationAsync(3, Message, memberEntity.Id, memberEntity.ImageUrl!, 2);
+
+                var notification = new NotificationEntity
+                {
+                    Message = Message,
+                    Created = DateTime.Now,
+                    Image = memberEntity.ImageUrl ?? "",
+                    TargetGroupId = 2, // Team members only
+                    NotificationTypeId = 3, // Member
+                };
+
+                await _notificationsServices.AddNotificationAsync(notification, memberEntity.Id.ToString());
             }
 
             return true;

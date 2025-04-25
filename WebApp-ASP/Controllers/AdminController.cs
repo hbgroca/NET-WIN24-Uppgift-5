@@ -1,20 +1,23 @@
 ﻿using Business.Dtos;
+using Business.Hubs;
 using Business.Interfaces;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace WebApp_ASP.Controllers
 {
-    public class AdminController(IAuthService authService, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, INotificationSerivces notificationSerivces, IMemberService memberService) : Controller
+    public class AdminController(IAuthService authService, SignInManager<MemberEntity> signInManager, UserManager<MemberEntity> userManager, INotificationSerivces notificationSerivces, IMemberService memberService, IHubContext<NotificationHub> hubContext) : Controller
     {
         private readonly SignInManager<MemberEntity> _signInManager = signInManager;
         private readonly UserManager<MemberEntity> _userManager = userManager;
         private readonly IAuthService _authService = authService;
         private readonly INotificationSerivces _notificationService = notificationSerivces;
         private readonly IMemberService _memberService = memberService;
+        private readonly IHubContext<NotificationHub> _notificationHub = hubContext;
 
         public IActionResult SignIn()
         {
@@ -60,6 +63,8 @@ namespace WebApp_ASP.Controllers
             return View(form);
         }
 
+
+
         // External Sign In
         [HttpPost]
         public IActionResult ExternalSignIn(string provider, string returnUrl = null!)
@@ -70,8 +75,6 @@ namespace WebApp_ASP.Controllers
                 return View("SignIn");
             }
 
-
-            //string redirectUrl = Url.Action("SignIn")!;
             string redirectUrl = Url.Action("ExternalSignInCallback", "Admin", new { returnUrl })!;
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 

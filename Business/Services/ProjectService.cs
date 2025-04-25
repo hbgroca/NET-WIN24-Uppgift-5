@@ -82,11 +82,21 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             // Commit the transaction
             await _projectRepository.CommitTransactionAsync();
 
-            // Send notifcations to other team members
             if (result > 0)
             {
+                // Send a notification to all users
                 string Message = $"Project added: {projectEntity.ProjectName}!";
-                await _notificationServices.AddNotificationAsync(2, Message, projectEntity.Id.ToString(), projectEntity.ImageUrl!, 1);
+
+                var notification = new NotificationEntity
+                {
+                    Message = Message,
+                    Created = DateTime.Now,
+                    Image = projectEntity.ImageUrl ?? "",
+                    TargetGroupId = 1, // All users
+                    NotificationTypeId = 2, // Project
+                };
+
+                await _notificationServices.AddNotificationAsync(notification, projectEntity.Id.ToString());
             }
 
             // Return the client
@@ -202,9 +212,19 @@ public class ProjectService(IProjectRepository projectRepository, IMemberReposit
             // Commit the transaction
             await _projectRepository.CommitTransactionAsync();
 
-            string Message = $"Project: {updatedEntity.ProjectName} was updated";
-            await _notificationServices.AddNotificationAsync(2, Message, updatedEntity.Id.ToString(), updatedEntity.ImageUrl!, 1);
-   
+            // Send a notification to all users
+            string Message = $"Project added: {updatedEntity.ProjectName}!";
+
+            var notification = new NotificationEntity
+            {
+                Message = Message,
+                Created = DateTime.Now,
+                Image = updatedEntity.ImageUrl ?? "",
+                TargetGroupId = 1, // All users
+                NotificationTypeId = 2, // Project
+            };
+
+            await _notificationServices.AddNotificationAsync(notification, updatedEntity.Id.ToString());
 
             return true;
         }

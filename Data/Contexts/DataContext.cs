@@ -59,7 +59,7 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
             );
         modelBuilder.Entity<NotificationTargetGroupEntity>()
             .HasData(
-                new NotificationTargetGroupEntity { Id = 1, TargetGroup = "Member" },
+                new NotificationTargetGroupEntity { Id = 1, TargetGroup = "All" },
                 new NotificationTargetGroupEntity { Id = 2, TargetGroup = "Admin" }
             );
         modelBuilder.Entity<NotificationTypeEntity>()

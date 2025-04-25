@@ -7,82 +7,60 @@ using System.Diagnostics;
 
 namespace Business.Services;
 
-public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, INotificationsRepository notificationsRepository) : INotificationSerivces
+public class NotificationSerivces(INotificationsRepository notificationsRepository, IHubContext<NotificationHub> hubContext) : INotificationSerivces
 {
     private readonly INotificationsRepository _notificationsRepository = notificationsRepository;
-    private readonly IHubContext<NotificationHub> _notificationHub = notificationhub;
+    private readonly IHubContext<NotificationHub> _notificationHub = hubContext;
 
-    public async Task AddNotificationAsync(int notificationTypeId, string message, string userId = "anonymous", string image = null!, int notificationTargetGroup = 1)
+    public async Task AddNotificationAsync(NotificationEntity entity, string userId = "anonymous")
     {
-        if (string.IsNullOrEmpty(image))
+        // If there is no image, set a default image based on the notification type
+        if (string.IsNullOrEmpty(entity.Image))
         {
-            switch (notificationTypeId)
+            switch (entity.NotificationTypeId)
             {
-                // Client
-                case 1:
+                case 1: // Client
                     {
-                        image = "/images/defaultmember.png";
+                        entity.Image = "/images/defaultmember.png";
                         break;
                     }
-                // Project
-                case 2:
+                case 2: // Project
                     {
-                        image = "/images/defaultproject.png";
+                        entity.Image = "/images/defaultproject.png";
                         break;
                     }
-                // Member
-                case 3:
+                case 3: // Member
                     {
-                        image = "/images/defaultmember.png";
+                        entity.Image = "/images/defaultmember.png";
                         break;
                     }
             }
         }
 
-        var notificationEntity = new NotificationEntity
-        {
-            TargetGroupId = notificationTargetGroup,
-            NotificationTypeId = notificationTypeId,
-            Message = message,
-            Image = image
-        };
-
         // Save the notification to the database
         await _notificationsRepository.BeginTransactionAsync();
         try
         {
-            var result = await _notificationsRepository.CreateAsync(notificationEntity);
+            var result = await _notificationsRepository.CreateAsync(entity);
             if (!result)
                 Debug.WriteLine("Failed to create notification");
 
             await _notificationsRepository.SaveAsync();
             await _notificationsRepository.CommitTransactionAsync();
 
-            // Send notification to the user
-            var notifications = await GetNotificationsAsync(userId);
-            var newNotification = notifications.OrderByDescending(x => x.Created).FirstOrDefault();
-
-            // Send notification to hub 
-            var notificationObject = new
-            {
-                id = newNotification?.Id,
-                message = newNotification?.Message,
-                image = newNotification?.Image,
-                created = newNotification?.Created,
-            };
-
-            switch (notificationTargetGroup)
+            // Send notification to the users
+            switch (entity.TargetGroupId)
             {
                 case 1:
                     {
                         // All users
-                        await _notificationHub.Clients.All.SendAsync("AllReceiveNotification", notificationObject);
+                        await _notificationHub.Clients.All.SendAsync("AllReceiveNotification", entity);
                         break;
                     }
                 case 2:
                     {
                         // Admins only
-                        await _notificationHub.Clients.All.SendAsync("AdminReceiveNotification", notificationObject);
+                        await _notificationHub.Clients.Group("Admin").SendAsync("AdminReceiveNotification", entity);
                         break;
                     }
             }
@@ -97,7 +75,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
 
 
     // Get notifications from db
-    public async Task<IEnumerable<NotificationEntity>> GetNotificationsAsync(string userId, int take = 10)
+    public async Task<IEnumerable<NotificationEntity>> GetNotificationsAsync(string userId, int take = 100)
     {
         var notifications = await _notificationsRepository.GetNotificationsAsync(userId, take);
 
@@ -123,8 +101,6 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
         var result = await _notificationsRepository.AddDismissNotificationAsync(notificationDismiss);
         if (!result)
             Debug.WriteLine("Failed to dismiss notification");
-
-        await _notificationHub.Clients.User(userId).SendAsync("DismissNotification", notificationId);
     }
 
     // Dismiss all notifications for current user
@@ -141,9 +117,7 @@ public class NotificationSerivces(IHubContext<NotificationHub> notificationhub, 
                 NotificationId = notification.Id
             };
 
-            var result = await _notificationsRepository.AddDismissNotificationAsync(notificationDismiss);
+            await _notificationsRepository.AddDismissNotificationAsync(notificationDismiss);
         }
-
-        await _notificationHub.Clients.User(userId).SendAsync("DismissAllNotification");
     }
 }
