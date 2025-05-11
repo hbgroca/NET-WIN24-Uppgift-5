@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.ok) {
                         const memberdata = await response.json();
 
-                        description = memberdata.client.description;
-
                         // Start initilize of rich text
                         initEditRichText('#project-edit-rich-text-editor', '#project-edit-rich-text-toolbar', '#editDescription', memberdata.description);
 
